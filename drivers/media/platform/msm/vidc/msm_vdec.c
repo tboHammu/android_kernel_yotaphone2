@@ -328,6 +328,16 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 		.menu_skip_mask = 0,
 		.qmenu = NULL,
 	},
+	{
+		.id = V4L2_CID_MPEG_VIDC_VIDEO_OPERATING_RATE,
+		.name = "Set Decoder Operating rate",
+		.type = V4L2_CTRL_TYPE_INTEGER,
+		.minimum = 0,
+		.maximum = 300 << 16,  /* 300 fps in Q16 format*/
+		.default_value = 0,
+		.step = 1,
+		.qmenu = NULL,
+	},
 };
 
 #define NUM_CTRLS ARRAY_SIZE(msm_vdec_ctrls)
@@ -809,8 +819,7 @@ int msm_vdec_g_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 				get_buff_req_buffer(inst,
 					msm_comm_get_hal_output_buffer(inst));
 			if (buff_req_buffer)
-				f->fmt.pix_mp.plane_fmt[0].sizeimage =
-				buff_req_buffer->buffer_size;
+				f->fmt.pix_mp.plane_fmt[0].sizeimage = buff_req_buffer->buffer_size;
 			else
 				f->fmt.pix_mp.plane_fmt[0].sizeimage = 0;
 
@@ -1741,6 +1750,14 @@ static int try_set_ctrl(struct msm_vidc_inst *inst, struct v4l2_ctrl *ctrl)
 		inst->capability.buffer_size_limit = ctrl->val;
 		dprintk(VIDC_DBG,
 			"Limiting input buffer size to :%u\n", ctrl->val);
+		break;
+	case V4L2_CID_MPEG_VIDC_VIDEO_PRIORITY:
+		property_id = HAL_CONFIG_REALTIME;
+		hal_property.enable = ctrl->val;
+		pdata = &hal_property;
+		break;
+	case V4L2_CID_MPEG_VIDC_VIDEO_OPERATING_RATE:
+		property_id = 0;
 		break;
 	}
 	default:
