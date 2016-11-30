@@ -1045,6 +1045,7 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
 
 int
 fb_blank(struct fb_info *info, int blank)
+<<<<<<< HEAD
 {
 	int ret = -EINVAL;
 
@@ -1067,6 +1068,26 @@ fb_blank(struct fb_info *info, int blank)
 		}
 	}
 	return ret;
+=======
+{	
+ 	int ret = -EINVAL;
+
+ 	if (blank > FB_BLANK_POWERDOWN)
+ 		blank = FB_BLANK_POWERDOWN;
+
+	if (info->fbops->fb_blank)
+ 		ret = info->fbops->fb_blank(blank, info);
+
+ 	if (!ret) {
+		struct fb_event event;
+
+		event.info = info;
+		event.data = &blank;
+		fb_notifier_call_chain(FB_EVENT_BLANK, &event);
+	}
+
+ 	return ret;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 }
 
 static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,

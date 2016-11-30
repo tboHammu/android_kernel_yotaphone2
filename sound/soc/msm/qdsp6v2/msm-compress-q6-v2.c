@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2015, The Linux Foundation. All rights reserved.
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -577,6 +581,15 @@ static int msm_compr_configure_dsp(struct snd_compr_stream *cstream)
 	int dir = IN, ret = 0;
 	struct audio_client *ac = prtd->audio_client;
 	uint32_t stream_index;
+<<<<<<< HEAD
+=======
+	struct asm_softpause_params softpause = {
+		.enable = SOFT_PAUSE_ENABLE,
+		.period = SOFT_PAUSE_PERIOD,
+		.step = SOFT_PAUSE_STEP,
+		.rampingcurve = SOFT_PAUSE_CURVE_LINEAR,
+	};
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	struct asm_softvolume_params softvol = {
 		.period = SOFT_VOLUME_PERIOD,
 		.step = SOFT_VOLUME_STEP,
@@ -621,6 +634,14 @@ static int msm_compr_configure_dsp(struct snd_compr_stream *cstream)
 		pr_err("%s: Send SoftVolume Param failed ret=%d\n",
 			__func__, ret);
 
+<<<<<<< HEAD
+=======
+	ret = q6asm_set_softpause(ac, &softpause);
+	if (ret < 0)
+		pr_err("%s: Send SoftPause Param failed ret=%d\n",
+				__func__, ret);
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	ret = q6asm_set_io_mode(ac, (COMPRESSED_STREAM_IO | ASYNC_IO_MODE));
 	if (ret < 0) {
 		pr_err("%s: Set IO mode failed\n", __func__);

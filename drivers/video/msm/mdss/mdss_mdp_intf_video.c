@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2015, The Linux Foundation. All rights reserved.
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -722,8 +726,16 @@ static int mdss_mdp_video_display(struct mdss_mdp_ctl *ctl, void *arg)
 
 		pr_debug("enabling timing gen for intf=%d\n", ctl->intf_num);
 
+<<<<<<< HEAD
 		if (pdata->panel_info.cont_splash_enabled &&
 			!ctl->mfd->splash_info.splash_logo_enabled) {
+=======
+		if ((pdata->panel_info.cont_splash_enabled &&
+			!ctl->mfd->splash_info.splash_logo_enabled)
+			|| (ctl->mfd->splash_info.splash_logo_enabled
+			&& ctl->mfd->splash_info.splash_thread
+			&& !is_mdss_iommu_attached())) {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			rc = wait_for_completion_timeout(&ctx->vsync_comp,
 					usecs_to_jiffies(VSYNC_TIMEOUT_US));
 		}

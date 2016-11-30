@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013-2015, The Linux Foundation. All rights reserved.
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -682,6 +686,11 @@ static int mdp3_ctrl_off(struct msm_fb_data_type *mfd)
 		pr_debug("fail to stop the MDP3 dma\n");
 	msleep(20);
 
+<<<<<<< HEAD
+=======
+	mfd->panel_info->cont_splash_enabled = 0;
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	mdp3_irq_deregister();
 
 	pr_debug("mdp3_ctrl_off stop clock\n");
@@ -760,6 +769,10 @@ static int mdp3_ctrl_reset_cmd(struct msm_fb_data_type *mfd)
 		mdp3_dma->vsync_enable(mdp3_dma, &vsync_client);
 
 	mdp3_session->first_commit = true;
+<<<<<<< HEAD
+=======
+	mfd->panel_info->cont_splash_enabled = 0;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	mdp3_session->in_splash_screen = 0;
 
 reset_error:
@@ -849,6 +862,10 @@ static int mdp3_ctrl_reset(struct msm_fb_data_type *mfd)
 		mdp3_dma->vsync_enable(mdp3_dma, &vsync_client);
 
 	mdp3_session->first_commit = true;
+<<<<<<< HEAD
+=======
+	mfd->panel_info->cont_splash_enabled = 0;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	mdp3_session->in_splash_screen = 0;
 
 reset_error:

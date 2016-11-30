@@ -122,10 +122,16 @@
 		#size-cells = <1>;
 		status = "disabled";
 
+<<<<<<< HEAD
 		qcom,use-external-rsense = <1>;
 		qcom,r-sense-uohm = <10000>;
 		qcom,v-cutoff-uv = <3300000>;
 		qcom,max-voltage-uv = <4350000>;
+=======
+		qcom,r-sense-uohm = <10000>;
+		qcom,v-cutoff-uv = <3400000>;
+		qcom,max-voltage-uv = <4200000>;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		qcom,r-conn-mohm = <0>;
 		qcom,shutdown-soc-valid-limit = <100>;
 		qcom,adjust-soc-low-threshold = <15>;
@@ -201,6 +207,7 @@
 		#size-cells = <1>;
 		status = "disabled";
 
+<<<<<<< HEAD
 		qcom,vddmax-mv = <4350>;
 		qcom,vddsafe-mv = <4430>;
 		qcom,vinmin-mv = <4450>;
@@ -217,6 +224,21 @@
 		qcom,batt-cold-percentage = <70>;
 		qcom,warm-bat-mv = <4100>;
 		//qcom,ibatmax-cool-ma = <350>;
+=======
+		qcom,vddmax-mv = <4200>;
+		qcom,vddsafe-mv = <4230>;
+		qcom,vinmin-mv = <4300>;
+		qcom,ibatmax-ma = <1500>;
+		qcom,ibatterm-ma = <100>;
+		qcom,ibatsafe-ma = <1500>;
+		qcom,thermal-mitigation = <1500 700 600 325>;
+		qcom,cool-bat-decidegc = <100>;
+		qcom,cool-bat-mv = <4100>;
+		qcom,ibatmax-warm-ma = <350>;
+		qcom,warm-bat-decidegc = <450>;
+		qcom,warm-bat-mv = <4100>;
+		qcom,ibatmax-cool-ma = <350>;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		qcom,vbatdet-delta-mv = <100>;
 		qcom,resume-soc = <99>;
 		qcom,tchg-mins = <150>;
@@ -568,7 +590,11 @@
 		#address-cells = <1>;
 		#size-cells = <1>;
 		qcom,qpnp-rtc-write = <0>;
+<<<<<<< HEAD
 		qcom,qpnp-rtc-alarm-pwrup = <1>;
+=======
+		qcom,qpnp-rtc-alarm-pwrup = <0>;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 		qcom,pm8941_rtc_rw@6000 {
 			reg = <0x6000 0x100>;
@@ -778,6 +804,7 @@
 			qcom,fast-avg-setup = <0>;
 		};
 
+<<<<<<< HEAD
 		chan@b6 {
                         label = "amux_in";
                         reg = <0xb6>;
@@ -789,6 +816,8 @@
                         qcom,fast-avg-setup = <0>;
                 };
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		chan@b7 {
 			label = "pa_therm1";
 			reg = <0xb7>;
@@ -856,6 +885,7 @@
 			qcom,decimation = <0>;
 			qcom,fast-avg-setup = <0>;
 		};
+<<<<<<< HEAD
 
 		chan@1 {
 			label = "external_rsense";
@@ -863,6 +893,8 @@
 			qcom,decimation = <0>;
 			qcom,fast-avg-setup = <0>;
 		};
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	};
 
 	pm8941_adc_tm: qcom,vadc@3400 {

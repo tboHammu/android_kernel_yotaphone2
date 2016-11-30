@@ -1063,7 +1063,10 @@ struct v4l2_bt_timings {
 #define V4L2_DV_VSYNC_POS_POL	0x00000001
 #define V4L2_DV_HSYNC_POS_POL	0x00000002
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 /* DV timings */
 struct v4l2_dv_timings {
 	__u32 type;
@@ -1959,7 +1962,10 @@ enum v4l2_mpeg_vidc_video_priority {
 	V4L2_MPEG_VIDC_VIDEO_PRIORITY_REALTIME_DISABLE = 1,
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #define V4L2_CID_MPEG_VIDC_VIDEO_OPERATING_RATE \
 		(V4L2_CID_MPEG_MSM_VIDC_BASE + 75)
 

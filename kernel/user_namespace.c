@@ -27,11 +27,24 @@ int create_user_ns(struct cred *new)
 	struct user_namespace *ns;
 	struct user_struct *root_user;
 	int n;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	ns = kmem_cache_alloc(user_ns_cachep, GFP_KERNEL);
 	if (!ns)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	ret = proc_alloc_inum(&ns->proc_inum);
+	if (ret) {
+		kmem_cache_free(user_ns_cachep, ns);
+		return ret;
+	}
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	kref_init(&ns->kref);
 
 	for (n = 0; n < UIDHASH_SZ; ++n)
@@ -73,6 +86,10 @@ static void free_user_ns_work(struct work_struct *work)
 	struct user_namespace *ns =
 		container_of(work, struct user_namespace, destroyer);
 	free_uid(ns->creator);
+<<<<<<< HEAD
+=======
+	proc_free_inum(ns->proc_inum);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	kmem_cache_free(user_ns_cachep, ns);
 }
 

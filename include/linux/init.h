@@ -47,8 +47,11 @@
 #define __exitdata	__section(.exit.data)
 #define __exit_call	__used __section(.exitcall.exit)
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 /*
  * modpost check for section mismatches during the kernel build.
  * A section mismatch happens when there are references from a
@@ -225,10 +228,13 @@ extern bool initcall_debug;
 	static initcall_t __initcall_##fn \
 	__used __section(.security_initcall.init) = fn
 
+<<<<<<< HEAD
 #define deferred_initcall(level, fn, id) \
 	static initcall_t __initcall_##fn##id __used \
 	__attribute__((__section__(".deferred_initcall" level ".init"))) = fn
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 struct obs_kernel_param {
 	const char *str;
 	int (*setup_func)(char *);
@@ -272,10 +278,13 @@ void __init parse_early_options(char *cmdline);
  */
 #define module_init(x)	__initcall(x);
 
+<<<<<<< HEAD
 #define deferred_module_init_0(fn)	deferred_initcall("0", fn, 0)
 #define deferred_module_init_1(fn)	deferred_initcall("1", fn, 1)
 #define deferred_module_init(fn)	deferred_initcall("1", fn, 1)
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 /**
  * module_exit() - driver exit entry point
  * @x: function to be run when driver is removed
@@ -290,10 +299,13 @@ void __init parse_early_options(char *cmdline);
 
 #else /* MODULE */
 
+<<<<<<< HEAD
 #define deferred_module_init_0(fn)	module_init(fn)
 #define deferred_module_init_1(fn)	module_init(fn)
 #define deferred_module_init(fn)	module_init(fn)
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 /* Don't use these in modules, but some people do... */
 #define early_initcall(fn)		module_init(fn)
 #define core_initcall(fn)		module_init(fn)

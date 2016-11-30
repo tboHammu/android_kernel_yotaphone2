@@ -23,6 +23,22 @@
 
 #define FB_SYSFS_FLAG_ATTR 1
 
+<<<<<<< HEAD
+=======
+/**
+ * framebuffer_alloc - creates a new frame buffer info structure
+ *
+ * @size: size of driver private data, can be zero
+ * @dev: pointer to the device for this fb, this can be NULL
+ *
+ * Creates a new frame buffer info structure. Also reserves @size bytes
+ * for driver private data (info->par). info->par (if any) will be
+ * aligned to sizeof(long).
+ *
+ * Returns the new structure, or NULL if an error occurred.
+ *
+ */
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 struct fb_info *framebuffer_alloc(size_t size, struct device *dev)
 {
 #define BYTES_PER_LONG (BITS_PER_LONG/8)
@@ -287,6 +303,10 @@ static ssize_t store_blank(struct device *device,
 	struct fb_info *fb_info = dev_get_drvdata(device);
 	char *last = NULL;
 	int err;
+<<<<<<< HEAD
+=======
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	console_lock();
 	fb_info->flags |= FBINFO_MISC_USEREVENT;
 	err = fb_blank(fb_info, simple_strtoul(buf, &last, 0));

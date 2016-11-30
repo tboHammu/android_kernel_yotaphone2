@@ -822,6 +822,7 @@ static const struct file_operations oldmem_fops = {
 };
 #endif
 
+<<<<<<< HEAD
 static ssize_t kmsg_writev(struct kiocb *iocb, const struct iovec *iv,
 			   unsigned long count, loff_t pos)
 {
@@ -860,6 +861,8 @@ static const struct file_operations kmsg_fops = {
 	.llseek = noop_llseek,
 };
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static const struct memdev {
 	const char *name;
 	umode_t mode;
@@ -880,7 +883,11 @@ static const struct memdev {
 	 [7] = { "full", 0666, &full_fops, NULL },
 	 [8] = { "random", 0666, &random_fops, NULL },
 	 [9] = { "urandom", 0666, &urandom_fops, NULL },
+<<<<<<< HEAD
 	[11] = { "kmsg", 0, &kmsg_fops, NULL },
+=======
+	[11] = { "kmsg", 0644, &kmsg_fops, NULL },
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #ifdef CONFIG_CRASH_DUMP
 	[12] = { "oldmem", 0, &oldmem_fops, NULL },
 #endif

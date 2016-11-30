@@ -905,7 +905,11 @@ static int taiko_config_gain_compander(struct snd_soc_codec *codec,
 	switch (comp) {
 	case COMPANDER_0:
 		snd_soc_update_bits(codec, TAIKO_A_SPKR_DRV_GAIN,
+<<<<<<< HEAD
 				    1 << 2, !0 << 2);
+=======
+				    1 << 2, !enable << 2);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		break;
 	case COMPANDER_1:
 		snd_soc_update_bits(codec, TAIKO_A_RX_HPH_L_GAIN,
@@ -3446,7 +3450,10 @@ static int taiko_codec_enable_anc(struct snd_soc_dapm_widget *w,
 			snd_soc_write(codec, reg, (old_val & ~mask) |
 				(val & mask));
 		}
+<<<<<<< HEAD
 		release_firmware(fw);
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		if (!hwdep_cal)
 			release_firmware(fw);
 		break;
@@ -5981,6 +5988,10 @@ static const struct snd_soc_dapm_widget taiko_dapm_widgets[] = {
 		&iir1_inp4_mux,  taiko_codec_iir_mux_event,
 		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	SND_SOC_DAPM_MUX_E("IIR2 INP1 MUX", TAIKO_A_CDC_IIR2_GAIN_B1_CTL, 0, 0,
 		&iir2_inp1_mux,  taiko_codec_iir_mux_event,
 		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),

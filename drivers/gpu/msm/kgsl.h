@@ -72,8 +72,19 @@
    the statisic is greater then _max, set _max
 */
 
+<<<<<<< HEAD
 #define KGSL_STATS_ADD(_size, _stat, _max) \
 	do { _stat += (_size); if (_stat > _max) _max = _stat; } while (0)
+=======
+static inline void KGSL_STATS_ADD(uint32_t size, atomic_t *stat,
+		atomic_t *max)
+{
+	uint32_t ret = atomic_add_return(size, stat);
+
+	if (ret > atomic_read(max))
+		atomic_set(max, ret);
+}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 #define KGSL_MAX_NUMIBS 100000
 
@@ -106,6 +117,7 @@ struct kgsl_driver {
 	void *ptpool;
 
 	struct {
+<<<<<<< HEAD
 		unsigned int vmalloc;
 		unsigned int vmalloc_max;
 		unsigned int page_alloc;
@@ -115,6 +127,16 @@ struct kgsl_driver {
 		unsigned int mapped;
 		unsigned int mapped_max;
 		unsigned int histogram[16];
+=======
+		atomic_t vmalloc;
+		atomic_t vmalloc_max;
+		atomic_t page_alloc;
+		atomic_t page_alloc_max;
+		atomic_t coherent;
+		atomic_t coherent_max;
+		atomic_t mapped;
+		atomic_t mapped_max;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	} stats;
 	unsigned int full_cache_threshold;
 };
@@ -191,6 +213,12 @@ struct kgsl_mem_entry {
 #define MMU_CONFIG 1
 #endif
 
+<<<<<<< HEAD
+=======
+int kgsl_cmdbatch_add_memobj(struct kgsl_cmdbatch *cmdbatch,
+			struct kgsl_ibdesc *ibdesc);
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 void kgsl_mem_entry_destroy(struct kref *kref);
 int kgsl_postmortem_dump(struct kgsl_device *device, int manual);
 
@@ -203,6 +231,7 @@ struct kgsl_mem_entry *kgsl_sharedmem_find_region(
 
 void kgsl_get_memory_usage(char *str, size_t len, unsigned int memflags);
 
+<<<<<<< HEAD
 void kgsl_signal_event(struct kgsl_device *device,
 		struct kgsl_context *context, unsigned int timestamp,
 		unsigned int type);
@@ -213,6 +242,8 @@ void kgsl_signal_events(struct kgsl_device *device,
 void kgsl_cancel_events(struct kgsl_device *device,
 	void *owner);
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 extern const struct dev_pm_ops kgsl_pm_ops;
 
 int kgsl_suspend_driver(struct platform_device *pdev, pm_message_t state);
@@ -222,7 +253,11 @@ void kgsl_trace_regwrite(struct kgsl_device *device, unsigned int offset,
 		unsigned int value);
 
 void kgsl_trace_issueibcmds(struct kgsl_device *device, int id,
+<<<<<<< HEAD
 		struct kgsl_cmdbatch *cmdbatch,
+=======
+		struct kgsl_cmdbatch *cmdbatch, unsigned int numibs,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		unsigned int timestamp, unsigned int flags,
 		int result, unsigned int type);
 

@@ -4,7 +4,10 @@
 #include <linux/export.h>
 #include <linux/err.h>
 #include <linux/sched.h>
+<<<<<<< HEAD
 #include <linux/vmalloc.h>
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #include <asm/uaccess.h>
 
 #include "internal.h"
@@ -342,6 +345,7 @@ int __attribute__((weak)) get_user_pages_fast(unsigned long start,
 }
 EXPORT_SYMBOL_GPL(get_user_pages_fast);
 
+<<<<<<< HEAD
 void kvfree(const void *addr)
 {
 	if (is_vmalloc_addr(addr))
@@ -351,6 +355,8 @@ void kvfree(const void *addr)
 }
 EXPORT_SYMBOL(kvfree);
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 /* Tracepoints definitions. */
 EXPORT_TRACEPOINT_SYMBOL(kmalloc);
 EXPORT_TRACEPOINT_SYMBOL(kmem_cache_alloc);

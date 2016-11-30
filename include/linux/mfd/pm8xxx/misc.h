@@ -60,6 +60,7 @@ struct pm8xxx_coincell_chg {
 	enum pm8xxx_coincell_chg_resistor	resistor;
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_TCMD
 struct qpnp_coincell_chg {
 	int state;
@@ -68,6 +69,8 @@ struct qpnp_coincell_chg {
 };
 #endif
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 enum pm8xxx_smpl_delay {
 	PM8XXX_SMPL_DELAY_0p5,
 	PM8XXX_SMPL_DELAY_1p0,

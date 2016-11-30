@@ -110,6 +110,21 @@ config TOUCHSCREEN_ATMEL_MXT
 	  To compile this driver as a module, choose M here: the
 	  module will be called atmel_mxt_ts.
 
+<<<<<<< HEAD
+=======
+config TOUCHSCREEN_ATMEL_MAXTOUCH_TS
+	tristate "Atmel Maxtouch Touchscreen Family"
+	depends on I2C
+	help
+	  Say Y here if you have Atmel MaXTouch Touchscreen
+	  using i2c connected to your system.
+
+	  If unsure, say N.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called atmel_maxtouch_ts.
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 config TOUCHSCREEN_AUO_PIXCIR
 	tristate "AUO in-cell touchscreen using Pixcir ICs"
 	depends on I2C
@@ -1016,9 +1031,15 @@ config TOUCHSCREEN_GT9XX
 	  Gt9xx controllers are multi touch controllers which can
 	  report 5 touches at a time.
 
+<<<<<<< HEAD
 	  If unsure, say N.
 
 source "drivers/input/touchscreen/gt9xx/Kconfig"
 source "drivers/input/touchscreen/cypress/Kconfig"
+=======
+          If unsure, say N.
+
+source "drivers/input/touchscreen/gt9xx/Kconfig"
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 endif

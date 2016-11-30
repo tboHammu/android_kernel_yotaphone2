@@ -104,12 +104,16 @@ int check_wakeup_irqs(void)
 
 	for_each_irq_desc(irq, desc) {
 		if (irqd_is_wakeup_set(&desc->irq_data)) {
+<<<<<<< HEAD
 			/*
 			 * Only interrupts which are marked as wakeup source
 			 * and have not been disabled before the suspend check
 			 * can abort suspend.
 			 */
 			if (desc->depth == 1 && desc->istate & IRQS_PENDING) {
+=======
+			if (desc->istate & IRQS_PENDING) {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 				pr_info("Wakeup IRQ %d %s pending, suspend aborted\n",
 					irq,
 					desc->action && desc->action->name ?

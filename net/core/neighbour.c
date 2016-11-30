@@ -935,6 +935,10 @@ static void neigh_timer_handler(unsigned long arg)
 			neigh->nud_state = NUD_PROBE;
 			neigh->updated = jiffies;
 			atomic_set(&neigh->probes, 0);
+<<<<<<< HEAD
+=======
+			notify = 1;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			next = now + neigh->parms->retrans_time;
 		}
 	} else {
@@ -1162,6 +1166,11 @@ int neigh_update(struct neighbour *neigh, const u8 *lladdr, u8 new,
 
 	if (new != old) {
 		neigh_del_timer(neigh);
+<<<<<<< HEAD
+=======
+		if (new & NUD_PROBE)
+			atomic_set(&neigh->probes, 0);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		if (new & NUD_IN_TIMER)
 			neigh_add_timer(neigh, (jiffies +
 						((new & NUD_REACHABLE) ?

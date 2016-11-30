@@ -131,9 +131,12 @@ static struct qpnp_vadc_scale_fn vadc_scale_fn[] = {
 	[SCALE_QRD_SKUAA_BATT_THERM] = {qpnp_adc_scale_qrd_skuaa_batt_therm},
 	[SCALE_QRD_SKUG_BATT_THERM] = {qpnp_adc_scale_qrd_skug_batt_therm},
 };
+<<<<<<< HEAD
 #ifdef CONFIG_TCMD
 struct qpnp_vadc_chip *vchip;
 #endif
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 static int32_t qpnp_vadc_read_reg(struct qpnp_vadc_chip *vadc, int16_t reg,
 								u8 *data)
@@ -1493,9 +1496,13 @@ static int __devinit qpnp_vadc_probe(struct spmi_device *spmi)
 	vadc->vadc_iadc_sync_lock = false;
 	dev_set_drvdata(&spmi->dev, vadc);
 	list_add(&vadc->list, &qpnp_vadc_device_list);
+<<<<<<< HEAD
 #ifdef CONFIG_TCMD
             vchip = vadc;
 #endif
+=======
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	return 0;
 
 err_setup:

@@ -34,6 +34,10 @@ struct pid_namespace {
 	gid_t pid_gid;
 	int hide_pid;
 	int reboot;	/* group exit code if this pidns was rebooted */
+<<<<<<< HEAD
+=======
+	unsigned int proc_inum;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 };
 
 extern struct pid_namespace init_pid_ns;

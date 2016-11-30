@@ -2,7 +2,11 @@
  *
  * MSM MDP Interface (used by framebuffer core)
  *
+<<<<<<< HEAD
  * Copyright (c) 2007-2013, 2016 The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2007-2012, The Linux Foundation. All rights reserved.
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  * Copyright (C) 2007 Google Incorporated
  *
  * This software is licensed under the terms of the GNU General Public
@@ -3257,7 +3261,11 @@ static int __init mdp_driver_init(void)
 		return ret;
 	}
 
+<<<<<<< HEAD
 #if defined(CONFIG_MDP_DEBUG_FS)
+=======
+#if defined(CONFIG_DEBUG_FS)
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	mdp_debugfs_init();
 #endif
 

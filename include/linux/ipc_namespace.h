@@ -65,6 +65,11 @@ struct ipc_namespace {
 
 	/* user_ns which owns the ipc ns */
 	struct user_namespace *user_ns;
+<<<<<<< HEAD
+=======
+
+	unsigned int	proc_inum;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 };
 
 extern struct ipc_namespace init_ipc_ns;

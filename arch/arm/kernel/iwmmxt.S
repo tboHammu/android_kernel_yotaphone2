@@ -61,7 +61,11 @@
  * r9  = ret_from_exception
  * lr  = undefined instr exit
  *
+<<<<<<< HEAD
  * called from prefetch exception handler with interrupts disabled
+=======
+ * called from prefetch exception handler with interrupts enabled
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  */
 
 ENTRY(iwmmxt_task_enable)

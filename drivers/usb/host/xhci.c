@@ -4047,6 +4047,16 @@ int xhci_gen_setup(struct usb_hcd *hcd, xhci_get_quirks_t get_quirks)
 
 	get_quirks(dev, xhci);
 
+<<<<<<< HEAD
+=======
+	/* In xhci controllers which follow xhci 1.0 spec gives a spurious
+	 * success event after a short transfer. This quirk will ignore such
+	 * spurious event.
+	 */
+	if (xhci->hci_version > 0x96)
+		xhci->quirks |= XHCI_SPURIOUS_SUCCESS;
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	/* Make sure the HC is halted. */
 	retval = xhci_halt(xhci);
 	if (retval)

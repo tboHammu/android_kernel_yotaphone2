@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2015, The Linux Foundation. All rights reserved.
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -567,6 +571,11 @@ void extract_dci_pkt_rsp(unsigned char *buf, int len, int data_source,
 	struct diag_dci_buffer_t *rsp_buf = NULL;
 	struct dci_pkt_req_entry_t *req_entry = NULL;
 	unsigned char *temp = buf;
+<<<<<<< HEAD
+=======
+	int save_req_uid = 0;
+	struct diag_dci_pkt_rsp_header_t pkt_rsp_header;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	if (!buf) {
 		pr_err("diag: Invalid pointer in %s\n", __func__);
@@ -608,6 +617,10 @@ void extract_dci_pkt_rsp(unsigned char *buf, int len, int data_source,
 		return;
 	}
 	curr_client_pid = req_entry->pid;
+<<<<<<< HEAD
+=======
+	save_req_uid = req_entry->uid;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	/* Remove the headers and send only the response to this function */
 	mutex_lock(&driver->dci_mutex);
@@ -647,6 +660,7 @@ void extract_dci_pkt_rsp(unsigned char *buf, int len, int data_source,
 	}
 
 	/* Fill in packet response header information */
+<<<<<<< HEAD
 	*(int *)(rsp_buf->data + rsp_buf->data_len) = DCI_PKT_RSP_TYPE;
 	rsp_buf->data_len += sizeof(int);
 	/* Packet Length = Response Length + Length of uid field (int) */
@@ -656,6 +670,16 @@ void extract_dci_pkt_rsp(unsigned char *buf, int len, int data_source,
 	rsp_buf->data_len += sizeof(uint8_t);
 	*(int *)(rsp_buf->data + rsp_buf->data_len) = req_entry->uid;
 	rsp_buf->data_len += sizeof(int);
+=======
+	pkt_rsp_header.type = DCI_PKT_RSP_TYPE;
+	/* Packet Length = Response Length + Length of uid field (int) */
+	pkt_rsp_header.length = rsp_len + sizeof(int);
+	pkt_rsp_header.delete_flag = delete_flag;
+	pkt_rsp_header.uid = save_req_uid;
+	memcpy(rsp_buf->data, &pkt_rsp_header,
+		sizeof(struct diag_dci_pkt_rsp_header_t));
+	rsp_buf->data_len += sizeof(struct diag_dci_pkt_rsp_header_t);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	memcpy(rsp_buf->data + rsp_buf->data_len, temp, rsp_len);
 	rsp_buf->data_len += rsp_len;
 	rsp_buf->data_source = data_source;
@@ -1289,9 +1313,17 @@ static int diag_process_dci_pkt_rsp(unsigned char *buf, int len)
 				 * registered on the Apps Processor
 				 */
 				if (entry.cmd_code_lo == MODE_CMD &&
+<<<<<<< HEAD
 				    entry.cmd_code_hi == MODE_CMD)
 					if (entry.client_id != APPS_DATA)
 						continue;
+=======
+				    entry.cmd_code_hi == MODE_CMD &&
+					header->subsys_id == RESET_ID) {
+					if (entry.client_id != APPS_DATA)
+						continue;
+				}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 					ret = diag_send_dci_pkt(entry, buf, len,
 								req_entry->tag);
 					found = 1;

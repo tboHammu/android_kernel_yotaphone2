@@ -177,6 +177,10 @@ struct qseecom_control {
 	struct work_struct bw_inactive_req_ws;
 	struct cdev cdev;
 	bool timer_running;
+<<<<<<< HEAD
+=======
+	bool appsbl_qseecom_support;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 };
 
 struct qseecom_client_handle {
@@ -937,7 +941,11 @@ static int qseecom_load_app(struct qseecom_dev_handle *data, void __user *argp)
 
 	req.qsee_cmd_id = QSEOS_APP_LOOKUP_COMMAND;
 	load_img_req.img_name[MAX_APP_NAME_SIZE-1] = '\0';
+<<<<<<< HEAD
 	memcpy(req.app_name, load_img_req.img_name, MAX_APP_NAME_SIZE);
+=======
+	strlcpy(req.app_name, load_img_req.img_name, MAX_APP_NAME_SIZE);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	ret = __qseecom_check_app_exists(req);
 	if (ret < 0)
@@ -979,7 +987,11 @@ static int qseecom_load_app(struct qseecom_dev_handle *data, void __user *argp)
 		}
 
 		/* Populate the structure for sending scm call to load image */
+<<<<<<< HEAD
 		memcpy(load_req.app_name, load_img_req.img_name,
+=======
+		strlcpy(load_req.app_name, load_img_req.img_name,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 						MAX_APP_NAME_SIZE);
 		load_req.qsee_cmd_id = QSEOS_APP_START_COMMAND;
 		load_req.mdt_len = load_img_req.mdt_len;
@@ -1039,7 +1051,11 @@ static int qseecom_load_app(struct qseecom_dev_handle *data, void __user *argp)
 		}
 		entry->app_id = app_id;
 		entry->ref_cnt = 1;
+<<<<<<< HEAD
 		memcpy(entry->app_name, load_img_req.img_name,
+=======
+		strlcpy(entry->app_name, load_img_req.img_name,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 					MAX_APP_NAME_SIZE);
 		/* Deallocate the handle */
 		if (!IS_ERR_OR_NULL(ihandle))
@@ -1054,7 +1070,11 @@ static int qseecom_load_app(struct qseecom_dev_handle *data, void __user *argp)
 		(char *)(load_img_req.img_name));
 	}
 	data->client.app_id = app_id;
+<<<<<<< HEAD
 	memcpy(data->client.app_name, load_img_req.img_name,
+=======
+	strlcpy(data->client.app_name, load_img_req.img_name,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 					MAX_APP_NAME_SIZE);
 	load_img_req.app_id = app_id;
 	if (copy_to_user(argp, &load_img_req, sizeof(load_img_req))) {
@@ -1174,7 +1194,11 @@ static int qseecom_unload_app(struct qseecom_dev_handle *data,
 			return -EFAULT;
 		}
 		if (resp.result == QSEOS_RESULT_SUCCESS)
+<<<<<<< HEAD
 			pr_info("App (%d) is unloaded!!\n",
+=======
+			pr_debug("App (%d) is unloaded!!\n",
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 					data->client.app_id);
 		__qseecom_cleanup_app(data);
 		if (resp.result == QSEOS_RESULT_INCOMPLETE) {
@@ -1195,10 +1219,17 @@ static int qseecom_unload_app(struct qseecom_dev_handle *data,
 		} else {
 			if (ptr_app->ref_cnt == 1) {
 				ptr_app->ref_cnt = 0;
+<<<<<<< HEAD
 				pr_info("ref_count set to 0\n");
 			} else {
 				ptr_app->ref_cnt--;
 				pr_info("Can't unload app(%d) inuse\n",
+=======
+				pr_debug("ref_count set to 0\n");
+			} else {
+				ptr_app->ref_cnt--;
+				pr_debug("Can't unload app(%d) inuse\n",
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 					ptr_app->app_id);
 			}
 		}
@@ -1956,7 +1987,11 @@ static int __qseecom_load_fw(struct qseecom_dev_handle *data, char *appname)
 
 	/* Populate the remaining parameters */
 	load_req.qsee_cmd_id = QSEOS_APP_START_COMMAND;
+<<<<<<< HEAD
 	memcpy(load_req.app_name, appname, MAX_APP_NAME_SIZE);
+=======
+	strlcpy(load_req.app_name, appname, MAX_APP_NAME_SIZE);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	if (qseecom.support_bus_scaling) {
 		mutex_lock(&qsee_bw_mutex);
@@ -2238,7 +2273,11 @@ int qseecom_start_app(struct qseecom_handle **handle,
 	}
 
 	app_ireq.qsee_cmd_id = QSEOS_APP_LOOKUP_COMMAND;
+<<<<<<< HEAD
 	memcpy(app_ireq.app_name, app_name, MAX_APP_NAME_SIZE);
+=======
+	strlcpy(app_ireq.app_name, app_name, MAX_APP_NAME_SIZE);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	ret = __qseecom_check_app_exists(app_ireq);
 	if (ret < 0)
 		goto err;
@@ -2269,7 +2308,11 @@ int qseecom_start_app(struct qseecom_handle **handle,
 		if (ret < 0)
 			goto err;
 		data->client.app_id = ret;
+<<<<<<< HEAD
 		memcpy(data->client.app_name, app_name, MAX_APP_NAME_SIZE);
+=======
+		strlcpy(data->client.app_name, app_name, MAX_APP_NAME_SIZE);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	}
 	if (!found_app) {
 		entry = kmalloc(sizeof(*entry), GFP_KERNEL);
@@ -2280,7 +2323,11 @@ int qseecom_start_app(struct qseecom_handle **handle,
 		}
 		entry->app_id = ret;
 		entry->ref_cnt = 1;
+<<<<<<< HEAD
 		memcpy(entry->app_name, app_name, MAX_APP_NAME_SIZE);
+=======
+		strlcpy(entry->app_name, app_name, MAX_APP_NAME_SIZE);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 		spin_lock_irqsave(&qseecom.registered_app_list_lock, flags);
 		list_add_tail(&entry->list, &qseecom.registered_app_list_head);
@@ -3007,6 +3054,10 @@ static int qseecom_query_app_loaded(struct qseecom_dev_handle *data,
 	struct qseecom_check_app_ireq req;
 	struct qseecom_registered_app_list *entry = NULL;
 	unsigned long flags = 0;
+<<<<<<< HEAD
+=======
+	bool found_app = false;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	/* Copy the relevant information needed for loading the image */
 	if (copy_from_user(&query_req,
@@ -3018,7 +3069,11 @@ static int qseecom_query_app_loaded(struct qseecom_dev_handle *data,
 
 	req.qsee_cmd_id = QSEOS_APP_LOOKUP_COMMAND;
 	query_req.app_name[MAX_APP_NAME_SIZE-1] = '\0';
+<<<<<<< HEAD
 	memcpy(req.app_name, query_req.app_name, MAX_APP_NAME_SIZE);
+=======
+	strlcpy(req.app_name, query_req.app_name, MAX_APP_NAME_SIZE);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	ret = __qseecom_check_app_exists(req);
 
@@ -3033,6 +3088,10 @@ static int qseecom_query_app_loaded(struct qseecom_dev_handle *data,
 				&qseecom.registered_app_list_head, list){
 			if (entry->app_id == ret) {
 				entry->ref_cnt++;
+<<<<<<< HEAD
+=======
+				found_app = true;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 				break;
 			}
 		}
@@ -3040,8 +3099,36 @@ static int qseecom_query_app_loaded(struct qseecom_dev_handle *data,
 				&qseecom.registered_app_list_lock, flags);
 		data->client.app_id = ret;
 		query_req.app_id = ret;
+<<<<<<< HEAD
 		memcpy(data->client.app_name, query_req.app_name,
 				MAX_APP_NAME_SIZE);
+=======
+		strlcpy(data->client.app_name, query_req.app_name,
+				MAX_APP_NAME_SIZE);
+		/*
+		 * If app was loaded by appsbl or kernel client before
+		 * and was not registered, regiser this app now.
+		 */
+		if (!found_app) {
+			pr_debug("Register app %d [%s] which was loaded before\n",
+					ret, (char *)query_req.app_name);
+			entry = kmalloc(sizeof(*entry), GFP_KERNEL);
+			if (!entry) {
+				pr_err("kmalloc for app entry failed\n");
+				return  -ENOMEM;
+			}
+			entry->app_id = ret;
+			entry->ref_cnt = 1;
+			strlcpy(entry->app_name, data->client.app_name,
+				MAX_APP_NAME_SIZE);
+			spin_lock_irqsave(&qseecom.registered_app_list_lock,
+				flags);
+			list_add_tail(&entry->list,
+				&qseecom.registered_app_list_head);
+			spin_unlock_irqrestore(
+				&qseecom.registered_app_list_lock, flags);
+		}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		if (copy_to_user(argp, &query_req, sizeof(query_req))) {
 			pr_err("copy_to_user failed\n");
 			return -EFAULT;
@@ -4105,14 +4192,24 @@ static int qseecom_release(struct inode *inode, struct file *file)
 	int ret = 0;
 
 	if (data->released == false) {
+<<<<<<< HEAD
 		pr_warn("data: released = false, type = %d, data = 0x%x\n",
+=======
+		pr_debug("data: released = false, type = %d, data = 0x%x\n",
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			data->type, (u32)data);
 		switch (data->type) {
 		case QSEECOM_LISTENER_SERVICE:
 			ret = qseecom_unregister_listener(data);
 			break;
 		case QSEECOM_CLIENT_APP:
+<<<<<<< HEAD
 			ret = qseecom_unload_app(data, true);
+=======
+			mutex_lock(&app_access_lock);
+			ret = qseecom_unload_app(data, true);
+			mutex_unlock(&app_access_lock);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			break;
 		case QSEECOM_SECURE_SERVICE:
 		case QSEECOM_GENERIC:
@@ -4442,6 +4539,15 @@ static int __devinit qseecom_probe(struct platform_device *pdev)
 			qseecom.ce_info.qsee_ce_hw_instance);
 		}
 
+<<<<<<< HEAD
+=======
+		qseecom.appsbl_qseecom_support =
+				of_property_read_bool((&pdev->dev)->of_node,
+						"qcom,appsbl-qseecom-support");
+		pr_info("qseecom.appsbl_qseecom_support = 0x%x",
+				qseecom.appsbl_qseecom_support);
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		qseecom.qsee.instance = qseecom.ce_info.qsee_ce_hw_instance;
 		qseecom.ce_drv.instance = qseecom.ce_info.hlos_ce_hw_instance;
 
@@ -4468,7 +4574,12 @@ static int __devinit qseecom_probe(struct platform_device *pdev)
 
 		qseecom_platform_support = (struct msm_bus_scale_pdata *)
 						msm_bus_cl_get_pdata(pdev);
+<<<<<<< HEAD
 		if (qseecom.qsee_version >= (QSEE_VERSION_02)) {
+=======
+		if (qseecom.qsee_version >= (QSEE_VERSION_02) &&
+			!qseecom.appsbl_qseecom_support) {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			struct resource *resource = NULL;
 			struct qsee_apps_region_info_ireq req;
 			struct qseecom_command_scm_resp resp;

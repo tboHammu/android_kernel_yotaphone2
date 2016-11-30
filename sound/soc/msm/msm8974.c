@@ -123,7 +123,11 @@ static struct wcd9xxx_mbhc_config mbhc_cfg = {
 	.mclk_rate = TAIKO_EXT_CLK_RATE,
 	.gpio = 0,
 	.gpio_irq = 0,
+<<<<<<< HEAD
 	.gpio_level_insert = 0,
+=======
+	.gpio_level_insert = 1,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	.detect_extn_cable = true,
 	.micbias_enable_flags = 1 << MBHC_MICBIAS_ENABLE_THRESHOLD_HEADSET,
 	.insert_detect = true,
@@ -728,7 +732,11 @@ static const char *const proxy_rx_ch_text[] = {"One", "Two", "Three", "Four",
 
 static char const *hdmi_rx_sample_rate_text[] = {"KHZ_48", "KHZ_96",
 					"KHZ_192"};
+<<<<<<< HEAD
 static const char *const btsco_rate_text[] = {"8000", "16000"};
+=======
+static const char *const btsco_rate_text[] = {"BTSCO_RATE_8KHZ", "BTSCO_RATE_16KHZ"};
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static const struct soc_enum msm_btsco_enum[] = {
 	SOC_ENUM_SINGLE_EXT(2, btsco_rate_text),
 };
@@ -870,10 +878,17 @@ static int msm_btsco_rate_put(struct snd_kcontrol *kcontrol,
 				struct snd_ctl_elem_value *ucontrol)
 {
 	switch (ucontrol->value.integer.value[0]) {
+<<<<<<< HEAD
 	case 8000:
 		msm_btsco_rate = BTSCO_RATE_8KHZ;
 		break;
 	case 16000:
+=======
+	case 0:
+		msm_btsco_rate = BTSCO_RATE_8KHZ;
+		break;
+	case 1:
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		msm_btsco_rate = BTSCO_RATE_16KHZ;
 		break;
 	default:
@@ -1698,7 +1713,11 @@ void *def_taiko_mbhc_cal(void)
 #undef S
 #define S(X, Y) ((WCD9XXX_MBHC_CAL_PLUG_TYPE_PTR(taiko_cal)->X) = (Y))
 	S(v_no_mic, 30);
+<<<<<<< HEAD
 	S(v_hs_max, 2700);
+=======
+	S(v_hs_max, 2400);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #undef S
 #define S(X, Y) ((WCD9XXX_MBHC_CAL_BTN_DET_PTR(taiko_cal)->X) = (Y))
 	S(c[0], 62);
@@ -1716,6 +1735,7 @@ void *def_taiko_mbhc_cal(void)
 	btn_low = wcd9xxx_mbhc_cal_btn_det_mp(btn_cfg, MBHC_BTN_DET_V_BTN_LOW);
 	btn_high = wcd9xxx_mbhc_cal_btn_det_mp(btn_cfg,
 					       MBHC_BTN_DET_V_BTN_HIGH);
+<<<<<<< HEAD
 
         btn_low[0] = -700;
         btn_high[0] = 50;
@@ -1734,6 +1754,24 @@ void *def_taiko_mbhc_cal(void)
         btn_low[7] = 275;
         btn_high[7] = 800;
 
+=======
+	btn_low[0] = -50;
+	btn_high[0] = 20;
+	btn_low[1] = 21;
+	btn_high[1] = 61;
+	btn_low[2] = 62;
+	btn_high[2] = 104;
+	btn_low[3] = 105;
+	btn_high[3] = 148;
+	btn_low[4] = 149;
+	btn_high[4] = 189;
+	btn_low[5] = 190;
+	btn_high[5] = 228;
+	btn_low[6] = 229;
+	btn_high[6] = 269;
+	btn_low[7] = 270;
+	btn_high[7] = 500;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	n_ready = wcd9xxx_mbhc_cal_btn_det_mp(btn_cfg, MBHC_BTN_DET_N_READY);
 	n_ready[0] = 80;
 	n_ready[1] = 68;

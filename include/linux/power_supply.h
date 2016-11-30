@@ -155,7 +155,10 @@ enum power_supply_type {
 	POWER_SUPPLY_TYPE_USB_DCP,	/* Dedicated Charging Port */
 	POWER_SUPPLY_TYPE_USB_CDP,	/* Charging Downstream Port */
 	POWER_SUPPLY_TYPE_USB_ACA,	/* Accessory Charger Adapters */
+<<<<<<< HEAD
 	POWER_SUPPLY_TYPE_WIRELESS,     /* Wireless Charger */
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	POWER_SUPPLY_TYPE_BMS,		/* Battery Monitor System */
 };
 

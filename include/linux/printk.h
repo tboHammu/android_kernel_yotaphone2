@@ -95,8 +95,24 @@ extern int printk_needs_cpu(int cpu);
 extern void printk_tick(void);
 
 #ifdef CONFIG_PRINTK
+<<<<<<< HEAD
 asmlinkage __printf(1, 0)
 int vprintk(const char *fmt, va_list args);
+=======
+asmlinkage __printf(5, 0)
+int vprintk_emit(int facility, int level,
+		const char *dict, size_t dictlen,
+		const char *fmt, va_list args);
+
+asmlinkage __printf(1, 0)
+int vprintk(const char *fmt, va_list args);
+
+asmlinkage __printf(5, 6) __cold
+asmlinkage int printk_emit(int facility, int level,
+				const char *dict, size_t dictlen,
+				const char *fmt, ...);
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 asmlinkage __printf(1, 2) __cold
 int printk(const char *fmt, ...);
 
@@ -189,6 +205,11 @@ extern void dump_stack(void) __cold;
 	no_printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__)
 #endif
 
+<<<<<<< HEAD
+=======
+extern const struct file_operations kmsg_fops;
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 /* If you are writing a driver, please use dev_dbg instead */
 #if defined(CONFIG_DYNAMIC_DEBUG)
 /* dynamic_pr_debug() uses pr_fmt() internally so we don't need it here */

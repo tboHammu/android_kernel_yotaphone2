@@ -9,6 +9,10 @@
 #include <linux/list.h>
 #include <linux/sysctl.h>
 
+<<<<<<< HEAD
+=======
+#include <net/flow.h>
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #include <net/netns/core.h>
 #include <net/netns/mib.h>
 #include <net/netns/unix.h>
@@ -52,6 +56,11 @@ struct net {
 	struct list_head	cleanup_list;	/* namespaces on death row */
 	struct list_head	exit_list;	/* Use only net_mutex */
 
+<<<<<<< HEAD
+=======
+	unsigned int		proc_inum;
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	struct proc_dir_entry 	*proc_net;
 	struct proc_dir_entry 	*proc_net_stat;
 
@@ -103,7 +112,10 @@ struct net {
 	struct netns_ipvs	*ipvs;
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #include <linux/seq_file_net.h>
 
 /* Init's network namespace */

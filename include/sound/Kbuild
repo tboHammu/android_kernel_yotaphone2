@@ -15,4 +15,7 @@ header-y += lsm_params.h
 header-y += voice_params.h
 header-y += voice_svc.h
 header-y += msmcal-hwdep.h
+<<<<<<< HEAD
 header-y += audio_effects.h
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13

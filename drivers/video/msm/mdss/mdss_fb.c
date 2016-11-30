@@ -2,7 +2,11 @@
  * Core MDSS framebuffer driver.
  *
  * Copyright (C) 2007 Google Incorporated
+<<<<<<< HEAD
  * Copyright (c) 2008-2014, The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2008-2015, The Linux Foundation. All rights reserved.
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -152,13 +156,40 @@ static int mdss_fb_notify_update(struct msm_fb_data_type *mfd,
 	if (notify > NOTIFY_UPDATE_POWER_OFF)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (mfd->update.is_suspend) {
+=======
+	if (notify == NOTIFY_UPDATE_INIT) {
+		mutex_lock(&mfd->update.lock);
+		mfd->update.init_done = true;
+		mutex_unlock(&mfd->update.lock);
+		ret = 1;
+	} else if (notify == NOTIFY_UPDATE_DEINIT) {
+		mutex_lock(&mfd->update.lock);
+		mfd->update.init_done = false;
+		mutex_unlock(&mfd->update.lock);
+		complete(&mfd->update.comp);
+		complete(&mfd->no_update.comp);
+		ret = 1;
+	} else if (mfd->update.is_suspend) {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		to_user = NOTIFY_TYPE_SUSPEND;
 		mfd->update.is_suspend = 0;
 		ret = 1;
 	} else if (notify == NOTIFY_UPDATE_START) {
+<<<<<<< HEAD
 		INIT_COMPLETION(mfd->update.comp);
 		mutex_lock(&mfd->update.lock);
+=======
+		mutex_lock(&mfd->update.lock);
+		if (mfd->update.init_done)
+			INIT_COMPLETION(mfd->update.comp);
+		else {
+			mutex_unlock(&mfd->update.lock);
+			pr_err("notify update start called without init\n");
+			return -EINVAL;
+		}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		mfd->update.ref_count++;
 		mutex_unlock(&mfd->update.lock);
 		ret = wait_for_completion_interruptible_timeout(
@@ -172,7 +203,19 @@ static int mdss_fb_notify_update(struct msm_fb_data_type *mfd,
 			ret = 1;
 		}
 	} else if (notify == NOTIFY_UPDATE_STOP) {
+<<<<<<< HEAD
 		INIT_COMPLETION(mfd->no_update.comp);
+=======
+		mutex_lock(&mfd->update.lock);
+		if (mfd->update.init_done)
+			INIT_COMPLETION(mfd->no_update.comp);
+		else {
+			mutex_unlock(&mfd->update.lock);
+			pr_err("notify update stop called without init\n");
+			return -EINVAL;
+		}
+		mutex_unlock(&mfd->update.lock);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		mutex_lock(&mfd->no_update.lock);
 		mfd->no_update.ref_count++;
 		mutex_unlock(&mfd->no_update.lock);
@@ -389,11 +432,21 @@ static ssize_t mdss_fb_get_panel_info(struct device *dev,
 
 	ret = scnprintf(buf, PAGE_SIZE,
 			"pu_en=%d\nxstart=%d\nwalign=%d\nystart=%d\nhalign=%d\n"
+<<<<<<< HEAD
 			"min_w=%d\nmin_h=%d",
 			pinfo->partial_update_enabled, pinfo->xstart_pix_align,
 			pinfo->width_pix_align, pinfo->ystart_pix_align,
 			pinfo->height_pix_align, pinfo->min_width,
 			pinfo->min_height);
+=======
+			"min_w=%d\nmin_h=%d\ndyn_fps_en=%d\nmin_fps=%d\n"
+			"max_fps=%d\n",
+			pinfo->partial_update_enabled, pinfo->xstart_pix_align,
+			pinfo->width_pix_align, pinfo->ystart_pix_align,
+			pinfo->height_pix_align, pinfo->min_width,
+			pinfo->min_height, pinfo->dynamic_fps,
+			pinfo->min_fps, pinfo->max_fps);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	return ret;
 }
@@ -566,9 +619,15 @@ static int mdss_fb_probe(struct platform_device *pdev)
 	mfd->ext_ad_ctrl = -1;
 	mfd->bl_level = 0;
 	mfd->bl_level_prev_scaled = 0;
+<<<<<<< HEAD
 	mfd->bl_return_from_powerdown = 0;
 	mfd->bl_scale = 1024;
 	mfd->bl_min_lvl = 30;
+=======
+	mfd->bl_scale = 1024;
+	mfd->bl_min_lvl = 30;
+	mfd->ad_bl_level = 0;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	mfd->fb_imgType = MDP_RGBA_8888;
 
 	mfd->pdev = pdev;
@@ -857,7 +916,10 @@ static void mdss_fb_scale_bl(struct msm_fb_data_type *mfd, u32 *bl_lvl)
 	u32 temp = *bl_lvl;
 
 	pr_debug("input = %d, scale = %d", temp, mfd->bl_scale);
+<<<<<<< HEAD
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if (temp >= mfd->bl_min_lvl) {
 		if (temp > mfd->panel_info->bl_max) {
 			pr_warn("%s: invalid bl level\n",
@@ -888,6 +950,7 @@ static void mdss_fb_scale_bl(struct msm_fb_data_type *mfd, u32 *bl_lvl)
 void mdss_fb_set_backlight(struct msm_fb_data_type *mfd, u32 bkl_lvl)
 {
 	struct mdss_panel_data *pdata;
+<<<<<<< HEAD
 	int (*update_ad_input)(struct msm_fb_data_type *mfd);
 	u32 temp = bkl_lvl;
 	int ret = -EINVAL;
@@ -898,6 +961,15 @@ void mdss_fb_set_backlight(struct msm_fb_data_type *mfd, u32 bkl_lvl)
 		|| !mfd->bl_updated) && !IS_CALIB_MODE_BL(mfd)) {
 		mfd->unset_bl_level = bkl_lvl;
 		mfd->bl_return_from_powerdown = 0;
+=======
+	u32 temp = bkl_lvl;
+	bool bl_notify_needed = false;
+
+	if ((((!mfd->panel_power_on && mfd->dcm_state != DCM_ENTER)
+		|| !mfd->bl_updated) && !IS_CALIB_MODE_BL(mfd)) ||
+		mfd->panel_info->cont_splash_enabled) {
+		mfd->unset_bl_level = bkl_lvl;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		return;
 	} else {
 		mfd->unset_bl_level = 0;
@@ -906,11 +978,19 @@ void mdss_fb_set_backlight(struct msm_fb_data_type *mfd, u32 bkl_lvl)
 	pdata = dev_get_platdata(&mfd->pdev->dev);
 
 	if ((pdata) && (pdata->set_backlight)) {
+<<<<<<< HEAD
 		if (mfd->mdp.ad_attenuate_bl) {
 			ret = (*mfd->mdp.ad_attenuate_bl)(bkl_lvl, &temp, mfd);
 			if (ret)
 				pr_err("Failed to attenuate BL\n");
 		}
+=======
+		if (mfd->mdp.ad_calc_bl)
+			(*mfd->mdp.ad_calc_bl)(mfd, temp, &temp,
+					&bl_notify_needed);
+		if (bl_notify_needed)
+			mdss_fb_bl_update_notify(mfd);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 		mfd->bl_level_prev_scaled = mfd->bl_level_scaled;
 		if (!IS_CALIB_MODE_BL(mfd))
@@ -924,6 +1004,7 @@ void mdss_fb_set_backlight(struct msm_fb_data_type *mfd, u32 bkl_lvl)
 		 * backlight has been set to the scaled value.
 		 */
 		if (mfd->bl_level_scaled == temp) {
+<<<<<<< HEAD
 			if (!mfd->bl_return_from_powerdown) {
 				mfd->bl_level = bkl_lvl;
 				return;
@@ -944,12 +1025,22 @@ void mdss_fb_set_backlight(struct msm_fb_data_type *mfd, u32 bkl_lvl)
 			mutex_lock(&mfd->bl_lock);
 		}
 		mdss_fb_bl_update_notify(mfd);
+=======
+			mfd->bl_level = bkl_lvl;
+		} else {
+			pr_debug("backlight sent to panel :%d\n", temp);
+			pdata->set_backlight(pdata, temp);
+			mfd->bl_level = bkl_lvl;
+			mfd->bl_level_scaled = temp;
+		}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	}
 }
 
 void mdss_fb_update_backlight(struct msm_fb_data_type *mfd)
 {
 	struct mdss_panel_data *pdata;
+<<<<<<< HEAD
 	int ret = 0;
 	u32 temp;
 
@@ -972,6 +1063,30 @@ void mdss_fb_update_backlight(struct msm_fb_data_type *mfd)
 		}
 	}
 	mutex_unlock(&mfd->bl_lock);
+=======
+	u32 temp;
+	bool bl_notify = false;
+
+	if (mfd->unset_bl_level) {
+		mutex_lock(&mfd->bl_lock);
+		if (!mfd->bl_updated) {
+			pdata = dev_get_platdata(&mfd->pdev->dev);
+			if ((pdata) && (pdata->set_backlight)) {
+				mfd->bl_level = mfd->unset_bl_level;
+				temp = mfd->bl_level;
+				if (mfd->mdp.ad_calc_bl)
+					(*mfd->mdp.ad_calc_bl)(mfd, temp, &temp,
+								&bl_notify);
+				if (bl_notify)
+					mdss_fb_bl_update_notify(mfd);
+				pdata->set_backlight(pdata, temp);
+				mfd->bl_level_scaled = mfd->unset_bl_level;
+				mfd->bl_updated = 1;
+			}
+		}
+		mutex_unlock(&mfd->bl_lock);
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 }
 
 static int mdss_fb_blank_sub(int blank_mode, struct fb_info *info,
@@ -1008,10 +1123,13 @@ static int mdss_fb_blank_sub(int blank_mode, struct fb_info *info,
 		mutex_lock(&mfd->bl_lock);
 		if (!mfd->bl_updated) {
 			mfd->bl_updated = 1;
+<<<<<<< HEAD
 			if (mfd->bl_level_scaled != 0) {
 				mfd->bl_level_prev_scaled = mfd->bl_level_scaled;
 				mfd->bl_return_from_powerdown = 1;
 			}
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			mdss_fb_set_backlight(mfd, mfd->bl_level_prev_scaled);
 		}
 		mutex_unlock(&mfd->bl_lock);
@@ -1024,7 +1142,11 @@ static int mdss_fb_blank_sub(int blank_mode, struct fb_info *info,
 	default:
 		if (mfd->panel_power_on && mfd->mdp.off_fnc) {
 			int curr_pwr_state;
+<<<<<<< HEAD
 			mfd->bl_updated = 0;
+=======
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			mutex_lock(&mfd->update.lock);
 			mfd->update.type = NOTIFY_TYPE_SUSPEND;
 			mfd->update.is_suspend = 1;
@@ -1086,6 +1208,7 @@ static int mdss_fb_blank(int blank_mode, struct fb_info *info)
 	return mdss_fb_blank_sub(blank_mode, info, mfd->op_enable);
 }
 
+<<<<<<< HEAD
 /* Set VM page protection */
 static inline void __mdss_fb_set_page_protection(struct vm_area_struct *vma,
 		struct msm_fb_data_type *mfd)
@@ -1107,6 +1230,8 @@ static inline void __mdss_fb_set_page_protection(struct vm_area_struct *vma,
 
 }
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static inline int mdss_fb_create_ion_client(struct msm_fb_data_type *mfd)
 {
 	mfd->fb_ion_client  = msm_ion_client_create(-1 , "mdss_fb_iclient");
@@ -1186,6 +1311,10 @@ int mdss_fb_alloc_fb_ion_memory(struct msm_fb_data_type *mfd, size_t fb_size)
 		}
 	} else {
 		pr_err("No IOMMU Domain");
+<<<<<<< HEAD
+=======
+		rc = -EINVAL;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		goto fb_mmap_failed;
 
 	}
@@ -1290,13 +1419,19 @@ static int mdss_fb_fbmem_ion_mmap(struct fb_info *info,
 			len = min(len, remainder);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			__mdss_fb_set_page_protection(vma, mfd);
 =======
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			if (mfd->mdp_fb_page_protection ==
 					MDP_FB_PAGE_PROTECTION_WRITECOMBINE)
 				vma->vm_page_prot =
 					pgprot_writecombine(vma->vm_page_prot);
+<<<<<<< HEAD
 >>>>>>> bf5ef19... mdss: fb: Add page protection flag in mmap call
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 			pr_debug("vma=%p, addr=%x len=%ld",
 					vma, (unsigned int)addr, len);
@@ -1509,8 +1644,13 @@ static int mdss_fb_register(struct msm_fb_data_type *mfd)
 	var->grayscale = 0,	/* No graylevels */
 	var->nonstd = 0,	/* standard pixel format */
 	var->activate = FB_ACTIVATE_VBL,	/* activate it at vsync */
+<<<<<<< HEAD
 	var->height = 110,	/* height of picture in mm */
 	var->width = 62,	/* width of picture in mm */
+=======
+	var->height = -1,	/* height of picture in mm */
+	var->width = -1,	/* width of picture in mm */
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	var->accel_flags = 0,	/* acceleration flags */
 	var->sync = 0,	/* see FB_SYNC_* */
 	var->rotate = 0,	/* angle we rotate counter clockwise */
@@ -1687,6 +1827,10 @@ static int mdss_fb_register(struct msm_fb_data_type *mfd)
 	mfd->no_update.timer.data = (unsigned long)mfd;
 	mfd->update.ref_count = 0;
 	mfd->no_update.ref_count = 0;
+<<<<<<< HEAD
+=======
+	mfd->update.init_done = false;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	init_completion(&mfd->update.comp);
 	init_completion(&mfd->no_update.comp);
 	init_completion(&mfd->power_off_comp);
@@ -1795,7 +1939,11 @@ static int mdss_fb_release_all(struct fb_info *info, bool release_all)
 {
 	struct msm_fb_data_type *mfd = (struct msm_fb_data_type *)info->par;
 	struct mdss_fb_proc_info *pinfo = NULL, *temp_pinfo = NULL;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+	int ret = 0, ad_ret = 0;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	int pid = current->tgid;
 	bool unknown_pid = true, release_needed = false;
 	struct task_struct *task = current->group_leader;
@@ -1892,6 +2040,16 @@ static int mdss_fb_release_all(struct fb_info *info, bool release_all)
 		if (mfd->fb_ion_handle)
 			mdss_fb_free_fb_ion_memory(mfd);
 
+<<<<<<< HEAD
+=======
+		if (mfd->mdp.ad_shutdown_cleanup) {
+			ad_ret = (*mfd->mdp.ad_shutdown_cleanup)(mfd);
+			if (ad_ret)
+				pr_err("AD shutdown cleanup failed ret = %d\n",
+						ad_ret);
+		}
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		ret = mdss_fb_blank_sub(FB_BLANK_POWERDOWN, info,
 			mfd->op_enable);
 		if (ret) {
@@ -1900,7 +2058,10 @@ static int mdss_fb_release_all(struct fb_info *info, bool release_all)
 			return ret;
 		}
 		atomic_set(&mfd->ioctl_ref_cnt, 0);
+<<<<<<< HEAD
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	}
 
 	return ret;

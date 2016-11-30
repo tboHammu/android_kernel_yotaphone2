@@ -2435,6 +2435,9 @@ config FB_SH_MOBILE_MERAM
 	  Up to 4 memory channels can be configured, allowing 4 RGB or
 	  2 YCbCr framebuffers to be configured.
 
+<<<<<<< HEAD
 source "drivers/video/s1d13522/Kconfig"
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 endmenu

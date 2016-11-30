@@ -80,6 +80,10 @@ arch-$(CONFIG_CPU_32v3)		:=-D__LINUX_ARM_ARCH__=3 -march=armv3
 # doesn't even support -march=armv7-a, since in that situation we would have
 # bigger problems.
 arch-$(CONFIG_ARCH_MSM_KRAIT)	:=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-mcpu=cortex-a15,-march=armv7-a)
+<<<<<<< HEAD
+=======
+arch-$(CONFIG_MSM_CORTEX_A7)	:=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-mcpu=cortex-a15,-march=armv7-a)
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 # This selects how we optimise for the processor.
 tune-$(CONFIG_CPU_ARM610)	:=-mtune=arm610
@@ -263,6 +267,10 @@ core-$(CONFIG_VFP)		+= arch/arm/vfp/
 # If we have a machine-specific directory, then include it in the build.
 core-y				+= arch/arm/kernel/ arch/arm/mm/ arch/arm/common/
 core-y				+= arch/arm/net/
+<<<<<<< HEAD
+=======
+core-y				+= arch/arm/crypto/
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 core-y				+= $(machdirs) $(platdirs)
 
 drivers-$(CONFIG_OPROFILE)      += arch/arm/oprofile/

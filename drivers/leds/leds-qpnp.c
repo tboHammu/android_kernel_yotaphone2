@@ -2898,7 +2898,11 @@ static int __devinit qpnp_get_config_flash(struct qpnp_led_data *led,
 			devm_regulator_get(&led->spmi_dev->dev, "flash-wa");
 		if (IS_ERR_OR_NULL(led->flash_cfg->flash_wa_reg)) {
 			rc = PTR_ERR(led->flash_cfg->flash_wa_reg);
+<<<<<<< HEAD
 			if (rc != -EPROBE_DEFER) {
+=======
+			if (rc != EPROBE_DEFER) {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 				dev_err(&led->spmi_dev->dev,
 					"Flash wa regulator get failed(%d)\n",
 					rc);

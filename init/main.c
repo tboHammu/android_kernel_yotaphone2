@@ -68,7 +68,10 @@
 #include <linux/shmem_fs.h>
 #include <linux/slab.h>
 #include <linux/perf_event.h>
+<<<<<<< HEAD
 #include <linux/completion.h>
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 #include <asm/io.h>
 #include <asm/bugs.h>
@@ -804,6 +807,10 @@ static noinline int init_post(void)
 {
 	/* need to finish all async __init code before freeing the memory */
 	async_synchronize_full();
+<<<<<<< HEAD
+=======
+	free_initmem();
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	mark_rodata_ro();
 	system_state = SYSTEM_RUNNING;
 	numa_default_policy();
@@ -892,6 +899,7 @@ static int __init kernel_init(void * unused)
 	init_post();
 	return 0;
 }
+<<<<<<< HEAD
 
 extern initcall_t __deferred_initcall0_start[], __deferred_initcall0_end[];
 extern initcall_t __deferred_initcall1_start[], __deferred_initcall1_end[];
@@ -971,3 +979,5 @@ if (mask != 0) {
 	kthread_run(clean_memory_handler, NULL, "clean_memory_th");
 }
 }
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13

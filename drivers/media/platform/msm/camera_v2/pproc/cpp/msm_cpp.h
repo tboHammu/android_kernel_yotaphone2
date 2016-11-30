@@ -79,7 +79,11 @@
 #define MSM_CPP_START_ADDRESS		0x0
 #define MSM_CPP_END_ADDRESS			0x3F00
 
+<<<<<<< HEAD
 #define MSM_CPP_POLL_RETRIES		20
+=======
+#define MSM_CPP_POLL_RETRIES		200
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #define MSM_CPP_TASKLETQ_SIZE		16
 #define MSM_CPP_TX_FIFO_LEVEL		16
 

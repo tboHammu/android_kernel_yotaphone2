@@ -167,6 +167,9 @@ obj-$(CONFIG_FB_VIRTUAL)          += vfb.o
 
 #video output switch sysfs driver
 obj-$(CONFIG_VIDEO_OUTPUT_CONTROL) += output.o
+<<<<<<< HEAD
 
 # To compile eink code
 obj-$(CONFIG_EPSON_13522)  += s1d13522/
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13

@@ -100,7 +100,11 @@ static int msm_ext_buck_probe(struct platform_device *pdev)
 	return ret;
 }
 
+<<<<<<< HEAD
 static struct of_device_id msm_ext_buck_table[] = {
+=======
+static struct of_device_id msm_ext_buck_table[] __initdata = {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	{.compatible = "qcom,ext-buck-control"},
 	{},
 };

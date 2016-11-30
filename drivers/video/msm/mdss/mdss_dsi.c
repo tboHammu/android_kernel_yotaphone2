@@ -742,7 +742,10 @@ static int mdss_dsi_unblank(struct mdss_panel_data *pdata)
 	int ret = 0;
 	struct mipi_panel_info *mipi;
 	struct mdss_dsi_ctrl_pdata *ctrl_pdata = NULL;
+<<<<<<< HEAD
 	u32 tmp;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	pr_debug("%s+:\n", __func__);
 
@@ -767,11 +770,14 @@ static int mdss_dsi_unblank(struct mdss_panel_data *pdata)
 		ctrl_pdata->ctrl_state |= CTRL_STATE_PANEL_INIT;
 	}
 
+<<<<<<< HEAD
 	tmp = MIPI_INP((ctrl_pdata->ctrl_base) + 0xac);
         tmp |= (1<<28);
         MIPI_OUTP((ctrl_pdata->ctrl_base) + 0xac, tmp);
         wmb();
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if (pdata->panel_info.type == MIPI_CMD_PANEL) {
 		if (mipi->vsync_enable && mipi->hw_vsync_mode
 			&& gpio_is_valid(ctrl_pdata->disp_te_gpio)) {
@@ -789,7 +795,10 @@ static int mdss_dsi_blank(struct mdss_panel_data *pdata)
 	int ret = 0;
 	struct mipi_panel_info *mipi;
 	struct mdss_dsi_ctrl_pdata *ctrl_pdata = NULL;
+<<<<<<< HEAD
 	u32 tmp;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	pr_debug("%s+:\n", __func__);
 
@@ -839,11 +848,14 @@ static int mdss_dsi_blank(struct mdss_panel_data *pdata)
 		}
 	}
 
+<<<<<<< HEAD
 	tmp = MIPI_INP((ctrl_pdata->ctrl_base) + 0xac);
         tmp &= ~(1<<28);
         MIPI_OUTP((ctrl_pdata->ctrl_base) + 0xac, tmp);
         wmb();
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if (ctrl_pdata->ctrl_state & CTRL_STATE_PANEL_INIT) {
 		if (!pdata->panel_info.dynamic_switch_pending) {
 			ret = ctrl_pdata->off(pdata);
@@ -1200,7 +1212,10 @@ static int __devinit mdss_dsi_ctrl_probe(struct platform_device *pdev)
 {
 	int rc = 0;
 	u32 index;
+<<<<<<< HEAD
 	u32 tmp;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	struct mdss_dsi_ctrl_pdata *ctrl_pdata = NULL;
 	struct device_node *dsi_pan_node = NULL;
 	char panel_cfg[MDSS_MAX_PANEL_LEN];
@@ -1298,10 +1313,13 @@ static int __devinit mdss_dsi_ctrl_probe(struct platform_device *pdev)
 		pr_err("%s: dsi panel dev reg failed\n", __func__);
 		goto error_pan_node;
 	}
+<<<<<<< HEAD
 	tmp = MIPI_INP((ctrl_pdata->ctrl_base) + 0xac);
         tmp |= (1<<28);
         MIPI_OUTP((ctrl_pdata->ctrl_base) + 0xac, tmp);
         wmb();
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	pr_debug("%s: Dsi Ctrl->%d initialized\n", __func__, index);
 	return 0;
@@ -1410,7 +1428,10 @@ int dsi_panel_device_register(struct device_node *pan_node,
 	int rc, i, len;
 	struct device_node *dsi_ctrl_np = NULL;
 	struct platform_device *ctrl_pdev = NULL;
+<<<<<<< HEAD
 	bool dynamic_fps;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	const char *data;
 	struct mdss_panel_info *pinfo = &(ctrl_pdata->panel_data.panel_info);
 
@@ -1491,6 +1512,7 @@ int dsi_panel_device_register(struct device_node *pan_node,
 	ctrl_pdata->shared_pdata.broadcast_enable = of_property_read_bool(
 		pan_node, "qcom,mdss-dsi-panel-broadcast-mode");
 
+<<<<<<< HEAD
 	dynamic_fps = of_property_read_bool(pan_node,
 					  "qcom,mdss-dsi-pan-enable-dynamic-fps");
 	if (dynamic_fps) {
@@ -1534,11 +1556,14 @@ int dsi_panel_device_register(struct device_node *pan_node,
 		pinfo->new_fps = pinfo->mipi.frame_rate;
 	}
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	pinfo->panel_max_fps = mdss_panel_get_framerate(pinfo);
 	pinfo->panel_max_vtotal = mdss_panel_get_vtotal(pinfo);
 	ctrl_pdata->disp_en_gpio = of_get_named_gpio(ctrl_pdev->dev.of_node,
 		"qcom,platform-enable-gpio", 0);
 
+<<<<<<< HEAD
 	if (!gpio_is_valid(ctrl_pdata->disp_en_gpio)){
 		pr_err("%s:%d, Disp_en gpio not specified\n",
 						__func__, __LINE__);
@@ -1552,6 +1577,11 @@ int dsi_panel_device_register(struct device_node *pan_node,
                 }
         }
 
+=======
+	if (!gpio_is_valid(ctrl_pdata->disp_en_gpio))
+		pr_err("%s:%d, Disp_en gpio not specified\n",
+						__func__, __LINE__);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	if (pinfo->type == MIPI_CMD_PANEL) {
 		ctrl_pdata->disp_te_gpio = of_get_named_gpio(ctrl_pdev->dev.of_node,
@@ -1594,6 +1624,7 @@ int dsi_panel_device_register(struct device_node *pan_node,
 		pr_debug("%s: te_gpio=%d\n", __func__,
 					ctrl_pdata->disp_te_gpio);
 	}
+<<<<<<< HEAD
 	ctrl_pdata->rst_gpio = of_get_named_gpio(ctrl_pdev->dev.of_node,
 			 "qcom,platform-reset-gpio", 0);
 	if (!gpio_is_valid(ctrl_pdata->rst_gpio)){
@@ -1608,6 +1639,14 @@ int dsi_panel_device_register(struct device_node *pan_node,
                         return -ENODEV;
                 }
         }
+=======
+
+	ctrl_pdata->rst_gpio = of_get_named_gpio(ctrl_pdev->dev.of_node,
+			 "qcom,platform-reset-gpio", 0);
+	if (!gpio_is_valid(ctrl_pdata->rst_gpio))
+		pr_err("%s:%d, reset gpio not specified\n",
+						__func__, __LINE__);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	if (pinfo->mode_gpio_state != MODE_GPIO_NOT_VALID) {
 

@@ -82,10 +82,22 @@ static int fb_event_callback(struct notifier_block *self,
 				struct dsi_status_data, fb_notifier);
 	struct mdss_dsi_ctrl_pdata *ctrl_pdata = NULL;
 	struct mdss_panel_info *pinfo;
+<<<<<<< HEAD
 
     if (strncmp(evdata->info->fix.id, "mdssfb_", 7)) return 0;
 	pdata->mfd = evdata->info->par;
 	ctrl_pdata = container_of(dev_get_platdata(&pdata->mfd->pdev->dev),
+=======
+	struct msm_fb_data_type *mfd;
+
+	if (!evdata) {
+		pr_err("%s: event data not available\n", __func__);
+		return NOTIFY_BAD;
+	}
+
+	mfd = evdata->info->par;
+	ctrl_pdata = container_of(dev_get_platdata(&mfd->pdev->dev),
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 				struct mdss_dsi_ctrl_pdata, panel_data);
 	if (!ctrl_pdata) {
 		pr_err("%s: DSI ctrl not available\n", __func__);
@@ -104,7 +116,12 @@ static int fb_event_callback(struct notifier_block *self,
 		return NOTIFY_DONE;
 	}
 
+<<<<<<< HEAD
 	if (event == FB_EVENT_BLANK && evdata) {
+=======
+	pdata->mfd = evdata->info->par;
+	if (event == FB_EVENT_BLANK) {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		int *blank = evdata->data;
 		struct dsi_status_data *pdata = container_of(self,
 				struct dsi_status_data, fb_notifier);

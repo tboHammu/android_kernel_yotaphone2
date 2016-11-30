@@ -703,6 +703,11 @@ struct dwc3_scratchpad_array {
  * @hwparams: copy of hwparams registers
  * @root: debugfs root folder pointer
  * @tx_fifo_size: Available RAM size for TX fifo allocation
+<<<<<<< HEAD
+=======
+ * @err_evt_seen: previous event in queue was erratic error
+ * @irq_cnt: total irq count
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  */
 struct dwc3 {
 	struct usb_ctrlrequest	*ctrl_req;
@@ -791,6 +796,11 @@ struct dwc3 {
 	void (*notify_event) (struct dwc3 *, unsigned);
 	int			tx_fifo_size;
 	bool			tx_fifo_reduced;
+<<<<<<< HEAD
+=======
+	bool			err_evt_seen;
+	unsigned long		irq_cnt;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 };
 
 /* -------------------------------------------------------------------------- */
@@ -944,7 +954,11 @@ int dwc3_event_buffers_setup(struct dwc3 *dwc);
 
 extern void dwc3_set_notifier(
 		void (*notify) (struct dwc3 *dwc3, unsigned event));
+<<<<<<< HEAD
 extern void dwc3_notify_event(struct dwc3 *dwc3, unsigned event);
+=======
+extern int dwc3_notify_event(struct dwc3 *dwc3, unsigned event);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 extern int dwc3_get_device_id(void);
 extern void dwc3_put_device_id(int id);
 

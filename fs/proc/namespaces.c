@@ -24,12 +24,171 @@ static const struct proc_ns_operations *ns_entries[] = {
 #ifdef CONFIG_IPC_NS
 	&ipcns_operations,
 #endif
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PID_NS
+	&pidns_operations,
+#endif
+	&mntns_operations,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 };
 
 static const struct file_operations ns_file_operations = {
 	.llseek		= no_llseek,
 };
 
+<<<<<<< HEAD
+=======
+static const struct inode_operations ns_inode_operations = {
+	.setattr	= proc_setattr,
+};
+
+static int ns_delete_dentry(const struct dentry *dentry)
+{
+	/* Don't cache namespace inodes when not in use */
+	return 1;
+}
+
+static char *ns_dname(struct dentry *dentry, char *buffer, int buflen)
+{
+	struct inode *inode = dentry->d_inode;
+	const struct proc_ns_operations *ns_ops = PROC_I(inode)->ns_ops;
+
+	return dynamic_dname(dentry, buffer, buflen, "%s:[%lu]",
+		ns_ops->name, inode->i_ino);
+}
+
+const struct dentry_operations ns_dentry_operations =
+{
+	.d_delete	= ns_delete_dentry,
+	.d_dname	= ns_dname,
+};
+
+static struct dentry *proc_ns_get_dentry(struct super_block *sb,
+	struct task_struct *task, const struct proc_ns_operations *ns_ops)
+{
+	struct dentry *dentry, *result;
+	struct inode *inode;
+	struct proc_inode *ei;
+	struct qstr qname = { .name = "", };
+	void *ns;
+
+	ns = ns_ops->get(task);
+	if (!ns)
+		return ERR_PTR(-ENOENT);
+
+	dentry = d_alloc_pseudo(sb, &qname);
+	if (!dentry) {
+		ns_ops->put(ns);
+		return ERR_PTR(-ENOMEM);
+	}
+
+	inode = iget_locked(sb, ns_ops->inum(ns));
+	if (!inode) {
+		dput(dentry);
+		ns_ops->put(ns);
+		return ERR_PTR(-ENOMEM);
+	}
+
+	ei = PROC_I(inode);
+	if (inode->i_state & I_NEW) {
+		inode->i_mtime = inode->i_atime = inode->i_ctime = CURRENT_TIME;
+		inode->i_op = &ns_inode_operations;
+		inode->i_mode = S_IFREG | S_IRUGO;
+		inode->i_fop = &ns_file_operations;
+		ei->ns_ops = ns_ops;
+		ei->ns = ns;
+		unlock_new_inode(inode);
+	} else {
+		ns_ops->put(ns);
+	}
+
+	d_set_d_op(dentry, &ns_dentry_operations);
+	result = d_instantiate_unique(dentry, inode);
+	if (result) {
+		dput(dentry);
+		dentry = result;
+	}
+
+	return dentry;
+}
+
+static void *proc_ns_follow_link(struct dentry *dentry, struct nameidata *nd)
+{
+	struct inode *inode = dentry->d_inode;
+	struct super_block *sb = inode->i_sb;
+	struct proc_inode *ei = PROC_I(inode);
+	struct task_struct *task;
+	struct dentry *ns_dentry;
+	void *error = ERR_PTR(-EACCES);
+
+	task = get_proc_task(inode);
+	if (!task)
+		goto out;
+
+	if (!ptrace_may_access(task, PTRACE_MODE_READ))
+		goto out_put_task;
+
+	ns_dentry = proc_ns_get_dentry(sb, task, ei->ns_ops);
+	if (IS_ERR(ns_dentry)) {
+		error = ERR_CAST(ns_dentry);
+		goto out_put_task;
+	}
+
+	dput(nd->path.dentry);
+	nd->path.dentry = ns_dentry;
+	error = NULL;
+
+out_put_task:
+	put_task_struct(task);
+out:
+	return error;
+}
+
+static int proc_ns_readlink(struct dentry *dentry, char __user *buffer, int buflen)
+{
+	struct inode *inode = dentry->d_inode;
+	struct proc_inode *ei = PROC_I(inode);
+	const struct proc_ns_operations *ns_ops = ei->ns_ops;
+	struct task_struct *task;
+	void *ns;
+	char name[50];
+	int len = -EACCES;
+
+	task = get_proc_task(inode);
+	if (!task)
+		goto out;
+
+	if (!ptrace_may_access(task, PTRACE_MODE_READ))
+		goto out_put_task;
+
+	len = -ENOENT;
+	ns = ns_ops->get(task);
+	if (!ns)
+		goto out_put_task;
+
+	snprintf(name, sizeof(name), "%s:[%u]", ns_ops->name, ns_ops->inum(ns));
+	len = strlen(name);
+
+	if (len > buflen)
+		len = buflen;
+	if (copy_to_user(buffer, name, len))
+		len = -EFAULT;
+
+	ns_ops->put(ns);
+out_put_task:
+	put_task_struct(task);
+out:
+	return len;
+}
+
+static const struct inode_operations proc_ns_link_inode_operations = {
+	.readlink	= proc_ns_readlink,
+	.follow_link	= proc_ns_follow_link,
+	.setattr	= proc_setattr,
+};
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static struct dentry *proc_ns_instantiate(struct inode *dir,
 	struct dentry *dentry, struct task_struct *task, const void *ptr)
 {
@@ -37,12 +196,16 @@ static struct dentry *proc_ns_instantiate(struct inode *dir,
 	struct inode *inode;
 	struct proc_inode *ei;
 	struct dentry *error = ERR_PTR(-ENOENT);
+<<<<<<< HEAD
 	void *ns;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	inode = proc_pid_make_inode(dir->i_sb, task);
 	if (!inode)
 		goto out;
 
+<<<<<<< HEAD
 	ns = ns_ops->get(task);
 	if (!ns)
 		goto out_iput;
@@ -52,6 +215,12 @@ static struct dentry *proc_ns_instantiate(struct inode *dir,
 	inode->i_fop  = &ns_file_operations;
 	ei->ns_ops    = ns_ops;
 	ei->ns	      = ns;
+=======
+	ei = PROC_I(inode);
+	inode->i_mode = S_IFLNK|S_IRWXUGO;
+	inode->i_op = &proc_ns_link_inode_operations;
+	ei->ns_ops = ns_ops;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	d_set_d_op(dentry, &pid_dentry_operations);
 	d_add(dentry, inode);
@@ -60,9 +229,12 @@ static struct dentry *proc_ns_instantiate(struct inode *dir,
 		error = NULL;
 out:
 	return error;
+<<<<<<< HEAD
 out_iput:
 	iput(inode);
 	goto out;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 }
 
 static int proc_ns_fill_cache(struct file *filp, void *dirent,
@@ -89,10 +261,13 @@ static int proc_ns_dir_readdir(struct file *filp, void *dirent,
 	if (!task)
 		goto out_no_task;
 
+<<<<<<< HEAD
 	ret = -EPERM;
 	if (!ptrace_may_access(task, PTRACE_MODE_READ))
 		goto out;
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	ret = 0;
 	i = filp->f_pos;
 	switch (i) {
@@ -152,10 +327,13 @@ static struct dentry *proc_ns_dir_lookup(struct inode *dir,
 	if (!task)
 		goto out_no_task;
 
+<<<<<<< HEAD
 	error = ERR_PTR(-EPERM);
 	if (!ptrace_may_access(task, PTRACE_MODE_READ))
 		goto out;
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	last = &ns_entries[ARRAY_SIZE(ns_entries)];
 	for (entry = ns_entries; entry < last; entry++) {
 		if (strlen((*entry)->name) != len)
@@ -163,7 +341,10 @@ static struct dentry *proc_ns_dir_lookup(struct inode *dir,
 		if (!memcmp(dentry->d_name.name, (*entry)->name, len))
 			break;
 	}
+<<<<<<< HEAD
 	error = ERR_PTR(-ENOENT);
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if (entry == last)
 		goto out;
 
@@ -198,3 +379,10 @@ out_invalid:
 	return ERR_PTR(-EINVAL);
 }
 
+<<<<<<< HEAD
+=======
+bool proc_ns_inode(struct inode *inode)
+{
+	return inode->i_fop == &ns_file_operations;
+}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13

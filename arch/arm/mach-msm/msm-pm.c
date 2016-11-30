@@ -56,7 +56,11 @@
 
 #define MAX_BUF_SIZE  512
 
+<<<<<<< HEAD
 static int msm_pm_debug_mask = 1;
+=======
+static int msm_pm_debug_mask __refdata = 1;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 module_param_named(
 	debug_mask, msm_pm_debug_mask, int, S_IRUGO | S_IWUSR | S_IWGRP
 );
@@ -113,14 +117,22 @@ static char *msm_pm_sleep_mode_labels[MSM_PM_SLEEP_MODE_NR] = {
 		"standalone_power_collapse",
 };
 
+<<<<<<< HEAD
 static bool msm_pm_ldo_retention_enabled = true;
+=======
+static bool msm_pm_ldo_retention_enabled __refdata = true;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static bool msm_no_ramp_down_pc;
 static struct msm_pm_sleep_status_data *msm_pm_slp_sts;
 DEFINE_PER_CPU(struct clk *, cpu_clks);
 static struct clk *l2_clk;
 
 static int cpu_count;
+<<<<<<< HEAD
 static DEFINE_SPINLOCK(cpu_cnt_lock);
+=======
+static __refdata DEFINE_SPINLOCK(cpu_cnt_lock);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #define SCM_HANDOFF_LOCK_ID "S:7"
 static bool need_scm_handoff_lock;
 static remote_spinlock_t scm_handoff_lock;
@@ -134,7 +146,11 @@ static void __iomem *msm_pc_debug_counters;
  * Default the l2 flush flag to OFF so the caches are flushed during power
  * collapse unless the explicitly voted by lpm driver.
  */
+<<<<<<< HEAD
 static enum msm_pm_l2_scm_flag msm_pm_flush_l2_flag = MSM_SCM_L2_OFF;
+=======
+static enum msm_pm_l2_scm_flag msm_pm_flush_l2_flag __refdata = MSM_SCM_L2_OFF;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 void msm_pm_set_l2_flush_flag(enum msm_pm_l2_scm_flag flag)
 {
@@ -148,7 +164,11 @@ static enum msm_pm_l2_scm_flag msm_pm_get_l2_flush_flag(void)
 }
 
 static cpumask_t retention_cpus;
+<<<<<<< HEAD
 static DEFINE_SPINLOCK(retention_lock);
+=======
+static __refdata DEFINE_SPINLOCK(retention_lock);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 static int msm_pm_get_pc_mode(struct device_node *node,
 		const char *key, uint32_t *pc_mode_val)
@@ -991,7 +1011,11 @@ static int msm_cpu_status_probe(struct platform_device *pdev)
 	return 0;
 };
 
+<<<<<<< HEAD
 static struct of_device_id msm_slp_sts_match_tbl[] = {
+=======
+static struct of_device_id msm_slp_sts_match_tbl[] __initdata= {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	{.compatible = "qcom,cpu-sleep-status"},
 	{},
 };
@@ -1005,7 +1029,11 @@ static struct platform_driver msm_cpu_status_driver = {
 	},
 };
 
+<<<<<<< HEAD
 static struct of_device_id msm_snoc_clnt_match_tbl[] = {
+=======
+static struct of_device_id msm_snoc_clnt_match_tbl[] __initdata = {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	{.compatible = "qcom,pm-snoc-client"},
 	{},
 };
@@ -1272,7 +1300,11 @@ static int msm_cpu_pm_probe(struct platform_device *pdev)
 	return ret;
 }
 
+<<<<<<< HEAD
 static struct of_device_id msm_cpu_pm_table[] = {
+=======
+static struct of_device_id msm_cpu_pm_table[] __initdata = {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	{.compatible = "qcom,pm-8x60"},
 	{},
 };

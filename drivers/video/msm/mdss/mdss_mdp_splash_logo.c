@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013-2015, The Linux Foundation. All rights reserved.
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -466,7 +470,10 @@ static int mdss_mdp_splash_ctl_cb(struct notifier_block *self,
 
 	if (!sinfo->frame_done_count) {
 		mdss_mdp_splash_unmap_splash_mem(mfd);
+<<<<<<< HEAD
 		mdss_mdp_splash_cleanup(mfd, false);
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	/* wait for 2 frame done events before releasing memory */
 	} else if (sinfo->frame_done_count > MAX_FRAME_DONE_COUNT_WAIT &&
 			sinfo->splash_thread) {

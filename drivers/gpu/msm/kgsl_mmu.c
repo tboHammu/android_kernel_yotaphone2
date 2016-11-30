@@ -158,8 +158,16 @@ sysfs_show_entries(struct kobject *kobj,
 
 	pt = _get_pt_from_kobj(kobj);
 
+<<<<<<< HEAD
 	if (pt)
 		ret += snprintf(buf, PAGE_SIZE, "%d\n", pt->stats.entries);
+=======
+	if (pt) {
+		unsigned int val = atomic_read(&pt->stats.entries);
+
+		ret += snprintf(buf, PAGE_SIZE, "%d\n", val);
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	kgsl_put_pagetable(pt);
 	return ret;
@@ -175,8 +183,16 @@ sysfs_show_mapped(struct kobject *kobj,
 
 	pt = _get_pt_from_kobj(kobj);
 
+<<<<<<< HEAD
 	if (pt)
 		ret += snprintf(buf, PAGE_SIZE, "%d\n", pt->stats.mapped);
+=======
+	if (pt) {
+		unsigned int val = atomic_read(&pt->stats.mapped);
+
+		ret += snprintf(buf, PAGE_SIZE, "%d\n", val);
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	kgsl_put_pagetable(pt);
 	return ret;
@@ -211,8 +227,16 @@ sysfs_show_max_mapped(struct kobject *kobj,
 
 	pt = _get_pt_from_kobj(kobj);
 
+<<<<<<< HEAD
 	if (pt)
 		ret += snprintf(buf, PAGE_SIZE, "%d\n", pt->stats.max_mapped);
+=======
+	if (pt) {
+		unsigned int val = atomic_read(&pt->stats.max_mapped);
+
+		ret += snprintf(buf, PAGE_SIZE, "%d\n", val);
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	kgsl_put_pagetable(pt);
 	return ret;
@@ -228,8 +252,16 @@ sysfs_show_max_entries(struct kobject *kobj,
 
 	pt = _get_pt_from_kobj(kobj);
 
+<<<<<<< HEAD
 	if (pt)
 		ret += snprintf(buf, PAGE_SIZE, "%d\n", pt->stats.max_entries);
+=======
+	if (pt) {
+		unsigned int val = atomic_read(&pt->stats.max_entries);
+
+		ret += snprintf(buf, PAGE_SIZE, "%d\n", val);
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	kgsl_put_pagetable(pt);
 	return ret;
@@ -476,6 +508,14 @@ kgsl_mmu_createpagetableobject(struct kgsl_mmu *mmu,
 	pagetable->max_entries = KGSL_PAGETABLE_ENTRIES(ptsize);
 	pagetable->fault_addr = 0xFFFFFFFF;
 
+<<<<<<< HEAD
+=======
+	atomic_set(&pagetable->stats.entries, 0);
+	atomic_set(&pagetable->stats.mapped, 0);
+	atomic_set(&pagetable->stats.max_mapped, 0);
+	atomic_set(&pagetable->stats.max_entries, 0);
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	/*
 	 * create a separate kgsl pool for IOMMU, global mappings can be mapped
 	 * just once from this pool of the defaultpagetable
@@ -692,14 +732,24 @@ kgsl_mmu_get_gpuaddr(struct kgsl_pagetable *pagetable,
 		memdesc->gpuaddr = gen_pool_alloc_aligned(pool, size,
 							  page_align);
 		if (memdesc->gpuaddr == 0) {
+<<<<<<< HEAD
+=======
+			unsigned int entries = atomic_read(&pagetable->stats.entries);
+			unsigned int mapped = atomic_read(&pagetable->stats.mapped);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			KGSL_CORE_ERR("gen_pool_alloc(%d) failed, pool: %s\n",
 					size,
 					(pool == pagetable->kgsl_pool) ?
 					"kgsl_pool" : "general_pool");
 			KGSL_CORE_ERR(" [%d] allocated=%d, entries=%d\n",
 					pagetable->name,
+<<<<<<< HEAD
 					pagetable->stats.mapped,
 					pagetable->stats.entries);
+=======
+					mapped,
+					entries);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			return -ENOMEM;
 		}
 	}
@@ -726,6 +776,7 @@ kgsl_mmu_map(struct kgsl_pagetable *pagetable,
 	if (kgsl_memdesc_has_guard_page(memdesc))
 		size += PAGE_SIZE;
 
+<<<<<<< HEAD
 	if (KGSL_MMU_TYPE_IOMMU != kgsl_mmu_get_mmutype())
 		spin_lock(&pagetable->lock);
 	ret = pagetable->pt_ops->mmu_map(pagetable, memdesc, protflags,
@@ -751,6 +802,21 @@ kgsl_mmu_map(struct kgsl_pagetable *pagetable,
 
 done:
 	spin_unlock(&pagetable->lock);
+=======
+	ret = pagetable->pt_ops->mmu_map(pagetable, memdesc, protflags,
+						&pagetable->tlb_flags);
+
+	if (ret == 0) {
+		KGSL_STATS_ADD(size, &pagetable->stats.mapped,
+			&pagetable->stats.max_mapped);
+
+		KGSL_STATS_ADD(1, &pagetable->stats.entries,
+			&pagetable->stats.max_entries);
+
+		memdesc->priv |= KGSL_MEMDESC_MAPPED;
+	}
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	return ret;
 }
 EXPORT_SYMBOL(kgsl_mmu_map);
@@ -824,8 +890,11 @@ kgsl_mmu_unmap(struct kgsl_pagetable *pagetable,
 	start_addr = memdesc->gpuaddr;
 	end_addr = (memdesc->gpuaddr + size);
 
+<<<<<<< HEAD
 	if (KGSL_MMU_TYPE_IOMMU != kgsl_mmu_get_mmutype())
 		spin_lock(&pagetable->lock);
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	pagetable->pt_ops->mmu_unmap(pagetable, memdesc,
 					&pagetable->tlb_flags);
 
@@ -834,6 +903,7 @@ kgsl_mmu_unmap(struct kgsl_pagetable *pagetable,
 		(pagetable->fault_addr < end_addr))
 		pagetable->fault_addr = 0;
 
+<<<<<<< HEAD
 	if (KGSL_MMU_TYPE_IOMMU == kgsl_mmu_get_mmutype())
 		spin_lock(&pagetable->lock);
 	/* Remove the statistics */
@@ -843,6 +913,15 @@ kgsl_mmu_unmap(struct kgsl_pagetable *pagetable,
 	spin_unlock(&pagetable->lock);
 	if (!kgsl_memdesc_is_global(memdesc))
 		memdesc->priv &= ~KGSL_MEMDESC_MAPPED;
+=======
+	/* Remove the statistics */
+	atomic_dec(&pagetable->stats.entries);
+	atomic_sub(size, &pagetable->stats.mapped);
+
+	if (!kgsl_memdesc_is_global(memdesc))
+		memdesc->priv &= ~KGSL_MEMDESC_MAPPED;
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	return 0;
 }
 EXPORT_SYMBOL(kgsl_mmu_unmap);

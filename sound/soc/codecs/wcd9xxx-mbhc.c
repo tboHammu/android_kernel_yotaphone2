@@ -58,7 +58,11 @@
 #define FAKE_INS_LOW 10
 #define FAKE_INS_HIGH 80
 #define FAKE_INS_HIGH_NO_SWCH 150
+<<<<<<< HEAD
 #define FAKE_REMOVAL_MIN_PERIOD_MS 100
+=======
+#define FAKE_REMOVAL_MIN_PERIOD_MS 50
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #define FAKE_INS_DELTA_SCALED_MV 300
 
 #define BUTTON_MIN 0x8000
@@ -121,7 +125,11 @@
 #define WCD9XXX_WG_TIME_FACTOR_US	240
 
 #define WCD9XXX_V_CS_HS_MAX 500
+<<<<<<< HEAD
 #define WCD9XXX_V_CS_NO_MIC 15
+=======
+#define WCD9XXX_V_CS_NO_MIC 5
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #define WCD9XXX_MB_MEAS_DELTA_MAX_MV 80
 #define WCD9XXX_CS_MEAS_DELTA_MAX_MV 12
 
@@ -1156,7 +1164,10 @@ static short wcd9xxx_mbhc_setup_hs_polling(struct wcd9xxx_mbhc *mbhc,
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 //	btn_det = WCD9XXX_MBHC_CAL_BTN_DET_PTR(mbhc->mbhc_cfg->calibration);
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	/* Enable external voltage source to micbias if present */
 	if (mbhc->mbhc_cb && mbhc->mbhc_cb->enable_mb_source)
 		mbhc->mbhc_cb->enable_mb_source(codec, true, true);
@@ -1215,6 +1226,10 @@ static short wcd9xxx_mbhc_setup_hs_polling(struct wcd9xxx_mbhc *mbhc,
 	bias_value = __wcd9xxx_codec_sta_dce(mbhc, 1, true, true);
 	snd_soc_write(codec, mbhc_micb_regs->cfilt_ctl, cfilt_mode);
 	snd_soc_update_bits(codec, WCD9XXX_A_MBHC_HPH, 0x13, 0x00);
+<<<<<<< HEAD
+=======
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	return bias_value;
 }
 
@@ -1264,6 +1279,7 @@ static void wcd9xxx_recalibrate(struct wcd9xxx_mbhc *mbhc,
 			snd_soc_write(mbhc->codec, WCD9XXX_A_CDC_MBHC_B1_CTL,
 				      reg);
 			if (dce_z) {
+<<<<<<< HEAD
 			//	pr_debug("%s: dce_nsc_cs_z 0x%x -> 0x%x\n",
 			//		 __func__, mbhc->mbhc_data.dce_nsc_cs_z,
 			//		 dce_z & 0xffff);
@@ -1273,6 +1289,14 @@ static void wcd9xxx_recalibrate(struct wcd9xxx_mbhc *mbhc,
 						wcd9xxx_codec_v_sta_dce(
 							mbhc, DCE,
 						WCD9XXX_V_CS_HS_MAX,
+=======
+				mbhc->mbhc_data.dce_nsc_cs_z = dce_z;
+				/* update v_cs_ins_h with new dce_nsc_cs_z */
+				mbhc->mbhc_data.v_cs_ins_h =
+						wcd9xxx_codec_v_sta_dce(
+							mbhc, DCE,
+							WCD9XXX_V_CS_HS_MAX,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 							is_cs_enable);
 				pr_debug("%s: dce_nsc_cs_z 0x%x -> 0x%x, v_cs_ins_h 0x%x\n",
 					  __func__,
@@ -1291,7 +1315,11 @@ static void wcd9xxx_shutdown_hs_removal_detect(struct wcd9xxx_mbhc *mbhc)
 {
 	struct snd_soc_codec *codec = mbhc->codec;
 	const struct wcd9xxx_mbhc_general_cfg *generic =
+<<<<<<< HEAD
 	WCD9XXX_MBHC_CAL_GENERAL_PTR(mbhc->mbhc_cfg->calibration);
+=======
+	    WCD9XXX_MBHC_CAL_GENERAL_PTR(mbhc->mbhc_cfg->calibration);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	/* Need MBHC clock */
 	WCD9XXX_BG_CLK_LOCK(mbhc->resmgr);
@@ -1840,8 +1868,15 @@ wcd9xxx_codec_cs_get_plug_type(struct wcd9xxx_mbhc *mbhc, bool highhph)
 		if (rt[i].swap_gnd)
 			wcd9xxx_codec_hphr_gnd_switch(codec, false);
 	}
+<<<<<<< HEAD
 	/* recalibrate DCE/STA GND voltages */
 	wcd9xxx_recalibrate(mbhc, &mbhc->mbhc_bias_regs, true);
+=======
+
+	/* recalibrate DCE/STA GND voltages */
+	wcd9xxx_recalibrate(mbhc, &mbhc->mbhc_bias_regs, true);
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	type = wcd9xxx_cs_find_plug_type(mbhc, rt, ARRAY_SIZE(rt), highhph,
 					 mbhc->event_state);
 
@@ -3222,9 +3257,19 @@ static void wcd9xxx_swch_irq_handler(struct wcd9xxx_mbhc *mbhc)
 				      &mbhc->correct_plug_swch);
 
 		if ((mbhc->current_plug != PLUG_TYPE_NONE) &&
+<<<<<<< HEAD
 		    !(snd_soc_read(codec, WCD9XXX_A_MBHC_INSERT_DETECT) &
 				   (1 << 1)))
 			goto exit;
+=======
+		    (mbhc->current_plug != PLUG_TYPE_HIGH_HPH) &&
+		    !(snd_soc_read(codec, WCD9XXX_A_MBHC_INSERT_DETECT) &
+				   (1 << 1))) {
+			pr_debug("%s: current plug: %d\n", __func__,
+				mbhc->current_plug);
+			goto exit;
+		}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 		/* Disable Mic Bias pull down and HPH Switch to GND */
 		snd_soc_update_bits(codec, mbhc->mbhc_bias_regs.ctl_reg, 0x01,
@@ -4995,6 +5040,7 @@ int wcd9xxx_mbhc_init(struct wcd9xxx_mbhc *mbhc, struct wcd9xxx_resmgr *resmgr,
 			return ret;
 		}
 
+<<<<<<< HEAD
 		ret = snd_jack_set_key(mbhc->button_jack.jack,
                                        SND_JACK_BTN_5,
                                        KEY_VOLUMEUP);
@@ -5012,6 +5058,8 @@ int wcd9xxx_mbhc_init(struct wcd9xxx_mbhc *mbhc, struct wcd9xxx_resmgr *resmgr,
                                 __func__);
                         return ret;
                 }
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		INIT_DELAYED_WORK(&mbhc->mbhc_firmware_dwork,
 				  wcd9xxx_mbhc_fw_read);
 		INIT_DELAYED_WORK(&mbhc->mbhc_btn_dwork, wcd9xxx_btn_lpress_fn);

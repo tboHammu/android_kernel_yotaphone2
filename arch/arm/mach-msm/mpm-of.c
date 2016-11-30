@@ -98,7 +98,11 @@ enum mpm_reg_offsets {
 	MSM_MPM_REG_STATUS,
 };
 
+<<<<<<< HEAD
 static DEFINE_SPINLOCK(msm_mpm_lock);
+=======
+static __refdata DEFINE_SPINLOCK(msm_mpm_lock);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 static uint32_t msm_mpm_enabled_irq[MSM_MPM_REG_WIDTH];
 static uint32_t msm_mpm_wake_irq[MSM_MPM_REG_WIDTH];
@@ -113,7 +117,11 @@ enum {
 	MSM_MPM_DEBUG_NON_DETECTABLE_IRQ_IDLE = BIT(3),
 };
 
+<<<<<<< HEAD
 static int msm_mpm_debug_mask = 1;
+=======
+static int msm_mpm_debug_mask __refdata = 1;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 module_param_named(
 	debug_mask, msm_mpm_debug_mask, int, S_IRUGO | S_IWUSR | S_IWGRP
 );
@@ -721,12 +729,20 @@ static int __devinit msm_mpm_dev_probe(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int __init mpm_irq_domain_linear_size(struct irq_domain *d)
+=======
+static inline int mpm_irq_domain_linear_size(struct irq_domain *d)
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 {
 	return d->revmap_data.linear.size;
 }
 
+<<<<<<< HEAD
 static inline int __init mpm_irq_domain_legacy_size(struct irq_domain *d)
+=======
+static inline int mpm_irq_domain_legacy_size(struct irq_domain *d)
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 {
 	return d->revmap_data.legacy.size;
 }

@@ -31,6 +31,10 @@ void mdss_check_dsi_ctrl_status(struct work_struct *work, uint32_t interval)
 {
 	struct dsi_status_data *pstatus_data = NULL;
 	struct mdss_panel_data *pdata = NULL;
+<<<<<<< HEAD
+=======
+	struct mipi_panel_info *mipi = NULL;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	struct mdss_dsi_ctrl_pdata *ctrl_pdata = NULL;
 	struct mdss_overlay_private *mdp5_data = NULL;
 	struct mdss_mdp_ctl *ctl = NULL;
@@ -48,6 +52,10 @@ void mdss_check_dsi_ctrl_status(struct work_struct *work, uint32_t interval)
 		pr_err("%s: Panel data not available\n", __func__);
 		return;
 	}
+<<<<<<< HEAD
+=======
+	mipi = &pdata->panel_info.mipi;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	ctrl_pdata = container_of(pdata, struct mdss_dsi_ctrl_pdata,
 							panel_data);
@@ -73,6 +81,7 @@ void mdss_check_dsi_ctrl_status(struct work_struct *work, uint32_t interval)
 	}
 
 	mutex_lock(&ctrl_pdata->mutex);
+<<<<<<< HEAD
 	if (ctl->shared_lock)
 		mutex_lock(ctl->shared_lock);
 	mutex_lock(&mdp5_data->ov_lock);
@@ -81,6 +90,22 @@ void mdss_check_dsi_ctrl_status(struct work_struct *work, uint32_t interval)
 		mutex_unlock(&mdp5_data->ov_lock);
 		if (ctl->shared_lock)
 			mutex_unlock(ctl->shared_lock);
+=======
+
+	/*
+	 * TODO: Because mdss_dsi_cmd_mdp_busy has made sure DMA to
+	 * be idle in mdss_dsi_cmdlist_commit, it is not necessary
+	 * to acquire ov_lock in case of video mode. Removing this
+	 * lock to fix issues so that ESD thread would not block other
+	 * overlay operations. Need refine this lock for command mode
+	 */
+	if (mipi->mode == DSI_CMD_MODE)
+		mutex_lock(&mdp5_data->ov_lock);
+
+	if (pstatus_data->mfd->shutdown_pending) {
+		if (mipi->mode == DSI_CMD_MODE)
+			mutex_unlock(&mdp5_data->ov_lock);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		mutex_unlock(&ctrl_pdata->mutex);
 		pr_err("%s: DSI turning off, avoiding panel status check\n",
 							__func__);
@@ -106,9 +131,14 @@ void mdss_check_dsi_ctrl_status(struct work_struct *work, uint32_t interval)
 	ret = ctrl_pdata->check_status(ctrl_pdata);
 	mdss_mdp_clk_ctrl(MDP_BLOCK_POWER_OFF, false);
 
+<<<<<<< HEAD
 	mutex_unlock(&mdp5_data->ov_lock);
 	if (ctl->shared_lock)
 		mutex_unlock(ctl->shared_lock);
+=======
+	if (mipi->mode == DSI_CMD_MODE)
+		mutex_unlock(&mdp5_data->ov_lock);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	mutex_unlock(&ctrl_pdata->mutex);
 
 	if ((pstatus_data->mfd->panel_power_on)) {

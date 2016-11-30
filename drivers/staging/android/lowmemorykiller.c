@@ -162,6 +162,7 @@ void tune_lmk_zone_param(struct zonelist *zonelist, int classzone_idx,
 	}
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_HIGHMEM
 void adjust_gfp_mask(gfp_t *gfp_mask)
 {
@@ -191,6 +192,8 @@ void adjust_gfp_mask(gfp_t *unused)
 }
 #endif
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 void tune_lmk_param(int *other_free, int *other_file, struct shrink_control *sc)
 {
 	gfp_t gfp_mask;
@@ -201,8 +204,11 @@ void tune_lmk_param(int *other_free, int *other_file, struct shrink_control *sc)
 	int use_cma_pages;
 
 	gfp_mask = sc->gfp_mask;
+<<<<<<< HEAD
 	adjust_gfp_mask(&gfp_mask);
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	zonelist = node_zonelist(0, gfp_mask);
 	high_zoneidx = gfp_zone(gfp_mask);
 	first_zones_zonelist(zonelist, high_zoneidx, NULL, &preferred_zone);

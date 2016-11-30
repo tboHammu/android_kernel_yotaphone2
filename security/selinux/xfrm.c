@@ -152,6 +152,7 @@ int selinux_xfrm_state_pol_flow_match(struct xfrm_state *x, struct xfrm_policy *
 	return rc;
 }
 
+<<<<<<< HEAD
 static int selinux_xfrm_skb_sid_ingress(struct sk_buff *skb,
 					u32 *sid, int ckall)
 {
@@ -159,6 +160,23 @@ static int selinux_xfrm_skb_sid_ingress(struct sk_buff *skb,
 
 	*sid = SECSID_NULL;
 
+=======
+/*
+ * LSM hook implementation that checks and/or returns the xfrm sid for the
+ * incoming packet.
+ */
+
+int selinux_xfrm_decode_session(struct sk_buff *skb, u32 *sid, int ckall)
+{
+	struct sec_path *sp;
+
+	*sid = SECSID_NULL;
+
+	if (skb == NULL)
+		return 0;
+
+	sp = skb->sp;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if (sp) {
 		int i, sid_set = 0;
 
@@ -182,6 +200,7 @@ static int selinux_xfrm_skb_sid_ingress(struct sk_buff *skb,
 	return 0;
 }
 
+<<<<<<< HEAD
 static u32 selinux_xfrm_skb_sid_egress(struct sk_buff *skb)
 {
 	struct dst_entry *dst = skb_dst(skb);
@@ -221,6 +240,8 @@ int selinux_xfrm_skb_sid(struct sk_buff *skb, u32 *sid)
 	return rc;
 }
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 /*
  * Security blob allocation for xfrm_policy and xfrm_state
  * CTX does not have a meaningful value on input
@@ -341,7 +362,11 @@ int selinux_xfrm_policy_clone(struct xfrm_sec_ctx *old_ctx,
 
 	if (old_ctx) {
 		new_ctx = kmalloc(sizeof(*old_ctx) + old_ctx->ctx_len,
+<<<<<<< HEAD
 				  GFP_ATOMIC);
+=======
+				  GFP_KERNEL);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		if (!new_ctx)
 			return -ENOMEM;
 

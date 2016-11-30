@@ -24,6 +24,11 @@
 #define MMC_QUEUE_BOUNCESZ	65536
 
 
+<<<<<<< HEAD
+=======
+#define MMC_REQ_SPECIAL_MASK	(REQ_DISCARD | REQ_FLUSH)
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 /*
  * Based on benchmark tests the default num of requests to trigger the write
  * packing was determined, to keep the read latency as low as possible and
@@ -66,23 +71,39 @@ static int mmc_queue_thread(void *d)
 	do {
 		struct mmc_queue_req *tmp;
 		struct request *req = NULL;
+<<<<<<< HEAD
 		unsigned int cmd_flags;
+=======
+		unsigned int cmd_flags = 0;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 		spin_lock_irq(q->queue_lock);
 		set_current_state(TASK_INTERRUPTIBLE);
 		req = blk_fetch_request(q);
 		mq->mqrq_cur->req = req;
+<<<<<<< HEAD
 		cmd_flags = req ? req->cmd_flags : 0;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		spin_unlock_irq(q->queue_lock);
 
 		if (req || mq->mqrq_prev->req) {
 			set_current_state(TASK_RUNNING);
+<<<<<<< HEAD
+=======
+			cmd_flags = req ? req->cmd_flags : 0;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			mq->issue_fn(mq, req);
 			if (test_bit(MMC_QUEUE_NEW_REQUEST, &mq->flags)) {
 				continue; /* fetch again */
 			} else if (test_bit(MMC_QUEUE_URGENT_REQUEST,
 					&mq->flags) && (mq->mqrq_cur->req &&
+<<<<<<< HEAD
 					!(cmd_flags & MMC_REQ_NOREINSERT_MASK))) {
+=======
+					!(cmd_flags &
+						MMC_REQ_NOREINSERT_MASK))) {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 				/*
 				 * clean current request when urgent request
 				 * processing in progress and current request is
@@ -96,7 +117,17 @@ static int mmc_queue_thread(void *d)
 			/*
 			 * Current request becomes previous request
 			 * and vice versa.
+<<<<<<< HEAD
 			 */
+=======
+			 * In case of special requests, current request
+			 * has been finished. Do not assign it to previous
+			 * request.
+			 */
+			if (cmd_flags & MMC_REQ_SPECIAL_MASK)
+				mq->mqrq_cur->req = NULL;
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			mq->mqrq_prev->brq.mrq.data = NULL;
 			mq->mqrq_prev->req = NULL;
 			tmp = mq->mqrq_prev;

@@ -145,7 +145,10 @@ struct request_sock;
 #define LSM_UNSAFE_SHARE	1
 #define LSM_UNSAFE_PTRACE	2
 #define LSM_UNSAFE_PTRACE_CAP	4
+<<<<<<< HEAD
 #define LSM_UNSAFE_NO_NEW_PRIVS	8
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 #ifdef CONFIG_MMU
 extern int mmap_min_addr_handler(struct ctl_table *table, int write,
@@ -1419,8 +1422,13 @@ struct security_operations {
 	int (*sb_kern_mount) (struct super_block *sb, int flags, void *data);
 	int (*sb_show_options) (struct seq_file *m, struct super_block *sb);
 	int (*sb_statfs) (struct dentry *dentry);
+<<<<<<< HEAD
 	int (*sb_mount) (const char *dev_name, struct path *path,
 			 const char *type, unsigned long flags, void *data);
+=======
+	int (*sb_mount) (char *dev_name, struct path *path,
+			 char *type, unsigned long flags, void *data);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	int (*sb_umount) (struct vfsmount *mnt, int flags);
 	int (*sb_pivotroot) (struct path *old_path,
 			     struct path *new_path);
@@ -1710,8 +1718,13 @@ int security_sb_remount(struct super_block *sb, void *data);
 int security_sb_kern_mount(struct super_block *sb, int flags, void *data);
 int security_sb_show_options(struct seq_file *m, struct super_block *sb);
 int security_sb_statfs(struct dentry *dentry);
+<<<<<<< HEAD
 int security_sb_mount(const char *dev_name, struct path *path,
 		      const char *type, unsigned long flags, void *data);
+=======
+int security_sb_mount(char *dev_name, struct path *path,
+		      char *type, unsigned long flags, void *data);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 int security_sb_umount(struct vfsmount *mnt, int flags);
 int security_sb_pivotroot(struct path *old_path, struct path *new_path);
 int security_sb_set_mnt_opts(struct super_block *sb, struct security_mnt_opts *opts);
@@ -2006,8 +2019,13 @@ static inline int security_sb_statfs(struct dentry *dentry)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int security_sb_mount(const char *dev_name, struct path *path,
 				    const char *type, unsigned long flags,
+=======
+static inline int security_sb_mount(char *dev_name, struct path *path,
+				    char *type, unsigned long flags,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 				    void *data)
 {
 	return 0;

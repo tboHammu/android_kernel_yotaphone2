@@ -39,6 +39,7 @@
 /* Support for first 5 EDID blocks */
 #define MAX_EDID_BLOCK_SIZE (0x80 * 5)
 
+<<<<<<< HEAD
 int slimport_read_edid_block(int, uint8_t *); // Slimport changes
 unchar sp_get_link_bw(void); // Slimport changes
 bool is_slimport_dp(void); // Slimport changes
@@ -47,6 +48,8 @@ int slimport_read_edid_block(int, uint8_t *); // Slimport changes
 unchar sp_get_link_bw(void); // Slimport changes
 bool is_slimport_dp(void); // Slimport changes
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 enum data_block_types {
 	RESERVED,
 	AUDIO_DATA_BLOCK,
@@ -413,20 +416,41 @@ static struct attribute_group hdmi_edid_fs_attrs_group = {
 	.attrs = hdmi_edid_fs_attrs,
 };
 
+<<<<<<< HEAD
 static int _hdmi_edid_read_block(struct hdmi_edid_ctrl *edid_ctrl, int block,
 	u8 *edid_buf)
 {
 	struct hdmi_tx_ddc_data ddc_data;
 	int block_size = 0x80;
 	int i, status = 0;
+=======
+static int hdmi_edid_read_block(struct hdmi_edid_ctrl *edid_ctrl, int block,
+	u8 *edid_buf)
+{
+	const u8 *b = NULL;
+	u32 ndx, check_sum, print_len;
+	int block_size;
+	int i, status;
+	int retry_cnt = 0;
+	struct hdmi_tx_ddc_data ddc_data;
+	b = edid_buf;
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if (!edid_ctrl) {
 		DEV_ERR("%s: invalid input\n", __func__);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 /*
 read_retry:
 	block_size = 0x80;
 	status = 0;*/
+=======
+
+read_retry:
+	block_size = 0x80;
+	status = 0;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	do {
 		DEV_DBG("EDID: reading block(%d) with block-size=%d\n",
 			block, block_size);
@@ -456,6 +480,7 @@ read_retry:
 
 		block_size /= 2;
 	} while (status && (block_size >= 16));
+<<<<<<< HEAD
 	return status;
 } /* _hdmi_edid_read_block */
 
@@ -472,6 +497,8 @@ static int hdmi_edid_read_block(struct hdmi_edid_ctrl *edid_ctrl, int block,
 	status = slimport_read_edid_block(block, edid_buf);
 	if (status == -ENOSYS)
 		status = _hdmi_edid_read_block(edid_ctrl, block, edid_buf);
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	if (status)
 		goto error;
@@ -489,10 +516,17 @@ static int hdmi_edid_read_block(struct hdmi_edid_ctrl *edid_ctrl, int block,
 				ndx, ndx+3,
 				b[ndx+0], b[ndx+1], b[ndx+2], b[ndx+3]);
 		status = -EPROTO;
+<<<<<<< HEAD
 /*		if (retry_cnt++ < 3) {
 			DEV_DBG("Retrying reading EDID %d time\n", retry_cnt);
 			goto read_retry;
 		}*/
+=======
+		if (retry_cnt++ < 3) {
+			DEV_DBG("Retrying reading EDID %d time\n", retry_cnt);
+			goto read_retry;
+		}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		goto error;
 	}
 
@@ -504,7 +538,11 @@ static int hdmi_edid_read_block(struct hdmi_edid_ctrl *edid_ctrl, int block,
 
 error:
 	return status;
+<<<<<<< HEAD
 } /* _hdmi_edid_read_block */
+=======
+} /* hdmi_edid_read_block */
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 #define EDID_BLK_LEN 128
 #define EDID_DTD_LEN 18
@@ -921,6 +959,7 @@ static void hdmi_edid_add_sink_3d_format(struct hdmi_edid_sink_data *sink_data,
 		string, added ? "added" : "NOT added");
 } /* hdmi_edid_add_sink_3d_format */
 
+<<<<<<< HEAD
 static void hdmi_limit_supported_video_format(u32 *video_format)
 {
 	switch (sp_get_link_bw()) {
@@ -963,6 +1002,8 @@ static void hdmi_limit_supported_video_format(u32 *video_format)
 	}
 } // Slimport changes
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static void hdmi_edid_add_sink_video_format(
 	struct hdmi_edid_sink_data *sink_data, u32 video_format)
 {
@@ -970,7 +1011,10 @@ static void hdmi_edid_add_sink_video_format(
 		hdmi_get_supported_mode(video_format);
 	u32 supported = timing != NULL;
 
+<<<<<<< HEAD
 	hdmi_limit_supported_video_format(&video_format); // Slimport changes
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if (video_format >= HDMI_VFRMT_MAX) {
 		DEV_ERR("%s: video format: %s is not supported\n", __func__,
 			msm_hdmi_mode_2string(video_format));
@@ -1659,10 +1703,15 @@ u32 hdmi_edid_get_sink_mode(void *input)
 		DEV_ERR("%s: invalid input\n", __func__);
 		return 0;
 	}
+<<<<<<< HEAD
 	if (is_slimport_dp())
 		return 1;
 	else //: Slimport changes
 		return edid_ctrl->sink_mode;
+=======
+
+	return edid_ctrl->sink_mode;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 } /* hdmi_edid_get_sink_mode */
 
 int hdmi_edid_get_audio_blk(void *input, struct msm_hdmi_audio_edid_blk *blk)

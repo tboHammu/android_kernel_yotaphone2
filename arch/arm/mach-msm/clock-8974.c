@@ -887,6 +887,7 @@ static struct clk_freq_tbl ftbl_gcc_blsp1_2_qup1_6_spi_apps_clk[] = {
 	F_END
 };
 
+<<<<<<< HEAD
 static struct clk_freq_tbl ftbl_gcc_blsp2_qup2_spi_apps_clk[] = {
 	F(  960000,    cxo,  10,   1,   2),
 	F( 4800000,    cxo,   4,   0,   0),
@@ -901,6 +902,8 @@ static struct clk_freq_tbl ftbl_gcc_blsp2_qup2_spi_apps_clk[] = {
 	F_END
 };
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static struct rcg_clk blsp1_qup1_spi_apps_clk_src = {
 	.cmd_rcgr_reg = BLSP1_QUP1_SPI_APPS_CMD_RCGR,
 	.set_rate = set_rate_mnd,
@@ -1196,13 +1199,21 @@ static struct rcg_clk blsp2_qup1_spi_apps_clk_src = {
 static struct rcg_clk blsp2_qup2_spi_apps_clk_src = {
 	.cmd_rcgr_reg = BLSP2_QUP2_SPI_APPS_CMD_RCGR,
 	.set_rate = set_rate_mnd,
+<<<<<<< HEAD
 	.freq_tbl = ftbl_gcc_blsp2_qup2_spi_apps_clk,
+=======
+	.freq_tbl = ftbl_gcc_blsp1_2_qup1_6_spi_apps_clk,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	.current_freq = &rcg_dummy_freq,
 	.base = &virt_bases[GCC_BASE],
 	.c = {
 		.dbg_name = "blsp2_qup2_spi_apps_clk_src",
 		.ops = &clk_ops_rcg_mnd,
+<<<<<<< HEAD
 		VDD_DIG_FMAX_MAP2(LOW, 25000000, NOMINAL, 109090000),
+=======
+		VDD_DIG_FMAX_MAP2(LOW, 25000000, NOMINAL, 50000000),
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		CLK_INIT(blsp2_qup2_spi_apps_clk_src.c),
 	},
 };
@@ -4953,8 +4964,12 @@ static struct clk_lookup msm_clocks_8974_common[] __initdata = {
 	CLK_LOOKUP("core_clk", gcc_blsp1_uart4_apps_clk.c, ""),
 	CLK_LOOKUP("core_clk", gcc_blsp1_uart5_apps_clk.c, ""),
 	CLK_LOOKUP("core_clk", gcc_blsp1_uart6_apps_clk.c, ""),
+<<<<<<< HEAD
 	CLK_LOOKUP("iface_clk", gcc_blsp2_ahb_clk.c, "f9964000.spi"),
 	CLK_LOOKUP("core_clk", gcc_blsp2_qup2_spi_apps_clk.c, "f9964000.spi"),
+=======
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	CLK_LOOKUP("iface_clk", gcc_blsp2_ahb_clk.c, "f9967000.i2c"),
 	CLK_LOOKUP("iface_clk", gcc_blsp2_ahb_clk.c, "f9966000.spi"),
 	CLK_LOOKUP("iface_clk", gcc_blsp2_ahb_clk.c, "f995e000.serial"),

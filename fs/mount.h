@@ -4,8 +4,16 @@
 
 struct mnt_namespace {
 	atomic_t		count;
+<<<<<<< HEAD
 	struct mount *	root;
 	struct list_head	list;
+=======
+	unsigned int            proc_inum;
+	struct mount *	root;
+	struct list_head	list;
+	 struct user_namespace   *user_ns;
+	u64			seq;	/* Sequence number to prevent loops */
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	wait_queue_head_t poll;
 	int event;
 };

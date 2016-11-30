@@ -60,8 +60,13 @@ static void msm_ispif_io_dump_reg(struct ispif_device *ispif)
 static inline int msm_ispif_is_intf_valid(uint32_t csid_version,
 	uint8_t intf_type)
 {
+<<<<<<< HEAD
         return ((csid_version <= CSID_VERSION_V22 && intf_type != VFE0) ||
                 (intf_type >= VFE_MAX)) ? false : true;
+=======
+	return ((csid_version <= CSID_VERSION_V22 && intf_type != VFE0) ||
+		(intf_type >= VFE_MAX)) ? false : true;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 }
 
 static struct msm_cam_clk_info ispif_8626_reset_clk_info[] = {
@@ -127,7 +132,11 @@ static int msm_ispif_reset_hw(struct ispif_device *ispif)
 		rc = msm_cam_clk_enable(&ispif->pdev->dev,
 			ispif_8626_reset_clk_info, reset_clk1,
 			ARRAY_SIZE(ispif_8626_reset_clk_info), 1);
+<<<<<<< HEAD
 		if (rc < 0){
+=======
+		if (rc < 0) {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			pr_err("%s: cannot enable clock, error = %d",
 				__func__, rc);
 		} else {
@@ -159,12 +168,21 @@ static int msm_ispif_reset_hw(struct ispif_device *ispif)
 		rc = msm_cam_clk_enable(&ispif->pdev->dev,
 			ispif_8974_reset_clk_info, reset_clk,
 			ARRAY_SIZE(ispif_8974_reset_clk_info), 0);
+<<<<<<< HEAD
 		if (rc < 0){
+=======
+		if (rc < 0) {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			rc = msm_cam_clk_enable(&ispif->pdev->dev,
 				ispif_8626_reset_clk_info, reset_clk1,
 				ARRAY_SIZE(ispif_8626_reset_clk_info), 0);
 			if (rc < 0)
+<<<<<<< HEAD
 				pr_err("%s: VFE0 reset wait timeout\n", __func__);
+=======
+				pr_err("%s: VFE0 reset wait timeout\n",
+					 __func__);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		}
 		return -ETIMEDOUT;
 	}
@@ -183,7 +201,11 @@ static int msm_ispif_reset_hw(struct ispif_device *ispif)
 		}
 	}
 
+<<<<<<< HEAD
 	if (ispif->clk_idx == 1){
+=======
+	if (ispif->clk_idx == 1) {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		rc = msm_cam_clk_enable(&ispif->pdev->dev,
 			ispif_8974_reset_clk_info, reset_clk,
 			ARRAY_SIZE(ispif_8974_reset_clk_info), 0);
@@ -193,6 +215,7 @@ static int msm_ispif_reset_hw(struct ispif_device *ispif)
 		}
 	}
 
+<<<<<<< HEAD
 	if (ispif->clk_idx == 2){
         	rc = msm_cam_clk_enable(&ispif->pdev->dev,
 			ispif_8626_reset_clk_info, reset_clk1,
@@ -200,6 +223,15 @@ static int msm_ispif_reset_hw(struct ispif_device *ispif)
         	if (rc < 0) {
 			pr_err("%s: cannot disable clock, error = %d",
 				__func__, rc);
+=======
+	if (ispif->clk_idx == 2) {
+		rc = msm_cam_clk_enable(&ispif->pdev->dev,
+			ispif_8626_reset_clk_info, reset_clk1,
+			ARRAY_SIZE(ispif_8626_reset_clk_info), 0);
+			if (rc < 0) {
+				pr_err("%s: cannot disable clock, error = %d",
+					__func__, rc);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		}
 	}
 
@@ -533,6 +565,14 @@ static int msm_ispif_config(struct ispif_device *ispif,
 
 	for (i = 0; i < params->num; i++) {
 		vfe_intf = params->entries[i].vfe_intf;
+<<<<<<< HEAD
+=======
+		if (vfe_intf >= VFE_MAX) {
+			pr_err("%s: %d invalid i %d vfe_intf %d\n", __func__,
+				__LINE__, i, vfe_intf);
+			return -EINVAL;
+		}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		if (!msm_ispif_is_intf_valid(ispif->csid_version,
 				vfe_intf)) {
 			pr_err("%s: invalid interface type\n", __func__);
@@ -624,8 +664,23 @@ static void msm_ispif_intf_cmd(struct ispif_device *ispif, uint32_t cmd_bits,
 	BUG_ON(!ispif);
 	BUG_ON(!params);
 
+<<<<<<< HEAD
 	for (i = 0; i < params->num; i++) {
 		vfe_intf = params->entries[i].vfe_intf;
+=======
+	if (params->num > MAX_PARAM_ENTRIES) {
+		pr_err("%s: invalid param entries %d\n", __func__,
+			params->num);
+		return;
+	}
+	for (i = 0; i < params->num; i++) {
+		vfe_intf = params->entries[i].vfe_intf;
+		if (vfe_intf >= VFE_MAX) {
+			pr_err("%s: %d invalid i %d vfe_intf %d\n", __func__,
+				__LINE__, i, vfe_intf);
+			return;
+		}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		if (!msm_ispif_is_intf_valid(ispif->csid_version, vfe_intf)) {
 			pr_err("%s: invalid interface type\n", __func__);
 			return;
@@ -931,7 +986,12 @@ static int msm_ispif_set_vfe_info(struct ispif_device *ispif,
 	struct msm_ispif_vfe_info *vfe_info)
 {
 	memcpy(&ispif->vfe_info, vfe_info, sizeof(struct msm_ispif_vfe_info));
+<<<<<<< HEAD
 
+=======
+	if (ispif->vfe_info.num_vfe > ispif->hw_num_isps)
+		return -EINVAL;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	return 0;
 }
 

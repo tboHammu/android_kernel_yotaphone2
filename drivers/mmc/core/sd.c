@@ -1045,6 +1045,10 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
 		err = mmc_send_relative_addr(host, &card->rca);
 		if (err)
 			return err;
+<<<<<<< HEAD
+=======
+		host->card = card;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	}
 
 	if (!oldcard) {
@@ -1114,12 +1118,22 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
 		}
 	}
 
+<<<<<<< HEAD
 	host->card = card;
 	return 0;
 
 free_card:
 	if (!oldcard)
 		mmc_remove_card(card);
+=======
+	return 0;
+
+free_card:
+	if (!oldcard) {
+		host->card = NULL;
+		mmc_remove_card(card);
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	return err;
 }

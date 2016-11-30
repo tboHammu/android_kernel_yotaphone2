@@ -311,9 +311,12 @@ static enum power_supply_property msm_bms_power_props[] = {
 	POWER_SUPPLY_PROP_CHARGE_FULL,
 	POWER_SUPPLY_PROP_CYCLE_COUNT,
 };
+<<<<<<< HEAD
 #ifdef CONFIG_TCMD
 static struct qpnp_bms_chip *bms_chip;
 #endif
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 static int discard_backup_fcc_data(struct qpnp_bms_chip *chip);
 static void backup_charge_cycle(struct qpnp_bms_chip *chip);
@@ -637,6 +640,7 @@ static int get_battery_current(struct qpnp_bms_chip *chip, int *result_ua)
 	*result_ua = temp_current;
 	return 0;
 }
+<<<<<<< HEAD
 #ifdef CONFIG_TCMD
 int tcmd_get_battery_current(int *result_ua)
 {
@@ -647,6 +651,9 @@ int tcmd_get_battery_current(int *result_ua)
 	return 0;
 }
 #endif
+=======
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static int get_battery_voltage(struct qpnp_bms_chip *chip, int *result_uv)
 {
 	int rc;
@@ -3692,7 +3699,11 @@ static int set_battery_data(struct qpnp_bms_chip *chip)
 	if (chip->batt_type == BATT_DESAY) {
 		batt_data = &desay_5200_data;
 	} else if (chip->batt_type == BATT_PALLADIUM) {
+<<<<<<< HEAD
 		batt_data = &palladium_2500_data;
+=======
+		batt_data = &palladium_1500_data;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	} else if (chip->batt_type == BATT_OEM) {
 		batt_data = &oem_batt_data;
 	} else if (chip->batt_type == BATT_QRD_4V35_2000MAH) {
@@ -3711,14 +3722,22 @@ static int set_battery_data(struct qpnp_bms_chip *chip)
 				"qcom,battery-data");
 		if (!node) {
 			pr_warn("No available batterydata, using palladium 1500\n");
+<<<<<<< HEAD
 			batt_data = &palladium_2500_data;
+=======
+			batt_data = &palladium_1500_data;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			goto assign_data;
 		}
 		batt_data = devm_kzalloc(chip->dev,
 				sizeof(struct bms_battery_data), GFP_KERNEL);
 		if (!batt_data) {
 			pr_err("Could not alloc battery data\n");
+<<<<<<< HEAD
 			batt_data = &palladium_2500_data;
+=======
+			batt_data = &palladium_1500_data;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			goto assign_data;
 		}
 		batt_data->fcc_temp_lut = devm_kzalloc(chip->dev,
@@ -3745,12 +3764,20 @@ static int set_battery_data(struct qpnp_bms_chip *chip)
 				&& batt_data->rbatt_sf_lut) {
 			dt_data = true;
 		} else {
+<<<<<<< HEAD
 			pr_err("battery data load failed, using palladium 2500\n");
+=======
+			pr_err("battery data load failed, using palladium 1500\n");
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			devm_kfree(chip->dev, batt_data->fcc_temp_lut);
 			devm_kfree(chip->dev, batt_data->pc_temp_ocv_lut);
 			devm_kfree(chip->dev, batt_data->rbatt_sf_lut);
 			devm_kfree(chip->dev, batt_data);
+<<<<<<< HEAD
 			batt_data = &palladium_2500_data;
+=======
+			batt_data = &palladium_1500_data;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		}
 	}
 
@@ -4426,9 +4453,12 @@ static int __devinit qpnp_bms_probe(struct spmi_device *spmi)
 		goto unregister_dc;
 	}
 
+<<<<<<< HEAD
 	#ifdef CONFIG_TCMD
 	bms_chip = chip;
 	#endif
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	pr_info("probe success: soc =%d vbatt = %d ocv = %d r_sense_uohm = %u warm_reset = %d\n",
 			get_prop_bms_capacity(chip), vbatt, chip->last_ocv_uv,
 			chip->r_sense_uohm, warm_reset);

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2015, The Linux Foundation. All rights reserved.
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -33,6 +37,10 @@
 
 		adsp_mem: adsp_region {
 			linux,contiguous-region;
+<<<<<<< HEAD
+=======
+			linux,memory-limit = <0x0>;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			reg = <0 0x2a00000>;
 			label = "adsp_mem";
 		};
@@ -628,6 +636,16 @@
 		qcom,msm-auxpcm-interface = "primary";
 	};
 
+<<<<<<< HEAD
+=======
+	qcom,avtimer@fe053000 {
+		compatible = "qcom,avtimer";
+		reg = <0xfe053008 0x4>,
+			<0xfe05300c 0x4>;
+		reg-names = "avtimer_lsb_addr", "avtimer_msb_addr";
+	};
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	qcom,wcnss-wlan@fb000000 {
 		compatible = "qcom,wcnss_wlan";
 		reg = <0xfb000000 0x280000>,
@@ -652,10 +670,13 @@
 
 	qcom,msm-adsp-sensors {
 		compatible = "qcom,msm-adsp-sensors";
+<<<<<<< HEAD
 		qcom,src-id = <11>;
 		qcom,dst-id = <604>;
 		qcom,ab = <32505856>;
 		qcom,ib = <32505856>;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	};
 
 	qcom,wdt@f9017000 {

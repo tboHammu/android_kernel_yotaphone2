@@ -9,7 +9,12 @@ obj-$(CONFIG_FB_BACKLIGHT) += msm_fb_bl.o
 ifeq ($(CONFIG_FB_MSM_MDP_HW),y)
 # MDP
 obj-y += mdp.o
+<<<<<<< HEAD
 obj-$(CONFIG_MDP_DEBUG_FS) += mdp_debugfs.o
+=======
+
+obj-$(CONFIG_DEBUG_FS) += mdp_debugfs.o
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 ifeq ($(CONFIG_FB_MSM_MDP40),y)
 obj-y += mdp4_util.o

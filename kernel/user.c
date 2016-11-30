@@ -16,6 +16,10 @@
 #include <linux/interrupt.h>
 #include <linux/export.h>
 #include <linux/user_namespace.h>
+<<<<<<< HEAD
+=======
+#include <linux/proc_fs.h>
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 /*
  * userns count is 1 for root user, 1 for init_uts_ns,
@@ -26,6 +30,10 @@ struct user_namespace init_user_ns = {
 		.refcount	= ATOMIC_INIT(3),
 	},
 	.creator = &root_user,
+<<<<<<< HEAD
+=======
+	.proc_inum = PROC_USER_INIT_INO,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 };
 EXPORT_SYMBOL_GPL(init_user_ns);
 

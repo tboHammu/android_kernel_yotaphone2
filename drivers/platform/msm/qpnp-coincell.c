@@ -40,9 +40,12 @@ struct qpnp_coincell {
 
 static const int qpnp_rset_map[] = {2100, 1700, 1200, 800};
 static const int qpnp_vset_map[] = {2500, 3200, 3100, 3000};
+<<<<<<< HEAD
 #ifdef CONFIG_TCMD
 static struct qpnp_coincell *coincell_chip;
 #endif
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 static int qpnp_coincell_set_resistance(struct qpnp_coincell *chip, int rset)
 {
@@ -68,6 +71,7 @@ static int qpnp_coincell_set_resistance(struct qpnp_coincell *chip, int rset)
 	return rc;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_TCMD
 int tcmd_qpnp_coincell_set_resistance(int rset)
 {
@@ -79,6 +83,8 @@ int tcmd_qpnp_coincell_set_resistance(int rset)
 }
 #endif
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static int qpnp_coincell_set_voltage(struct qpnp_coincell *chip, int vset)
 {
 	int i, rc;
@@ -103,6 +109,7 @@ static int qpnp_coincell_set_voltage(struct qpnp_coincell *chip, int vset)
 	return rc;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_TCMD
 int tcmd_qpnp_coincell_set_voltage(int vset)
 {
@@ -115,6 +122,8 @@ int tcmd_qpnp_coincell_set_voltage(int vset)
 }
 #endif
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static int qpnp_coincell_set_charge(struct qpnp_coincell *chip, bool enabled)
 {
 	int rc;
@@ -130,6 +139,7 @@ static int qpnp_coincell_set_charge(struct qpnp_coincell *chip, bool enabled)
 	return rc;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_TCMD
 int tcmd_qpnp_coincell_set_charger(bool enabled)
 {
@@ -141,6 +151,8 @@ int tcmd_qpnp_coincell_set_charger(bool enabled)
 }
 #endif
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static void qpnp_coincell_charger_show_state(struct qpnp_coincell *chip)
 {
 	int rc, rset, vset, temp;
@@ -255,9 +267,13 @@ static int qpnp_coincell_probe(struct spmi_device *spmi)
 	}
 
 	qpnp_coincell_charger_show_state(chip);
+<<<<<<< HEAD
 #ifdef CONFIG_TCMD
 	coincell_chip =chip;
 #endif
+=======
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	return 0;
 }
 

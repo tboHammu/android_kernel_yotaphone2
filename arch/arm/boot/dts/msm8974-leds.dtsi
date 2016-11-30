@@ -74,7 +74,11 @@
 				"flash0_trigger";
 			qcom,id = <1>;
 			linux,name = "led:flash_0";
+<<<<<<< HEAD
 			qcom,current = <500>;
+=======
+			qcom,current = <625>;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		};
 
 		pm8941_flash1: qcom,flash_1 {
@@ -90,7 +94,11 @@
 			label = "flash";
 			qcom,id = <2>;
 			linux,name = "led:flash_1";
+<<<<<<< HEAD
 			qcom,current = <500>;
+=======
+			qcom,current = <625>;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		};
 
 		pm8941_torch: qcom,flash_torch {
@@ -103,7 +111,11 @@
 			label = "flash";
 			qcom,id = <2>;
 			linux,name = "led:flash_torch";
+<<<<<<< HEAD
 			qcom,current = <35>;
+=======
+			qcom,current = <200>;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			qcom,torch-enable;
 		};
 	};

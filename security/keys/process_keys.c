@@ -54,7 +54,11 @@ int install_user_keyrings(void)
 
 	kenter("%p{%u}", user, user->uid);
 
+<<<<<<< HEAD
 	if (user->uid_keyring && user->session_keyring) {
+=======
+	if (user->uid_keyring) {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		kleave(" = 0 [exist]");
 		return 0;
 	}

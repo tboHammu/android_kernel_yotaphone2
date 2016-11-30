@@ -1053,6 +1053,12 @@ static const char *hwcap_str[] = {
 	"vfpv4",
 	"idiva",
 	"idivt",
+<<<<<<< HEAD
+=======
+	"vfpd32",
+	"lpae",
+	"evtstrm",
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	NULL
 };
 

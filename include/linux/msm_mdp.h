@@ -95,7 +95,14 @@
 #define IS_MDSS_MAJOR_MINOR_SAME(rev1, rev2)	\
 	(MDSS_GET_MAJOR_MINOR((rev1)) == MDSS_GET_MAJOR_MINOR((rev2)))
 
+<<<<<<< HEAD
 #define MDSS_MDP_REV(major, minor, step) ((((major) & 0x000F) << 28) |	(((minor) & 0x0FFF) << 16) | ((step)   & 0xFFFF))
+=======
+#define MDSS_MDP_REV(major, minor, step)	\
+	((((major) & 0x000F) << 28) |		\
+	 (((minor) & 0x0FFF) << 16) |		\
+	 ((step)   & 0xFFFF))
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 #define MDSS_MDP_HW_REV_100	MDSS_MDP_REV(1, 0, 0) /* 8974 v1.0 */
 #define MDSS_MDP_HW_REV_101	MDSS_MDP_REV(1, 1, 0) /* 8x26 v1.0 */
@@ -1000,7 +1007,10 @@ enum {
 	metadata_op_wb_secure,
 	metadata_op_get_caps,
 	metadata_op_crc,
+<<<<<<< HEAD
 	metadata_op_get_ion_fd,
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	metadata_op_max
 };
 
@@ -1034,7 +1044,10 @@ struct msmfb_metadata {
 		uint32_t video_info_code;
 		struct mdss_hw_caps caps;
 		uint8_t secure_en;
+<<<<<<< HEAD
 		int fbmem_ionfd;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	} data;
 };
 

@@ -167,6 +167,10 @@ extern int ipv6_chk_acast_addr(struct net *net, struct net_device *dev,
 			       const struct in6_addr *addr);
 
 u32 addrconf_rt_table(const struct net_device *dev, u32 default_table);
+<<<<<<< HEAD
+=======
+extern void ipv6_ac_destroy_dev(struct inet6_dev *idev);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 
 /* Device notifier */

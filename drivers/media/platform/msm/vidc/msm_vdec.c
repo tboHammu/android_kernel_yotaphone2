@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2015, The Linux Foundation. All rights reserved.
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -329,6 +333,19 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 		.qmenu = NULL,
 	},
 	{
+<<<<<<< HEAD
+=======
+		.id = V4L2_CID_MPEG_VIDC_VIDEO_PRIORITY,
+		.name = "Session Priority",
+		.type = V4L2_CTRL_TYPE_INTEGER,
+		.minimum = V4L2_MPEG_VIDC_VIDEO_PRIORITY_REALTIME_ENABLE,
+		.maximum = V4L2_MPEG_VIDC_VIDEO_PRIORITY_REALTIME_DISABLE,
+		.default_value = V4L2_MPEG_VIDC_VIDEO_PRIORITY_REALTIME_DISABLE,
+		.step = 1,
+		.qmenu = NULL,
+	},
+	{
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_OPERATING_RATE,
 		.name = "Set Decoder Operating rate",
 		.type = V4L2_CTRL_TYPE_INTEGER,
@@ -537,6 +554,17 @@ int msm_vdec_prepare_buf(struct msm_vidc_inst *inst,
 	}
 	hdev = inst->core->device;
 
+<<<<<<< HEAD
+=======
+	if (inst->state == MSM_VIDC_CORE_INVALID ||
+			inst->core->state == VIDC_CORE_INVALID) {
+		dprintk(VIDC_ERR,
+			"Core %p in bad state, ignoring prepare buf\n",
+				inst->core);
+		goto exit;
+	}
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	switch (b->type) {
 	case V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE:
 		break;
@@ -586,6 +614,10 @@ int msm_vdec_prepare_buf(struct msm_vidc_inst *inst,
 		dprintk(VIDC_ERR, "Buffer type not recognized: %d\n", b->type);
 		break;
 	}
+<<<<<<< HEAD
+=======
+exit:
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	return rc;
 }
 
@@ -819,7 +851,12 @@ int msm_vdec_g_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 				get_buff_req_buffer(inst,
 					msm_comm_get_hal_output_buffer(inst));
 			if (buff_req_buffer)
+<<<<<<< HEAD
 				f->fmt.pix_mp.plane_fmt[0].sizeimage = buff_req_buffer->buffer_size;
+=======
+				f->fmt.pix_mp.plane_fmt[0].sizeimage =
+				buff_req_buffer->buffer_size;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			else
 				f->fmt.pix_mp.plane_fmt[0].sizeimage = 0;
 
@@ -914,7 +951,11 @@ int msm_vdec_s_parm(struct msm_vidc_inst *inst, struct v4l2_streamparm *a)
 
 	if ((fps % 15 == 14) || (fps % 24 == 23))
 		fps = fps + 1;
+<<<<<<< HEAD
 	else if ((fps % 24 == 1) || (fps % 15 == 1))
+=======
+	else if ((fps > 1) && ((fps % 24 == 1) || (fps % 15 == 1)))
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		fps = fps - 1;
 
 	if (inst->prop.fps != fps) {
@@ -1051,6 +1092,10 @@ int msm_vdec_s_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 		rc = msm_comm_try_state(inst, MSM_VIDC_OPEN_DONE);
 		if (rc) {
 			dprintk(VIDC_ERR, "Failed to open instance\n");
+<<<<<<< HEAD
+=======
+			msm_comm_session_clean(inst);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			goto err_invalid_fmt;
 		}
 		frame_sz.buffer_type = HAL_BUFFER_INPUT;
@@ -1180,6 +1225,10 @@ static int msm_vdec_queue_setup(struct vb2_queue *q,
 		rc = msm_comm_try_state(inst, MSM_VIDC_OPEN_DONE);
 		if (rc) {
 			dprintk(VIDC_ERR, "Failed to open instance\n");
+<<<<<<< HEAD
+=======
+			msm_comm_session_clean(inst);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			break;
 		}
 		rc = msm_comm_try_get_bufreqs(inst);
@@ -1289,6 +1338,7 @@ static inline int start_streaming(struct msm_vidc_inst *inst)
 			goto fail_start;
 		}
 	}
+<<<<<<< HEAD
 	mutex_lock(&inst->sync_lock);
 	if (!list_empty(&inst->pendingq)) {
 		list_for_each_safe(ptr, next, &inst->pendingq) {
@@ -1304,6 +1354,22 @@ static inline int start_streaming(struct msm_vidc_inst *inst)
 		}
 	}
 	mutex_unlock(&inst->sync_lock);
+=======
+
+	mutex_lock(&inst->pendingq.lock);
+	list_for_each_safe(ptr, next, &inst->pendingq.list) {
+		temp = list_entry(ptr, struct vb2_buf_entry, list);
+		rc = msm_comm_qbuf(temp->vb);
+		if (rc) {
+			dprintk(VIDC_ERR,
+				"Failed to qbuf to hardware\n");
+			break;
+		}
+		list_del(&temp->list);
+		kfree(temp);
+	}
+	mutex_unlock(&inst->pendingq.lock);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	return rc;
 fail_start:
 	return rc;
@@ -1751,6 +1817,10 @@ static int try_set_ctrl(struct msm_vidc_inst *inst, struct v4l2_ctrl *ctrl)
 		dprintk(VIDC_DBG,
 			"Limiting input buffer size to :%u\n", ctrl->val);
 		break;
+<<<<<<< HEAD
+=======
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	case V4L2_CID_MPEG_VIDC_VIDEO_PRIORITY:
 		property_id = HAL_CONFIG_REALTIME;
 		hal_property.enable = ctrl->val;
@@ -1759,7 +1829,10 @@ static int try_set_ctrl(struct msm_vidc_inst *inst, struct v4l2_ctrl *ctrl)
 	case V4L2_CID_MPEG_VIDC_VIDEO_OPERATING_RATE:
 		property_id = 0;
 		break;
+<<<<<<< HEAD
 	}
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	default:
 		break;
 	}

@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (c) 2011-2013 The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2011-2013,2016 The Linux Foundation. All rights reserved.
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -18,13 +22,22 @@
 
 #include <mach/msm-krait-l2-accessors.h>
 
+<<<<<<< HEAD
+=======
+#define PMU_CODES_SIZE 64
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 /*
  * The L2 PMU is shared between all CPU's, so protect
  * its bitmap access.
  */
 struct pmu_constraints {
 	u64 pmu_bitmap;
+<<<<<<< HEAD
 	u8 codes[64];
+=======
+	u8 codes[PMU_CODES_SIZE];
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	raw_spinlock_t lock;
 } l2_pmu_constraints = {
 	.pmu_bitmap = 0,
@@ -419,10 +432,16 @@ static int msm_l2_test_set_ev_constraint(struct perf_event *event)
 	u8 group = evt_type & 0x0000F;
 	u8 code = (evt_type & 0x00FF0) >> 4;
 	unsigned long flags;
+<<<<<<< HEAD
 	u32 err = 0;
 	u64 bitmap_t;
 	u32 shift_idx;
 
+=======
+	int err = 0;
+	u64 bitmap_t;
+	u32 shift_idx;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if (evt_prefix == L2_TRACECTR_PREFIX)
 		return err;
 	/*
@@ -436,6 +455,14 @@ static int msm_l2_test_set_ev_constraint(struct perf_event *event)
 
 	shift_idx = ((reg * 4) + group);
 
+<<<<<<< HEAD
+=======
+	if (shift_idx >= PMU_CODES_SIZE) {
+		err =  -EINVAL;
+		goto out;
+	}
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	bitmap_t = 1 << shift_idx;
 
 	if (!(l2_pmu_constraints.pmu_bitmap & bitmap_t)) {
@@ -460,7 +487,10 @@ static int msm_l2_test_set_ev_constraint(struct perf_event *event)
 			if (!(event->cpu < 0)) {
 				event->state = PERF_EVENT_STATE_OFF;
 				event->attr.constraint_duplicate = 1;
+<<<<<<< HEAD
 				err = -EPERM;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			}
 	}
 out:
@@ -477,6 +507,10 @@ static int msm_l2_clear_ev_constraint(struct perf_event *event)
 	unsigned long flags;
 	u64 bitmap_t;
 	u32 shift_idx;
+<<<<<<< HEAD
+=======
+	int err = 1;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	if (evt_prefix == L2_TRACECTR_PREFIX)
 		return 1;
@@ -484,6 +518,13 @@ static int msm_l2_clear_ev_constraint(struct perf_event *event)
 
 	shift_idx = ((reg * 4) + group);
 
+<<<<<<< HEAD
+=======
+	if (shift_idx >= PMU_CODES_SIZE) {
+		err = -EINVAL;
+		goto out;
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	bitmap_t = 1 << shift_idx;
 
 	/* Clear constraint bit. */
@@ -491,9 +532,15 @@ static int msm_l2_clear_ev_constraint(struct perf_event *event)
 
 	/* Clear code. */
 	l2_pmu_constraints.codes[shift_idx] = -1;
+<<<<<<< HEAD
 
 	raw_spin_unlock_irqrestore(&l2_pmu_constraints.lock, flags);
 	return 1;
+=======
+out:
+	raw_spin_unlock_irqrestore(&l2_pmu_constraints.lock, flags);
+	return err;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 }
 
 int get_num_events(void)

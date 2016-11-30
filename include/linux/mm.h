@@ -321,8 +321,11 @@ static inline int is_vmalloc_or_module_addr(const void *x)
 }
 #endif
 
+<<<<<<< HEAD
 extern void kvfree(const void *addr);
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static inline void compound_lock(struct page *page)
 {
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE

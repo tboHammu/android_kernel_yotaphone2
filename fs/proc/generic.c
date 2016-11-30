@@ -350,12 +350,17 @@ static DEFINE_SPINLOCK(proc_inum_lock); /* protects the above */
  * Return an inode number between PROC_DYNAMIC_FIRST and
  * 0xffffffff, or zero on failure.
  */
+<<<<<<< HEAD
 static unsigned int get_inode_number(void)
+=======
+int proc_alloc_inum(unsigned int *inum)
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 {
 	unsigned int i;
 	int error;
 
 retry:
+<<<<<<< HEAD
 	if (ida_pre_get(&proc_inum_ida, GFP_KERNEL) == 0)
 		return 0;
 
@@ -381,6 +386,35 @@ static void release_inode_number(unsigned int inum)
 	spin_lock(&proc_inum_lock);
 	ida_remove(&proc_inum_ida, inum - PROC_DYNAMIC_FIRST);
 	spin_unlock(&proc_inum_lock);
+=======
+	if (!ida_pre_get(&proc_inum_ida, GFP_KERNEL))
+		return -ENOMEM;
+
+	spin_lock_irq(&proc_inum_lock);
+	error = ida_get_new(&proc_inum_ida, &i);
+	spin_unlock_irq(&proc_inum_lock);
+	if (error == -EAGAIN)
+		goto retry;
+	else if (error)
+		return error;
+
+	if (i > UINT_MAX - PROC_DYNAMIC_FIRST) {
+		spin_lock_irq(&proc_inum_lock);
+		ida_remove(&proc_inum_ida, i);
+		spin_unlock_irq(&proc_inum_lock);
+		return -ENOSPC;
+	}
+	*inum = PROC_DYNAMIC_FIRST + i;
+	return 0;
+}
+
+void proc_free_inum(unsigned int inum)
+{
+	unsigned long flags;
+	spin_lock_irqsave(&proc_inum_lock, flags);
+	ida_remove(&proc_inum_ida, inum - PROC_DYNAMIC_FIRST);
+	spin_unlock_irqrestore(&proc_inum_lock, flags);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 }
 
 static void *proc_follow_link(struct dentry *dentry, struct nameidata *nd)
@@ -554,6 +588,7 @@ static const struct inode_operations proc_dir_inode_operations = {
 
 static int proc_register(struct proc_dir_entry * dir, struct proc_dir_entry * dp)
 {
+<<<<<<< HEAD
 	unsigned int i;
 	struct proc_dir_entry *tmp;
 	
@@ -561,6 +596,14 @@ static int proc_register(struct proc_dir_entry * dir, struct proc_dir_entry * dp
 	if (i == 0)
 		return -EAGAIN;
 	dp->low_ino = i;
+=======
+	struct proc_dir_entry *tmp;
+	int ret;
+	
+	ret = proc_alloc_inum(&dp->low_ino);
+	if (ret)
+		return ret;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	if (S_ISDIR(dp->mode)) {
 		if (dp->proc_iops == NULL) {
@@ -765,7 +808,11 @@ EXPORT_SYMBOL(proc_create_data);
 
 static void free_proc_entry(struct proc_dir_entry *de)
 {
+<<<<<<< HEAD
 	release_inode_number(de->low_ino);
+=======
+	proc_free_inum(de->low_ino);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	if (S_ISLNK(de->mode))
 		kfree(de->data);

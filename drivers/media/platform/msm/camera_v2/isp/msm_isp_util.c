@@ -13,7 +13,10 @@
 #include <linux/io.h>
 #include <media/v4l2-subdev.h>
 #include <linux/ratelimit.h>
+<<<<<<< HEAD
 #include <asm/div64.h>
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 #include "msm.h"
 #include "msm_isp_util.h"
@@ -218,6 +221,7 @@ static inline void msm_isp_get_timestamp(struct msm_isp_timestamp *time_stamp)
 	do_gettimeofday(&(time_stamp->event_time));
 }
 
+<<<<<<< HEAD
 static inline void msm_isp_get_vt_tstamp(struct vfe_device *vfe_dev,
 	struct msm_isp_timestamp *time_stamp)
 {
@@ -240,6 +244,8 @@ static inline void msm_isp_get_vt_tstamp(struct vfe_device *vfe_dev,
 	time_stamp->vt_time.tv_usec = avtimer_lsw;
 }
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 int msm_isp_subscribe_event(struct v4l2_subdev *sd, struct v4l2_fh *fh,
 	struct v4l2_event_subscription *sub)
 {
@@ -1259,8 +1265,11 @@ irqreturn_t msm_isp_process_irq(int irq_num, void *data)
 	queue_cmd->vfeInterruptStatus0 = irq_status0;
 	queue_cmd->vfeInterruptStatus1 = irq_status1;
 	msm_isp_get_timestamp(&queue_cmd->ts);
+<<<<<<< HEAD
 	if (vfe_dev->vt_enable)
 		msm_isp_get_vt_tstamp(vfe_dev, &queue_cmd->ts);
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	queue_cmd->cmd_used = 1;
 	vfe_dev->taskletq_idx =
 		(vfe_dev->taskletq_idx + 1) % MSM_VFE_TASKLETQ_SIZE;
@@ -1385,13 +1394,17 @@ int msm_isp_open_node(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
 	vfe_dev->vfe_open_cnt++;
 	vfe_dev->taskletq_idx = 0;
 	vfe_dev->vt_enable = 0;
+<<<<<<< HEAD
 	vfe_dev->p_avtimer_lsw = NULL;
 	vfe_dev->p_avtimer_msw = NULL;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	mutex_unlock(&vfe_dev->core_mutex);
 	mutex_unlock(&vfe_dev->realtime_mutex);
 	return 0;
 }
 
+<<<<<<< HEAD
 int msm_isp_close_node(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
 {
 	long rc;
@@ -1399,6 +1412,26 @@ int msm_isp_close_node(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
 	ISP_DBG("%s\n", __func__);
 	mutex_lock(&vfe_dev->realtime_mutex);
 	mutex_lock(&vfe_dev->core_mutex);
+=======
+#ifdef CONFIG_MSM_AVTIMER
+void msm_isp_end_avtimer(void)
+{
+       avcs_core_disable_power_collapse(0);
+}
+#else
+void msm_isp_end_avtimer(void)
+{
+       pr_err("AV Timer is not supported\n");
+}
+#endif
+
+int msm_isp_close_node(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+{
+	struct vfe_device *vfe_dev = v4l2_get_subdevdata(sd);
+	mutex_lock(&vfe_dev->realtime_mutex);
+	mutex_lock(&vfe_dev->core_mutex);
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if (vfe_dev->vfe_open_cnt == 0) {
 		pr_err("%s: Invalid close\n", __func__);
 		mutex_unlock(&vfe_dev->core_mutex);
@@ -1406,19 +1439,27 @@ int msm_isp_close_node(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	rc = vfe_dev->hw_info->vfe_ops.axi_ops.halt(vfe_dev, 1);
 	if (rc <= 0)
 		pr_err("%s: halt timeout rc=%ld\n", __func__, rc);
 
+=======
+	vfe_dev->hw_info->vfe_ops.axi_ops.halt(vfe_dev, 1);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	vfe_dev->buf_mgr->ops->buf_mgr_deinit(vfe_dev->buf_mgr);
 	vfe_dev->hw_info->vfe_ops.core_ops.release_hw(vfe_dev);
 	vfe_dev->vfe_open_cnt--;
 	if (vfe_dev->vt_enable) {
+<<<<<<< HEAD
 		iounmap(vfe_dev->p_avtimer_lsw);
 		iounmap(vfe_dev->p_avtimer_msw);
 	#ifdef CONFIG_MSM_AVTIMER
 		avcs_core_disable_power_collapse(0);
 	#endif
+=======
+                msm_isp_end_avtimer();
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		vfe_dev->vt_enable = 0;
 	}
 	mutex_unlock(&vfe_dev->core_mutex);

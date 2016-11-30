@@ -245,7 +245,11 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 
 HOSTCC       = gcc
 HOSTCXX      = g++
+<<<<<<< HEAD
 HOSTCFLAGS   = -Wno-error -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
+=======
+HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 HOSTCXXFLAGS = -O2
 
 # Decide whether to build built-in, modular, or both.
@@ -368,7 +372,11 @@ LINUXINCLUDE    := -I$(srctree)/arch/$(hdr-arch)/include \
 
 KBUILD_CPPFLAGS := -D__KERNEL__
 
+<<<<<<< HEAD
 KBUILD_CFLAGS   := -Wno-all -Wno-error -Wundef -Wstrict-prototypes -Wno-trigraphs \
+=======
+KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
@@ -377,7 +385,11 @@ KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
 KBUILD_AFLAGS_MODULE  := -DMODULE
+<<<<<<< HEAD
 KBUILD_CFLAGS_MODULE  := -DMODULE
+=======
+KBUILD_CFLAGS_MODULE  := -DMODULE -fno-pic
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 KBUILD_LDFLAGS_MODULE := -T $(srctree)/scripts/module-common.lds
 
 # Read KERNELRELEASE from include/config/kernel.release (if it exists)
@@ -562,6 +574,7 @@ endif # $(dot-config)
 # Defaults to vmlinux, but the arch makefile usually adds further targets
 all: vmlinux
 
+<<<<<<< HEAD
 ifneq (,$(filter %_china %_cta,$(TARGET_PRODUCT)))
 KBUILD_CFLAGS	+= -DTARGET_PRODUCT_CHINA
 ifeq ($(TARGET_PRODUCT), yotaphone2_cta)
@@ -569,6 +582,8 @@ KBUILD_CFLAGS	+= -DYOTA_CHINA_CTA
 endif
 endif
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
 else

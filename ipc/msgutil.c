@@ -16,6 +16,10 @@
 #include <linux/msg.h>
 #include <linux/ipc_namespace.h>
 #include <linux/utsname.h>
+<<<<<<< HEAD
+=======
+#include <linux/proc_fs.h>
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #include <asm/uaccess.h>
 
 #include "util.h"
@@ -30,6 +34,10 @@ DEFINE_SPINLOCK(mq_lock);
 struct ipc_namespace init_ipc_ns = {
 	.count		= ATOMIC_INIT(1),
 	.user_ns = &init_user_ns,
+<<<<<<< HEAD
+=======
+	.proc_inum = PROC_IPC_INIT_INO,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 };
 
 atomic_t nr_ipc_ns = ATOMIC_INIT(1);

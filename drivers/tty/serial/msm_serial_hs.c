@@ -253,8 +253,13 @@ struct msm_hs_port {
 };
 
 static struct of_device_id msm_hs_match_table[] = {
+<<<<<<< HEAD
 	{ .compatible = "qcom,msm-hsuart-v14",
 	},
+=======
+	{ .compatible = "qcom,msm-hsuart-v14"},
+	{}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 };
 
 

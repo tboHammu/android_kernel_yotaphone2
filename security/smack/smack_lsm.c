@@ -41,6 +41,11 @@
 #include <linux/binfmts.h>
 #include "smack.h"
 
+<<<<<<< HEAD
+=======
+#define task_security(task)	(task_cred_xxx((task), security))
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #define TRANS_TRUE	"TRUE"
 #define TRANS_TRUE_SIZE	4
 
@@ -162,7 +167,11 @@ static int smack_ptrace_access_check(struct task_struct *ctp, unsigned int mode)
 	if (rc != 0)
 		return rc;
 
+<<<<<<< HEAD
 	tsp = smk_of_task_struct(ctp);
+=======
+	tsp = smk_of_task(task_security(ctp));
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	smk_ad_init(&ad, __func__, LSM_AUDIT_DATA_TASK);
 	smk_ad_setfield_u_tsk(&ad, ctp);
 
@@ -188,7 +197,11 @@ static int smack_ptrace_traceme(struct task_struct *ptp)
 	if (rc != 0)
 		return rc;
 
+<<<<<<< HEAD
 	tsp = smk_of_task_struct(ptp);
+=======
+	tsp = smk_of_task(task_security(ptp));
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	smk_ad_init(&ad, __func__, LSM_AUDIT_DATA_TASK);
 	smk_ad_setfield_u_tsk(&ad, ptp);
 
@@ -404,8 +417,13 @@ static int smack_sb_statfs(struct dentry *dentry)
  * Returns 0 if current can write the floor of the filesystem
  * being mounted on, an error code otherwise.
  */
+<<<<<<< HEAD
 static int smack_sb_mount(const char *dev_name, struct path *path,
 			  const char *type, unsigned long flags, void *data)
+=======
+static int smack_sb_mount(char *dev_name, struct path *path,
+			  char *type, unsigned long flags, void *data)
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 {
 	struct superblock_smack *sbp = path->dentry->d_sb->s_security;
 	struct smk_audit_info ad;
@@ -1516,7 +1534,11 @@ static int smk_curacc_on_task(struct task_struct *p, int access,
 
 	smk_ad_init(&ad, caller, LSM_AUDIT_DATA_TASK);
 	smk_ad_setfield_u_tsk(&ad, p);
+<<<<<<< HEAD
 	return smk_curacc(smk_of_task_struct(p), access, &ad);
+=======
+	return smk_curacc(smk_of_task(task_security(p)), access, &ad);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 }
 
 /**
@@ -1562,7 +1584,11 @@ static int smack_task_getsid(struct task_struct *p)
  */
 static void smack_task_getsecid(struct task_struct *p, u32 *secid)
 {
+<<<<<<< HEAD
 	*secid = smack_to_secid(smk_of_task_struct(p));
+=======
+	*secid = smack_to_secid(smk_of_task(task_security(p)));
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 }
 
 /**
@@ -1674,7 +1700,11 @@ static int smack_task_kill(struct task_struct *p, struct siginfo *info,
 	 * can write the receiver.
 	 */
 	if (secid == 0)
+<<<<<<< HEAD
 		return smk_curacc(smk_of_task_struct(p), MAY_WRITE,
+=======
+		return smk_curacc(smk_of_task(task_security(p)), MAY_WRITE,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 				  &ad);
 	/*
 	 * If the secid isn't 0 we're dealing with some USB IO
@@ -1682,7 +1712,11 @@ static int smack_task_kill(struct task_struct *p, struct siginfo *info,
 	 * we can't take privilege into account.
 	 */
 	return smk_access(smack_from_secid(secid),
+<<<<<<< HEAD
 			  smk_of_task_struct(p), MAY_WRITE, &ad);
+=======
+			  smk_of_task(task_security(p)), MAY_WRITE, &ad);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 }
 
 /**
@@ -1695,6 +1729,7 @@ static int smack_task_wait(struct task_struct *p)
 {
 	struct smk_audit_info ad;
 	char *sp = smk_of_current();
+<<<<<<< HEAD
 	char *tsp;
 	int rc;
 
@@ -1702,6 +1737,11 @@ static int smack_task_wait(struct task_struct *p)
 	tsp = smk_of_forked(__task_cred(p)->security);
 	rcu_read_unlock();
 
+=======
+	char *tsp = smk_of_forked(task_security(p));
+	int rc;
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	/* we don't log here, we can be overriden */
 	rc = smk_access(tsp, sp, MAY_WRITE, NULL);
 	if (rc == 0)
@@ -1738,7 +1778,11 @@ static int smack_task_wait(struct task_struct *p)
 static void smack_task_to_inode(struct task_struct *p, struct inode *inode)
 {
 	struct inode_smack *isp = inode->i_security;
+<<<<<<< HEAD
 	isp->smk_inode = smk_of_task_struct(p);
+=======
+	isp->smk_inode = smk_of_task(task_security(p));
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 }
 
 /*
@@ -2721,7 +2765,11 @@ static int smack_getprocattr(struct task_struct *p, char *name, char **value)
 	if (strcmp(name, "current") != 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	cp = kstrdup(smk_of_task_struct(p), GFP_KERNEL);
+=======
+	cp = kstrdup(smk_of_task(task_security(p)), GFP_KERNEL);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if (cp == NULL)
 		return -ENOMEM;
 

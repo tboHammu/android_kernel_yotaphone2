@@ -1,5 +1,9 @@
 *.gen.S
+<<<<<<< HEAD
 #*.fw
+=======
+*.fw
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 *.bin
 *.csp
 *.dsp

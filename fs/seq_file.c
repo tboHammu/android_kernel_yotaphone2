@@ -8,9 +8,13 @@
 #include <linux/fs.h>
 #include <linux/export.h>
 #include <linux/seq_file.h>
+<<<<<<< HEAD
 #include <linux/vmalloc.h>
 #include <linux/slab.h>
 #include <linux/mm.h>
+=======
+#include <linux/slab.h>
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 #include <asm/uaccess.h>
 #include <asm/page.h>
@@ -31,6 +35,7 @@ static void seq_set_overflow(struct seq_file *m)
 	m->count = m->size;
 }
 
+<<<<<<< HEAD
 static void *seq_buf_alloc(unsigned long size)
 {
 	void *buf;
@@ -41,6 +46,8 @@ static void *seq_buf_alloc(unsigned long size)
 	return buf;
 }
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 /**
  *	seq_open -	initialize sequential file
  *	@file: file we initialize
@@ -104,7 +111,11 @@ static int traverse(struct seq_file *m, loff_t offset)
 		return 0;
 	}
 	if (!m->buf) {
+<<<<<<< HEAD
 		m->buf = seq_buf_alloc(m->size = PAGE_SIZE);
+=======
+		m->buf = kmalloc(m->size = PAGE_SIZE, GFP_KERNEL);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		if (!m->buf)
 			return -ENOMEM;
 	}
@@ -143,8 +154,13 @@ static int traverse(struct seq_file *m, loff_t offset)
 
 Eoverflow:
 	m->op->stop(m, p);
+<<<<<<< HEAD
 	kvfree(m->buf);
 	m->buf = seq_buf_alloc(m->size <<= 1);
+=======
+	kfree(m->buf);
+	m->buf = kmalloc(m->size <<= 1, GFP_KERNEL);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	return !m->buf ? -ENOMEM : -EAGAIN;
 }
 
@@ -199,7 +215,11 @@ ssize_t seq_read(struct file *file, char __user *buf, size_t size, loff_t *ppos)
 
 	/* grab buffer if we didn't have one */
 	if (!m->buf) {
+<<<<<<< HEAD
 		m->buf = seq_buf_alloc(m->size = PAGE_SIZE);
+=======
+		m->buf = kmalloc(m->size = PAGE_SIZE, GFP_KERNEL);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		if (!m->buf)
 			goto Enomem;
 	}
@@ -239,8 +259,13 @@ ssize_t seq_read(struct file *file, char __user *buf, size_t size, loff_t *ppos)
 		if (m->count < m->size)
 			goto Fill;
 		m->op->stop(m, p);
+<<<<<<< HEAD
 		kvfree(m->buf);
 		m->buf = seq_buf_alloc(m->size <<= 1);
+=======
+		kfree(m->buf);
+		m->buf = kmalloc(m->size <<= 1, GFP_KERNEL);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		if (!m->buf)
 			goto Enomem;
 		m->count = 0;
@@ -355,7 +380,11 @@ EXPORT_SYMBOL(seq_lseek);
 int seq_release(struct inode *inode, struct file *file)
 {
 	struct seq_file *m = file->private_data;
+<<<<<<< HEAD
 	kvfree(m->buf);
+=======
+	kfree(m->buf);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	kfree(m);
 	return 0;
 }

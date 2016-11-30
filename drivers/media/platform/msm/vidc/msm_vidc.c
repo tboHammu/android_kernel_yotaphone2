@@ -698,11 +698,30 @@ int output_buffer_cache_invalidate(struct msm_vidc_inst *inst,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static bool valid_v4l2_buffer(struct v4l2_buffer *b,
+		struct msm_vidc_inst *inst) {
+	enum vidc_ports port =
+		!V4L2_TYPE_IS_MULTIPLANAR(b->type) ? MAX_PORT_NUM :
+		b->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE ? CAPTURE_PORT :
+		b->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE ? OUTPUT_PORT :
+								MAX_PORT_NUM;
+
+	return port != MAX_PORT_NUM &&
+		inst->fmts[port]->num_planes == b->length;
+}
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 int msm_vidc_prepare_buf(void *instance, struct v4l2_buffer *b)
 {
 	struct msm_vidc_inst *inst = instance;
 
+<<<<<<< HEAD
 	if (!inst || !b)
+=======
+	if (!inst || !b || !valid_v4l2_buffer(b, inst))
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		return -EINVAL;
 
 	if (is_dynamic_output_buffer_mode(b, inst)) {
@@ -852,6 +871,7 @@ int msm_vidc_qbuf(void *instance, struct v4l2_buffer *b)
 	int rc = 0;
 	int i;
 
+<<<<<<< HEAD
 	if (!inst || !b)
 		return -EINVAL;
 
@@ -860,6 +880,10 @@ int msm_vidc_qbuf(void *instance, struct v4l2_buffer *b)
 			b->length);
 		return -EINVAL;
 	}
+=======
+	if (!inst || !b || !valid_v4l2_buffer(b, inst))
+		return -EINVAL;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	if (is_dynamic_output_buffer_mode(b, inst)) {
 		if (b->m.planes[0].reserved[0])
@@ -934,6 +958,7 @@ int msm_vidc_dqbuf(void *instance, struct v4l2_buffer *b)
 	struct buffer_info *buffer_info = NULL;
 	int i = 0, rc = 0;
 
+<<<<<<< HEAD
 	if (!inst || !b)
 		return -EINVAL;
 
@@ -942,6 +967,10 @@ int msm_vidc_dqbuf(void *instance, struct v4l2_buffer *b)
 			b->length);
 		return -EINVAL;
 	}
+=======
+	if (!inst || !b || !valid_v4l2_buffer(b, inst))
+		return -EINVAL;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	if (inst->session_type == MSM_VIDC_DECODER)
 		rc = msm_vdec_dqbuf(instance, b);
@@ -1223,7 +1252,11 @@ void *msm_vidc_open(int core_id, int session_type)
 	mutex_init(&inst->bufq[OUTPUT_PORT].lock);
 	mutex_init(&inst->lock);
 	inst->session_type = session_type;
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&inst->pendingq);
+=======
+	INIT_MSM_VIDC_LIST(&inst->pendingq);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	INIT_LIST_HEAD(&inst->internalbufs);
 	INIT_LIST_HEAD(&inst->persistbufs);
 	INIT_LIST_HEAD(&inst->registered_bufs);
@@ -1306,6 +1339,7 @@ err_invalid_core:
 
 static void cleanup_instance(struct msm_vidc_inst *inst)
 {
+<<<<<<< HEAD
 	struct list_head *ptr, *next;
 	struct vb2_buf_entry *entry;
 	if (inst) {
@@ -1318,6 +1352,18 @@ static void cleanup_instance(struct msm_vidc_inst *inst)
 				kfree(entry);
 			}
 		}
+=======
+	struct vb2_buf_entry *entry, *dummy;
+	if (inst) {
+		mutex_lock(&inst->pendingq.lock);
+		list_for_each_entry_safe(entry, dummy, &inst->pendingq.list,
+				list) {
+			list_del(&entry->list);
+			kfree(entry);
+		}
+		mutex_unlock(&inst->pendingq.lock);
+		mutex_lock(&inst->lock);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		if (!list_empty(&inst->internalbufs)) {
 			mutex_unlock(&inst->lock);
 			if (msm_comm_release_scratch_buffers(inst))
@@ -1362,7 +1408,11 @@ int msm_vidc_close(void *instance)
 	int rc = 0;
 	int i;
 
+<<<<<<< HEAD
 	if (!inst)
+=======
+	if (!inst || !inst->core)
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		return -EINVAL;
 
 	v4l2_fh_del(&inst->event_handler);
@@ -1380,6 +1430,10 @@ int msm_vidc_close(void *instance)
 	}
 
 	core = inst->core;
+<<<<<<< HEAD
+=======
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	mutex_lock(&core->lock);
 	list_for_each_safe(ptr, next, &core->instances) {
 		temp = list_entry(ptr, struct msm_vidc_inst, list);
@@ -1406,6 +1460,11 @@ int msm_vidc_close(void *instance)
 		dprintk(VIDC_ERR,
 			"Failed to move video instance to uninit state\n");
 
+<<<<<<< HEAD
+=======
+	msm_comm_session_clean(inst);
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	msm_smem_delete_client(inst->mem_client);
 	pr_info(VIDC_DBG_TAG "Closed video instance: %p\n", VIDC_INFO, inst);
 	kfree(inst);

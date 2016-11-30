@@ -127,6 +127,10 @@ struct mdss_data_type {
 	u32 has_decimation;
 	u8 has_wfd_blk;
 	u32 has_no_lut_read;
+<<<<<<< HEAD
+=======
+	atomic_t sd_client_count;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	u8 has_wb_ad;
 
 	u32 rotator_ot_limit;
@@ -252,4 +256,15 @@ static inline int mdss_get_iommu_domain(u32 type)
 
 	return mdss_res->iommu_map[type].domain_idx;
 }
+<<<<<<< HEAD
+=======
+
+static inline int mdss_get_sd_client_cnt(void)
+{
+	if (!mdss_res)
+		return 0;
+	else
+		return atomic_read(&mdss_res->sd_client_count);
+}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #endif /* MDSS_H */

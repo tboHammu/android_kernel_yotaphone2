@@ -570,6 +570,7 @@ config CI_BRIDGE_SPI
 
 	To compile this driver as module, choose M here.
 
+<<<<<<< HEAD
 config HAPTIC_LC898300XA
 	tristate "LC898300XA haptic support"
 	depends on I2C
@@ -577,6 +578,8 @@ config HAPTIC_LC898300XA
 	help
 	The LC898300XA is a Linear Vibrator Driver IC for a haptics and a vibrator.
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 config HAPTIC_ISA1200
 	tristate "ISA1200 haptic support"
 	depends on I2C
@@ -672,6 +675,7 @@ config TI_DRV2667
 	  To compile this driver as a module, choose M here: the
 	  module will be called ti_drv2667.
 
+<<<<<<< HEAD
 config TCMD_DRIVER
 	bool "tcmd driver"
 	default n
@@ -679,6 +683,13 @@ config TCMD_DRIVER
 config TCMD
 	bool "tcmd config"
 	default n
+=======
+config UID_CPUTIME
+	tristate "Per-UID cpu time statistics"
+	depends on PROFILING
+	help
+	  Per UID based cpu time statistics exported to /proc/uid_cputime
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 source "drivers/misc/c2port/Kconfig"
 source "drivers/misc/eeprom/Kconfig"
@@ -688,5 +699,8 @@ source "drivers/misc/ti-st/Kconfig"
 source "drivers/misc/lis3lv02d/Kconfig"
 source "drivers/misc/carma/Kconfig"
 source "drivers/misc/altera-stapl/Kconfig"
+<<<<<<< HEAD
 source "drivers/misc/slimport_anx7814/Kconfig"
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 endmenu

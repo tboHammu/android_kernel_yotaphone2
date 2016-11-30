@@ -2716,6 +2716,10 @@ out:
 	 *   (all existing requests completed or reinserted to the block layer)
 	 */
 	if ((!req && !(test_bit(MMC_QUEUE_NEW_REQUEST, &mq->flags))) ||
+<<<<<<< HEAD
+=======
+			(cmd_flags & MMC_REQ_SPECIAL_MASK) ||
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			((test_bit(MMC_QUEUE_URGENT_REQUEST, &mq->flags)) &&
 			 !(cmd_flags & MMC_REQ_NOREINSERT_MASK))) {
 		if (mmc_card_need_bkops(card))
@@ -3210,7 +3214,11 @@ static void mmc_blk_shutdown(struct mmc_card *card)
 		mmc_claim_host(card->host);
 		mmc_stop_bkops(card);
 		mmc_release_host(card->host);
+<<<<<<< HEAD
 		mmc_send_long_pon(card);
+=======
+		mmc_send_pon(card);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		mmc_rpm_release(card->host, &card->dev);
 	}
 	return;

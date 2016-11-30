@@ -1338,7 +1338,11 @@ int32_t qpnp_iadc_vadc_sync_read(struct qpnp_iadc_chip *iadc,
 	if (dt_index >= iadc->max_channels_available) {
 		pr_err("not a valid IADC channel\n");
 		rc = -EINVAL;
+<<<<<<< HEAD
 		goto fail_release_vadc;
+=======
+		goto fail;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	}
 
 	iadc->adc->amux_prop->decimation =

@@ -438,7 +438,11 @@ static netdev_tx_t reg_vif_xmit(struct sk_buff *skb, struct net_device *dev)
 	struct mr_table *mrt;
 	struct flowi4 fl4 = {
 		.flowi4_oif	= dev->ifindex,
+<<<<<<< HEAD
 		.flowi4_iif	= skb->skb_iif,
+=======
+		.flowi4_iif	= skb->skb_iif ? : LOOPBACK_IFINDEX,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		.flowi4_mark	= skb->mark,
 	};
 	int err;

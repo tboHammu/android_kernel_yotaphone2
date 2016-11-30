@@ -156,6 +156,7 @@ static struct file_system_type proc_fs_type = {
 	.kill_sb	= proc_kill_sb,
 };
 
+<<<<<<< HEAD
 extern void do_deferred_initcalls(unsigned long mask);
 static ssize_t deferred_initcalls_write_proc(struct file *file, const char __user *buf,
 		size_t count, loff_t *ppos)
@@ -188,6 +189,8 @@ static const struct file_operations deferred_initcalls_fops = {
 	.write		 = deferred_initcalls_write_proc,
 };
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 void __init proc_root_init(void)
 {
 	int err;
@@ -204,8 +207,11 @@ void __init proc_root_init(void)
 
 	proc_symlink("mounts", NULL, "self/mounts");
 
+<<<<<<< HEAD
 	proc_create("deferred_initcalls", 0, NULL, &deferred_initcalls_fops);
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	proc_net_init();
 
 #ifdef CONFIG_SYSVIPC

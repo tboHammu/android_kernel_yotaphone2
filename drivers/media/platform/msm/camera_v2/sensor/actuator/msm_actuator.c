@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2011-2016, The Linux Foundation. All rights reserved.
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -19,7 +23,11 @@
 
 DEFINE_MSM_MUTEX(msm_actuator_mutex);
 
+<<<<<<< HEAD
 /* #define MSM_ACUTUATOR_DEBUG */
+=======
+/*#define MSM_ACUTUATOR_DEBUG*/
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #undef CDBG
 #ifdef MSM_ACUTUATOR_DEBUG
 #define CDBG(fmt, args...) pr_err(fmt, ##args)
@@ -31,10 +39,13 @@ DEFINE_MSM_MUTEX(msm_actuator_mutex);
 static int32_t msm_actuator_power_up(struct msm_actuator_ctrl_t *a_ctrl);
 static int32_t msm_actuator_power_down(struct msm_actuator_ctrl_t *a_ctrl);
 
+<<<<<<< HEAD
 #ifdef CONFIG_AK7345
 static int init_actuator=0;
 #endif
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static struct msm_actuator msm_vcm_actuator_table;
 static struct msm_actuator msm_piezo_actuator_table;
 
@@ -79,6 +90,7 @@ static int32_t msm_actuator_piezo_set_default_focus(
 static void msm_actuator_parse_i2c_params(struct msm_actuator_ctrl_t *a_ctrl,
 	int16_t next_lens_position, uint32_t hw_params, uint16_t delay)
 {
+<<<<<<< HEAD
 	struct msm_actuator_reg_params_t *write_arr = a_ctrl->reg_tbl;
 	uint32_t hw_dword = hw_params;
 	uint16_t i2c_byte1 = 0, i2c_byte2 = 0;
@@ -86,6 +98,25 @@ static void msm_actuator_parse_i2c_params(struct msm_actuator_ctrl_t *a_ctrl,
 	uint32_t size = a_ctrl->reg_tbl_size, i = 0;
 	struct msm_camera_i2c_reg_array *i2c_tbl = a_ctrl->i2c_reg_tbl;
 	CDBG("Enter\n");
+=======
+	struct msm_actuator_reg_params_t *write_arr = NULL;
+	uint32_t hw_dword = hw_params;
+	uint16_t i2c_byte1 = 0, i2c_byte2 = 0;
+	uint16_t value = 0;
+	uint32_t size = 0, i = 0;
+	struct msm_camera_i2c_reg_array *i2c_tbl = NULL;
+	CDBG("Enter\n");
+
+	if (a_ctrl == NULL) {
+		pr_err("failed. actuator ctrl is NULL");
+		return;
+	}
+
+	size = a_ctrl->reg_tbl_size;
+	write_arr = a_ctrl->reg_tbl;
+	i2c_tbl = a_ctrl->i2c_reg_tbl;
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	for (i = 0; i < size; i++) {
 		/* check that the index into i2c_tbl cannot grow larger that
 		the allocated size of i2c_tbl */
@@ -247,8 +278,16 @@ static int32_t msm_actuator_piezo_move_focus(
 		return -EFAULT;
 	}
 
+<<<<<<< HEAD
 	if (num_steps == 0)
 		return rc;
+=======
+	if (num_steps <= 0 || num_steps > MAX_NUMBER_OF_STEPS) {
+		pr_err("num_steps out of range = %d\n",
+			num_steps);
+		return -EFAULT;
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	a_ctrl->i2c_tbl_index = 0;
 	a_ctrl->func_tbl->actuator_parse_i2c_params(a_ctrl,
@@ -524,15 +563,39 @@ static int32_t msm_actuator_set_position(
 	uint32_t hw_params = 0;
 	struct msm_camera_i2c_reg_setting reg_setting;
 	CDBG("%s Enter %d\n", __func__, __LINE__);
+<<<<<<< HEAD
 	if (set_pos->number_of_steps  == 0)
 		return rc;
+=======
+	if (set_pos->number_of_steps <= 0 ||
+		set_pos->number_of_steps > MAX_NUMBER_OF_STEPS) {
+		pr_err("num_steps out of range = %d\n",
+			set_pos->number_of_steps);
+		return -EFAULT;
+	}
+
+	if (!a_ctrl || !a_ctrl->func_tbl ||
+		!a_ctrl->func_tbl->actuator_parse_i2c_params) {
+		pr_err("failed. NULL actuator pointers.");
+		return -EFAULT;
+	}
+
+	if (a_ctrl->actuator_state != ACTUATOR_POWER_UP) {
+		pr_err("failed. Invalid actuator state.");
+		return -EFAULT;
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	a_ctrl->i2c_tbl_index = 0;
 	for (index = 0; index < set_pos->number_of_steps; index++) {
 		next_lens_position = set_pos->pos[index];
 		delay = set_pos->delay[index];
 		a_ctrl->func_tbl->actuator_parse_i2c_params(a_ctrl,
+<<<<<<< HEAD
 		next_lens_position, hw_params, delay);
+=======
+			next_lens_position, hw_params, delay);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 		reg_setting.reg_setting = a_ctrl->i2c_reg_tbl;
 		reg_setting.size = a_ctrl->i2c_tbl_index;
@@ -639,7 +702,11 @@ static int32_t msm_actuator_init(struct msm_actuator_ctrl_t *a_ctrl,
 		set_info->actuator_params.init_setting_size
 		<= MAX_ACTUATOR_REG_TBL_SIZE) {
 		if (a_ctrl->func_tbl->actuator_init_focus) {
+<<<<<<< HEAD
 			init_settings = kmalloc(sizeof(struct reg_settings_t) *
+=======
+			init_settings = kzalloc(sizeof(struct reg_settings_t) *
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 				(set_info->actuator_params.init_setting_size),
 				GFP_KERNEL);
 			if (init_settings == NULL) {
@@ -656,6 +723,7 @@ static int32_t msm_actuator_init(struct msm_actuator_ctrl_t *a_ctrl,
 				pr_err("Error copying init_settings\n");
 				return -EFAULT;
 			}
+<<<<<<< HEAD
 
                         rc = a_ctrl->i2c_client.i2c_func_tbl->i2c_read(
                                 &a_ctrl->i2c_client,
@@ -667,6 +735,8 @@ static int32_t msm_actuator_init(struct msm_actuator_ctrl_t *a_ctrl,
                                 return rc;
                         }
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			rc = a_ctrl->func_tbl->actuator_init_focus(a_ctrl,
 				set_info->actuator_params.init_setting_size,
 				init_settings);
@@ -677,9 +747,12 @@ static int32_t msm_actuator_init(struct msm_actuator_ctrl_t *a_ctrl,
 				pr_err("Error actuator_init_focus\n");
 				return -EFAULT;
 			}
+<<<<<<< HEAD
 #ifdef CONFIG_AK7345
         init_actuator=1;
 #endif
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		}
 	}
 
@@ -827,9 +900,12 @@ static int msm_actuator_close(struct v4l2_subdev *sd,
 		if (rc < 0)
 			pr_err("cci_init failed\n");
 	}
+<<<<<<< HEAD
 #ifdef CONFIG_AK7345
 	init_actuator=0;
 #endif
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	kfree(a_ctrl->i2c_reg_tbl);
 	a_ctrl->i2c_reg_tbl = NULL;
 

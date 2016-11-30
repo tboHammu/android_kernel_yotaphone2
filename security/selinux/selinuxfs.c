@@ -150,7 +150,11 @@ static ssize_t sel_write_enforce(struct file *file, const char __user *buf,
 		goto out;
 
 	/* No partial writes. */
+<<<<<<< HEAD
 	length = -EINVAL;
+=======
+	length = EINVAL;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if (*ppos != 0)
 		goto out;
 
@@ -1232,7 +1236,10 @@ static int sel_make_bools(void)
 		kfree(bool_pending_names[i]);
 	kfree(bool_pending_names);
 	kfree(bool_pending_values);
+<<<<<<< HEAD
 	bool_num = 0;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	bool_pending_names = NULL;
 	bool_pending_values = NULL;
 

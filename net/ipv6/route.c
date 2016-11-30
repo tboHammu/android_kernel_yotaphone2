@@ -928,6 +928,11 @@ struct dst_entry * ip6_route_output(struct net *net, const struct sock *sk,
 {
 	int flags = 0;
 
+<<<<<<< HEAD
+=======
+	fl6->flowi6_iif = net->loopback_dev->ifindex;
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if ((sk && sk->sk_bound_dev_if) || rt6_need_strict(&fl6->daddr))
 		flags |= RT6_LOOKUP_F_IFACE;
 

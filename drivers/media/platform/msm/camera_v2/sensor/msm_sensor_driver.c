@@ -116,7 +116,10 @@ static int32_t msm_sensor_driver_create_v4l_subdev
 {
 	int32_t rc = 0;
 	uint32_t session_id = 0;
+<<<<<<< HEAD
         unsigned long mount_pos;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	rc = camera_init_v4l2(&s_ctrl->pdev->dev, &session_id);
 	if (rc < 0) {
@@ -137,12 +140,15 @@ static int32_t msm_sensor_driver_create_v4l_subdev
 	s_ctrl->msm_sd.sd.entity.group_id = MSM_CAMERA_SUBDEV_SENSOR;
 	s_ctrl->msm_sd.sd.entity.name = s_ctrl->msm_sd.sd.name;
 	s_ctrl->msm_sd.close_seq = MSM_SD_CLOSE_2ND_CATEGORY | 0x3;
+<<<<<<< HEAD
 
         mount_pos = s_ctrl->sensordata->sensor_info->position << 16;
         mount_pos = mount_pos |
                              ((s_ctrl->sensordata->sensor_info->sensor_mount_angle / 90) << 8);
         s_ctrl->msm_sd.sd.entity.flags = mount_pos | MEDIA_ENT_FL_DEFAULT;
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	msm_sd_register(&s_ctrl->msm_sd);
 	return rc;
 }

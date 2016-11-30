@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2008-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2008-2015, The Linux Foundation. All rights reserved.
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -41,11 +45,18 @@
 #include <linux/mutex.h>
 #include <linux/atomic.h>
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 #include <mach/msm_spi.h>
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #include <mach/sps.h>
 #include <mach/dma.h>
 #include <mach/msm_bus.h>
 #include <mach/msm_bus_board.h>
+<<<<<<< HEAD
+=======
+#include <linux/qcom-spi.h>
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #include "spi_qsd.h"
 
 static int msm_spi_pm_resume_runtime(struct device *device);
@@ -168,6 +179,7 @@ static inline void msm_spi_free_cs_gpio(struct msm_spi *dd)
 	}
 }
 
+<<<<<<< HEAD
 static void msm_spi_clock_set(struct msm_spi *dd, int speed)
 {
 	int rc;
@@ -177,6 +189,68 @@ static void msm_spi_clock_set(struct msm_spi *dd, int speed)
 	if (rate < 0) {
 		dev_err(dd->dev,
 			"%s: no match found for requested clock frequency:%d",
+=======
+
+/**
+ * msm_spi_clk_max_rate: finds the nearest lower rate for a clk
+ * @clk the clock for which to find nearest lower rate
+ * @rate clock frequency in Hz
+ * @return nearest lower rate or negative error value
+ *
+ * Public clock API extends clk_round_rate which is a ceiling function. This
+ * function is a floor function implemented as a binary search using the
+ * ceiling function.
+ */
+static long msm_spi_clk_max_rate(struct clk *clk, unsigned long rate)
+{
+	long lowest_available, nearest_low, step_size, cur;
+	long step_direction = -1;
+	long guess = rate;
+	int  max_steps = 10;
+
+	cur =  clk_round_rate(clk, rate);
+	if (cur == rate)
+		return rate;
+
+	/* if we got here then: cur > rate */
+	lowest_available =  clk_round_rate(clk, 0);
+	if (lowest_available > rate)
+		return -EINVAL;
+
+	step_size = (rate - lowest_available) >> 1;
+	nearest_low = lowest_available;
+
+	while (max_steps-- && step_size) {
+		guess += step_size * step_direction;
+
+		cur =  clk_round_rate(clk, guess);
+
+		if ((cur < rate) && (cur > nearest_low))
+			nearest_low = cur;
+
+		/*
+		 * if we stepped too far, then start stepping in the other
+		 * direction with half the step size
+		 */
+		if (((cur > rate) && (step_direction > 0))
+		 || ((cur < rate) && (step_direction < 0))) {
+			step_direction = -step_direction;
+			step_size >>= 1;
+		 }
+	}
+	return nearest_low;
+}
+
+static void msm_spi_clock_set(struct msm_spi *dd, int speed)
+{
+	long rate;
+	int rc;
+
+	rate = msm_spi_clk_max_rate(dd->clk, speed);
+	if (rate < 0) {
+		dev_err(dd->dev,
+		"%s: no match found for requested clock frequency:%d",
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 			__func__, speed);
 		return;
 	}
@@ -636,6 +710,19 @@ static void msm_spi_set_spi_config(struct msm_spi *dd, int bpw)
 		/* flags removed from SPI_CONFIG in QUP version-2 */
 		msm_spi_set_bpw_and_no_io_flags(dd, &spi_config, bpw-1);
 
+<<<<<<< HEAD
+=======
+	/*
+	 * HS_MODE improves signal stability for spi-clk high rates
+	 * but is invalid in LOOPBACK mode.
+	 */
+	if ((dd->clock_speed >= SPI_HS_MIN_RATE) &&
+	   !(dd->cur_msg->spi->mode & SPI_LOOP))
+		spi_config |= SPI_CFG_HS_MODE;
+	else
+		spi_config &= ~SPI_CFG_HS_MODE;
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	writel_relaxed(spi_config, dd->base + SPI_CONFIG);
 }
 
@@ -1446,7 +1533,11 @@ static int msm_spi_bam_map_buffers(struct msm_spi *dd)
 	u32 tx_len, rx_len;
 	int num_xfrs_grped = dd->num_xfrs_grped;
 
+<<<<<<< HEAD
 	dev = &dd->cur_msg->spi->dev;
+=======
+	dev = dd->dev;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	first_xfr = dd->cur_transfer;
 
 	do {
@@ -1456,7 +1547,11 @@ static int msm_spi_bam_map_buffers(struct msm_spi *dd)
 		if (tx_buf != NULL) {
 			first_xfr->tx_dma = dma_map_single(dev, tx_buf,
 							tx_len, DMA_TO_DEVICE);
+<<<<<<< HEAD
 			if (dma_mapping_error(NULL, first_xfr->tx_dma)) {
+=======
+			if (dma_mapping_error(dev, first_xfr->tx_dma)) {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 				ret = -ENOMEM;
 				goto error;
 			}
@@ -1465,9 +1560,15 @@ static int msm_spi_bam_map_buffers(struct msm_spi *dd)
 		if (rx_buf != NULL) {
 			first_xfr->rx_dma = dma_map_single(dev, rx_buf,	rx_len,
 							DMA_FROM_DEVICE);
+<<<<<<< HEAD
 			if (dma_mapping_error(NULL, first_xfr->rx_dma)) {
 				if (tx_buf != NULL)
 					dma_unmap_single(NULL,
+=======
+			if (dma_mapping_error(dev, first_xfr->rx_dma)) {
+				if (tx_buf != NULL)
+					dma_unmap_single(dev,
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 							first_xfr->tx_dma,
 							tx_len, DMA_TO_DEVICE);
 				ret = -ENOMEM;
@@ -1772,6 +1873,10 @@ static void msm_spi_process_transfer(struct msm_spi *dd)
 	u32 timeout;
 	u32 spi_ioc;
 	u32 int_loopback = 0;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	dd->tx_bytes_remaining = dd->cur_msg_len;
 	dd->rx_bytes_remaining = dd->cur_msg_len;
@@ -1824,10 +1929,19 @@ static void msm_spi_process_transfer(struct msm_spi *dd)
 	msm_spi_set_transfer_mode(dd, bpw, read_count);
 	msm_spi_set_mx_counts(dd, read_count);
 	if (dd->mode == SPI_DMOV_MODE) {
+<<<<<<< HEAD
 		if (msm_spi_dma_map_buffers(dd) < 0) {
 			pr_err("Mapping DMA buffers\n");
 			return;
 			}
+=======
+		ret = msm_spi_dma_map_buffers(dd);
+		if (ret < 0) {
+			pr_err("Mapping DMA buffers\n");
+			dd->cur_msg->status = ret;
+			return;
+		}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	} else if (dd->mode == SPI_BAM_MODE) {
 			if (msm_spi_dma_map_buffers(dd) < 0) {
 				pr_err("Mapping DMA buffers\n");
@@ -1968,8 +2082,11 @@ static inline void write_force_cs(struct msm_spi *dd, bool set_flag)
 
 static inline int combine_transfers(struct msm_spi *dd)
 {
+<<<<<<< HEAD
 	struct spi_transfer *t = dd->cur_transfer;
 	struct spi_transfer *nxt;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	int xfrs_grped = 1;
 	dd->xfrs_delay_usec = 0;
 
@@ -1982,6 +2099,7 @@ static inline int combine_transfers(struct msm_spi *dd)
 	if (dd->cur_transfer->rx_buf)
 		dd->bam.bam_rx_len += dd->cur_transfer->len;
 
+<<<<<<< HEAD
 	while (t->transfer_list.next != &dd->cur_msg->transfers) {
 		nxt = list_entry(t->transfer_list.next,
 				 struct spi_transfer,
@@ -2006,6 +2124,9 @@ static inline int combine_transfers(struct msm_spi *dd)
 
 	if (1 == xfrs_grped)
 		dd->xfrs_delay_usec = dd->cur_transfer->delay_usecs;
+=======
+	dd->xfrs_delay_usec = dd->cur_transfer->delay_usecs;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	return xfrs_grped;
 }
@@ -2055,7 +2176,11 @@ static void msm_spi_process_message(struct msm_spi *dd)
 			dd->cur_tx_transfer = dd->cur_transfer;
 			dd->cur_rx_transfer = dd->cur_transfer;
 			msm_spi_process_transfer(dd);
+<<<<<<< HEAD
 			if (dd->qup_ver && !dd->xfrs_delay_usec)
+=======
+			if (dd->qup_ver && dd->cur_transfer->cs_change)
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 				write_force_cs(dd, 0);
 			xfrs_grped--;
 		}
@@ -2079,13 +2204,84 @@ static void msm_spi_process_message(struct msm_spi *dd)
 		dd->num_xfrs_grped = 1;
 		msm_spi_process_transfer(dd);
 	}
+<<<<<<< HEAD
 
+=======
+	if (dd->qup_ver)
+		write_force_cs(dd, 0);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	return;
 
 error:
 	msm_spi_free_cs_gpio(dd);
 }
 
+<<<<<<< HEAD
+=======
+static void reset_core(struct msm_spi *dd)
+{
+	msm_spi_register_init(dd);
+	/*
+	 * The SPI core generates a bogus input overrun error on some targets,
+	 * when a transition from run to reset state occurs and if the FIFO has
+	 * an odd number of entries. Hence we disable the INPUT_OVER_RUN_ERR_EN
+	 * bit.
+	 */
+	msm_spi_enable_error_flags(dd);
+
+	writel_relaxed(SPI_IO_C_NO_TRI_STATE, dd->base + SPI_IO_CONTROL);
+	msm_spi_set_state(dd, SPI_OP_STATE_RESET);
+}
+
+static void put_local_resources(struct msm_spi *dd)
+{
+	msm_spi_disable_irqs(dd);
+	clk_disable_unprepare(dd->clk);
+	clk_disable_unprepare(dd->pclk);
+
+	/* Free  the spi clk, miso, mosi, cs gpio */
+	if (dd->pdata && dd->pdata->gpio_release)
+		dd->pdata->gpio_release();
+
+	msm_spi_free_gpios(dd);
+}
+
+static int get_local_resources(struct msm_spi *dd)
+{
+	int ret = -EINVAL;
+	/* Configure the spi clk, miso, mosi and cs gpio */
+	if (dd->pdata->gpio_config) {
+		ret = dd->pdata->gpio_config();
+		if (ret) {
+			dev_err(dd->dev,
+					"%s: error configuring GPIOs\n",
+					__func__);
+			return ret;
+		}
+	}
+
+	ret = msm_spi_request_gpios(dd);
+	if (ret)
+		return ret;
+
+	ret = clk_prepare_enable(dd->clk);
+	if (ret)
+		goto clk0_err;
+	ret = clk_prepare_enable(dd->pclk);
+	if (ret)
+		goto clk1_err;
+	msm_spi_enable_irqs(dd);
+
+	return 0;
+
+clk1_err:
+	clk_disable_unprepare(dd->clk);
+clk0_err:
+	msm_spi_free_gpios(dd);
+	return ret;
+}
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 /**
  * msm_spi_transfer_one_message: To process one spi message at a time
  * @master: spi master controller reference
@@ -2117,7 +2313,14 @@ static int msm_spi_transfer_one_message(struct spi_master *master,
 				tr->speed_hz, tr->bits_per_word,
 				tr->tx_buf, tr->rx_buf);
 			status_error = -EINVAL;
+<<<<<<< HEAD
 			goto out;
+=======
+			msg->status = status_error;
+			spi_finalize_current_message(master);
+			put_local_resources(dd);
+			return 0;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		}
 	}
 
@@ -2137,6 +2340,27 @@ static int msm_spi_transfer_one_message(struct spi_master *master,
 	spin_lock_irqsave(&dd->queue_lock, flags);
 	dd->transfer_pending = 1;
 	spin_unlock_irqrestore(&dd->queue_lock, flags);
+<<<<<<< HEAD
+=======
+	/*
+	 * get local resources for each transfer to ensure we're in a good
+	 * state and not interfering with other EE's using this device
+	 */
+	if (dd->pdata->is_shared) {
+		if (get_local_resources(dd)) {
+			mutex_unlock(&dd->core_lock);
+			return -EINVAL;
+		}
+
+		reset_core(dd);
+		if (dd->use_dma) {
+			msm_spi_bam_pipe_connect(dd, &dd->bam.prod,
+					&dd->bam.prod.config);
+			msm_spi_bam_pipe_connect(dd, &dd->bam.cons,
+					&dd->bam.cons.config);
+		}
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	if (dd->suspended || !msm_spi_is_valid_state(dd)) {
 		dev_err(dd->dev, "%s: SPI operational state not valid\n",
@@ -2169,10 +2393,32 @@ static int msm_spi_transfer_one_message(struct spi_master *master,
 	if (dd->suspended)
 		wake_up_interruptible(&dd->continue_suspend);
 
+<<<<<<< HEAD
 out:
 	dd->cur_msg->status = status_error;
 	spi_finalize_current_message(master);
 	return 0;
+=======
+	/*
+	 * Put local resources prior to calling finalize to ensure the hw
+	 * is in a known state before notifying the calling thread (which is a
+	 * different context since we're running in the spi kthread here) to
+	 * prevent race conditions between us and any other EE's using this hw.
+	 */
+	if (dd->pdata->is_shared) {
+		if (dd->use_dma) {
+			msm_spi_bam_pipe_disconnect(dd, &dd->bam.prod);
+			msm_spi_bam_pipe_disconnect(dd, &dd->bam.cons);
+		}
+		put_local_resources(dd);
+	}
+	mutex_unlock(&dd->core_lock);
+	if (dd->suspended)
+		wake_up_interruptible(&dd->continue_suspend);
+	status_error = dd->cur_msg->status;
+	spi_finalize_current_message(master);
+	return status_error;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 }
 
 static int msm_spi_prepare_transfer_hardware(struct spi_master *master)
@@ -2229,8 +2475,16 @@ static int msm_spi_setup(struct spi_device *spi)
 		return -EBUSY;
 	}
 
+<<<<<<< HEAD
 	if (dd->use_rlock)
 		remote_mutex_lock(&dd->r_lock);
+=======
+	if (dd->pdata->is_shared) {
+		rc = get_local_resources(dd);
+		if (rc)
+			goto no_resources;
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	spi_ioc = readl_relaxed(dd->base + SPI_IO_CONTROL);
 	mask = SPI_IO_C_CS_N_POLARITY_0 << spi->chip_select;
@@ -2249,6 +2503,7 @@ static int msm_spi_setup(struct spi_device *spi)
 
 	/* Ensure previous write completed before disabling the clocks */
 	mb();
+<<<<<<< HEAD
 
 	if (dd->use_rlock)
 		remote_mutex_unlock(&dd->r_lock);
@@ -2256,6 +2511,14 @@ static int msm_spi_setup(struct spi_device *spi)
 	/* Counter-part of system-resume when runtime-pm is not enabled. */
 	if (!pm_runtime_enabled(dd->dev))
 		msm_spi_pm_suspend_runtime(dd->dev);
+=======
+	if (dd->pdata->is_shared)
+		put_local_resources(dd);
+	/* Counter-part of system-resume when runtime-pm is not enabled. */
+	if (!pm_runtime_enabled(dd->dev))
+		msm_spi_pm_suspend_runtime(dd->dev);
+no_resources:
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	mutex_unlock(&dd->core_lock);
 
@@ -2585,6 +2848,7 @@ static int msm_spi_bam_pipe_init(struct msm_spi *dd,
 	memset(pipe_conf->desc.base, 0x00, pipe_conf->desc.size);
 
 	pipe->handle = pipe_handle;
+<<<<<<< HEAD
 	rc = msm_spi_bam_pipe_connect(dd, pipe, pipe_conf);
 	if (rc)
 		goto connect_err;
@@ -2594,6 +2858,11 @@ static int msm_spi_bam_pipe_init(struct msm_spi *dd,
 connect_err:
 	dma_free_coherent(dd->dev, pipe_conf->desc.size,
 		pipe_conf->desc.base, pipe_conf->desc.phys_base);
+=======
+
+	return 0;
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 config_err:
 	sps_free_endpoint(pipe_handle);
 
@@ -2842,6 +3111,11 @@ struct msm_spi_platform_data * __init msm_spi_dt_to_pdata(
 			&dd->cs_gpios[3].gpio_num,       DT_OPT,  DT_GPIO, -1},
 		{"qcom,rt-priority",
 			&pdata->rt_priority,		 DT_OPT,  DT_BOOL,  0},
+<<<<<<< HEAD
+=======
+		{"qcom,shared",
+			&pdata->is_shared,		 DT_OPT,  DT_BOOL,  0},
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		{NULL,  NULL,                            0,       0,        0},
 		};
 
@@ -3254,6 +3528,7 @@ static int msm_spi_pm_suspend_runtime(struct device *device)
 	wait_event_interruptible(dd->continue_suspend,
 		!dd->transfer_pending);
 
+<<<<<<< HEAD
 	msm_spi_disable_irqs(dd);
 	clk_disable_unprepare(dd->clk);
 	clk_disable_unprepare(dd->pclk);
@@ -3269,6 +3544,16 @@ static int msm_spi_pm_suspend_runtime(struct device *device)
 	if (pm_qos_request_active(&qos_req_list))
 		pm_qos_update_request(&qos_req_list,
 				PM_QOS_DEFAULT_VALUE);
+=======
+	if (dd->pdata && !dd->pdata->is_shared && dd->use_dma) {
+		msm_spi_bam_pipe_disconnect(dd, &dd->bam.prod);
+		msm_spi_bam_pipe_disconnect(dd, &dd->bam.cons);
+	}
+	if (dd->pdata && !dd->pdata->active_only)
+		msm_spi_clk_path_unvote(dd);
+	if (dd->pdata && !dd->pdata->is_shared)
+		put_local_resources(dd);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 suspend_exit:
 	return 0;
 }
@@ -3278,7 +3563,10 @@ static int msm_spi_pm_resume_runtime(struct device *device)
 	struct platform_device *pdev = to_platform_device(device);
 	struct spi_master *master = platform_get_drvdata(pdev);
 	struct msm_spi	  *dd;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	dev_dbg(device, "pm_runtime: resuming...\n");
 	if (!master)
@@ -3289,6 +3577,7 @@ static int msm_spi_pm_resume_runtime(struct device *device)
 
 	if (!dd->suspended)
 		return 0;
+<<<<<<< HEAD
 
 	if (pm_qos_request_active(&qos_req_list))
 		pm_qos_update_request(&qos_req_list,
@@ -3315,6 +3604,20 @@ static int msm_spi_pm_resume_runtime(struct device *device)
 	clk_prepare_enable(dd->clk);
 	clk_prepare_enable(dd->pclk);
 	msm_spi_enable_irqs(dd);
+=======
+	
+	if (!dd->pdata->is_shared)
+		get_local_resources(dd);
+	msm_spi_clk_path_init(dd);
+	if (!dd->pdata->active_only)
+		msm_spi_clk_path_vote(dd);
+	if (!dd->pdata->is_shared && dd->use_dma) {
+		msm_spi_bam_pipe_connect(dd, &dd->bam.prod,
+				&dd->bam.prod.config);
+		msm_spi_bam_pipe_connect(dd, &dd->bam.cons,
+				&dd->bam.cons.config);
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	dd->suspended = 0;
 
 resume_exit:

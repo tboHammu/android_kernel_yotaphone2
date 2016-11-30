@@ -472,6 +472,7 @@ static void kgsl_iommu_disable_clk(struct kgsl_mmu *mmu, int ctx_id)
 }
 
 /*
+<<<<<<< HEAD
  * kgsl_iommu_disable_clk_event - An event function that is executed when
  * the required timestamp is reached. It disables the IOMMU clocks if
  * the timestamp on which the clocks can be disabled has expired.
@@ -495,6 +496,26 @@ static void kgsl_iommu_clk_disable_event(struct kgsl_device *device, void *data,
 	else
 		/* something went wrong with the event handling mechanism */
 		BUG_ON(1);
+=======
+ * kgsl_iommu_disable_clk_event() - Disable IOMMU clocks after timestamp
+ * @device: The kgsl device pointer
+ * @context: Pointer to the context that fired the event
+ * @data: Pointer to the private data for the event
+ * @type: Result of the callback (retired or cancelled)
+ *
+ * An event function that is executed when
+ * the required timestamp is reached. It disables the IOMMU clocks if
+ * the timestamp on which the clocks can be disabled has expired.
+ *
+ * Return - void
+ */
+static void kgsl_iommu_clk_disable_event(struct kgsl_device *device,
+		struct kgsl_context *context, void *data, int type)
+{
+	struct kgsl_iommu_disable_clk_param *param = data;
+
+	kgsl_iommu_disable_clk(param->mmu, param->ctx_id);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	/* Free param we are done using it */
 	kfree(param);
@@ -531,8 +552,13 @@ kgsl_iommu_disable_clk_on_ts(struct kgsl_mmu *mmu,
 	param->ctx_id = ctx_id;
 	param->ts = ts;
 
+<<<<<<< HEAD
 	if (kgsl_add_event(mmu->device, KGSL_MEMSTORE_GLOBAL,
 			ts, kgsl_iommu_clk_disable_event, param, mmu)) {
+=======
+	if (kgsl_add_event(mmu->device, &mmu->device->iommu_events,
+			ts, kgsl_iommu_clk_disable_event, param)) {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		KGSL_DRV_ERR(mmu->device,
 			"Failed to add IOMMU disable clk event\n");
 		kfree(param);
@@ -1909,7 +1935,11 @@ static void kgsl_iommu_stop(struct kgsl_mmu *mmu)
 		kgsl_iommu_pagefault_resume(mmu);
 	}
 	/* switch off MMU clocks and cancel any events it has queued */
+<<<<<<< HEAD
 	kgsl_cancel_events(mmu->device, mmu);
+=======
+	kgsl_cancel_events(mmu->device, &mmu->device->iommu_events);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 }
 
 static int kgsl_iommu_close(struct kgsl_mmu *mmu)

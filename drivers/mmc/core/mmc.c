@@ -1291,10 +1291,14 @@ static int mmc_reboot_notify(struct notifier_block *notify_block,
 	struct mmc_card *card = container_of(
 			notify_block, struct mmc_card, reboot_notify);
 
+<<<<<<< HEAD
 	if (event != SYS_RESTART)
 		card->issue_long_pon = true;
 	else
 		card->issue_long_pon = false;
+=======
+	card->pon_type = (event != SYS_RESTART) ? MMC_LONG_PON : MMC_SHRT_PON;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	return NOTIFY_OK;
 }
@@ -1690,11 +1694,16 @@ static int mmc_poweroff_notify(struct mmc_card *card, unsigned int notify_type)
 	return err;
 }
 
+<<<<<<< HEAD
 int mmc_send_long_pon(struct mmc_card *card)
+=======
+int mmc_send_pon(struct mmc_card *card)
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 {
 	int err = 0;
 	struct mmc_host *host = card->host;
 
+<<<<<<< HEAD
 	mmc_claim_host(host);
 	if (card->issue_long_pon && mmc_can_poweroff_notify(card)) {
 		err = mmc_poweroff_notify(host->card, EXT_CSD_POWER_OFF_LONG);
@@ -1703,6 +1712,21 @@ int mmc_send_long_pon(struct mmc_card *card)
 					mmc_hostname(host), err);
 	}
 	mmc_release_host(host);
+=======
+	if (!mmc_can_poweroff_notify(card))
+		goto out;
+
+	mmc_claim_host(host);
+	if (card->pon_type & MMC_LONG_PON)
+		err = mmc_poweroff_notify(host->card, EXT_CSD_POWER_OFF_LONG);
+	else if (card->pon_type & MMC_SHRT_PON)
+		err = mmc_poweroff_notify(host->card, EXT_CSD_POWER_OFF_SHORT);
+	if (err)
+		pr_warn("%s: error %d sending PON type %u",
+			mmc_hostname(host), err, card->pon_type);
+	mmc_release_host(host);
+out:
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	return err;
 }
 

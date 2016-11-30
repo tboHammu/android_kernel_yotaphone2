@@ -843,8 +843,11 @@ static int encrypted_update(struct key *key, const void *data, size_t datalen)
 	const char *format = NULL;
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (test_bit(KEY_FLAG_NEGATIVE, &key->flags))
 		return -ENOKEY;
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if (datalen <= 0 || datalen > 32767 || !data)
 		return -EINVAL;
 
@@ -1018,6 +1021,7 @@ static int __init init_encrypted(void)
 	ret = encrypted_shash_alloc();
 	if (ret < 0)
 		return ret;
+<<<<<<< HEAD
 	ret = aes_get_sizes();
 	if (ret < 0)
 		goto out;
@@ -1025,6 +1029,12 @@ static int __init init_encrypted(void)
 	if (ret < 0)
 		goto out;
 	return 0;
+=======
+	ret = register_key_type(&key_type_encrypted);
+	if (ret < 0)
+		goto out;
+	return aes_get_sizes();
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 out:
 	encrypted_shash_release();
 	return ret;

@@ -3326,8 +3326,11 @@ static unsigned int adreno_readtimestamp(struct kgsl_device *device,
 		break;
 	}
 
+<<<<<<< HEAD
 	rmb();
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	return timestamp;
 }
 

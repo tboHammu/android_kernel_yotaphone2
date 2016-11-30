@@ -3147,7 +3147,11 @@ static void a3xx_cp_callback(struct adreno_device *adreno_dev, int irq)
 	struct kgsl_device *device = &adreno_dev->dev;
 
 	device->pwrctrl.irq_last = 1;
+<<<<<<< HEAD
 	queue_work(device->work_queue, &device->ts_expired_ws);
+=======
+	queue_work(device->work_queue, &device->event_work);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	adreno_dispatcher_schedule(device);
 }
 

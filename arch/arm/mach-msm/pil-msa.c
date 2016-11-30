@@ -299,10 +299,19 @@ static int pil_msa_mba_init_image(struct pil_desc *pil,
 	dma_addr_t mdata_phys;
 	s32 status;
 	int ret;
+<<<<<<< HEAD
 
 	/* Make metadata physically contiguous and 4K aligned. */
 	mdata_virt = dma_alloc_coherent(pil->dev, size, &mdata_phys,
 					GFP_KERNEL);
+=======
+	DEFINE_DMA_ATTRS(attrs);
+
+	dma_set_attr(DMA_ATTR_STRONGLY_ORDERED, &attrs);
+	/* Make metadata physically contiguous and 4K aligned. */
+	mdata_virt = dma_alloc_attrs(pil->dev, size, &mdata_phys,
+					GFP_KERNEL, &attrs);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	if (!mdata_virt) {
 		dev_err(pil->dev, "MBA metadata buffer allocation failed\n");
 		return -ENOMEM;
@@ -328,7 +337,11 @@ static int pil_msa_mba_init_image(struct pil_desc *pil,
 		ret = -EINVAL;
 	}
 
+<<<<<<< HEAD
 	dma_free_coherent(pil->dev, size, mdata_virt, mdata_phys);
+=======
+	dma_free_attrs(pil->dev, size, mdata_virt, mdata_phys, &attrs);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	return ret;
 }

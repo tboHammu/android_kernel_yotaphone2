@@ -72,7 +72,11 @@ struct krait_vreg_pmic_chip {
 
 static struct krait_vreg_pmic_chip *the_chip;
 
+<<<<<<< HEAD
 static struct of_device_id krait_vreg_pmic_match_table[] = {
+=======
+static struct of_device_id krait_vreg_pmic_match_table[] __initdata = {
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	{ .compatible = KRAIT_REG_PMIC_DEV_NAME },
 	{}
 };

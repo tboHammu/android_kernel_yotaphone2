@@ -36,11 +36,24 @@ static struct uts_namespace *clone_uts_ns(struct task_struct *tsk,
 					  struct uts_namespace *old_ns)
 {
 	struct uts_namespace *ns;
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	ns = create_uts_ns();
 	if (!ns)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
+=======
+	err = proc_alloc_inum(&ns->proc_inum);
+	if (err) {
+		kfree(ns);
+		return ERR_PTR(err);
+	}
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	down_read(&uts_sem);
 	memcpy(&ns->name, &old_ns->name, sizeof(ns->name));
 	ns->user_ns = get_user_ns(task_cred_xxx(tsk, user)->user_ns);
@@ -78,6 +91,10 @@ void free_uts_ns(struct kref *kref)
 
 	ns = container_of(kref, struct uts_namespace, kref);
 	put_user_ns(ns->user_ns);
+<<<<<<< HEAD
+=======
+	proc_free_inum(ns->proc_inum);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	kfree(ns);
 }
 
@@ -110,11 +127,26 @@ static int utsns_install(struct nsproxy *nsproxy, void *ns)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static unsigned int utsns_inum(void *vp)
+{
+	struct uts_namespace *ns = vp;
+
+	return ns->proc_inum;
+}
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 const struct proc_ns_operations utsns_operations = {
 	.name		= "uts",
 	.type		= CLONE_NEWUTS,
 	.get		= utsns_get,
 	.put		= utsns_put,
 	.install	= utsns_install,
+<<<<<<< HEAD
 };
 
+=======
+	.inum		= utsns_inum,
+};
+>>>>>>> caf/LA.BF.1.1.3_rb1.13

@@ -1,6 +1,11 @@
 #ifndef MMC_QUEUE_H
 #define MMC_QUEUE_H
 
+<<<<<<< HEAD
+=======
+#define MMC_REQ_SPECIAL_MASK    (REQ_DISCARD | REQ_FLUSH)
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 struct request;
 struct task_struct;
 

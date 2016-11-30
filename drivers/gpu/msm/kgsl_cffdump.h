@@ -51,6 +51,12 @@ void kgsl_cffdump_memory_base(struct kgsl_device *device, unsigned int base,
 void kgsl_cffdump_hang(struct kgsl_device *device);
 int kgsl_cff_dump_enable_set(void *data, u64 val);
 int kgsl_cff_dump_enable_get(void *data, u64 *val);
+<<<<<<< HEAD
+=======
+int kgsl_cffdump_capture_ib_desc(struct kgsl_device *device,
+				struct kgsl_context *context,
+				struct kgsl_cmdbatch *cmdbatch);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 #else
 
@@ -124,6 +130,17 @@ static inline void kgsl_cffdump_user_event(struct kgsl_device *device,
 {
 	return;
 }
+<<<<<<< HEAD
+=======
+
+static inline int kgsl_cffdump_capture_ib_desc(struct kgsl_device *device,
+				struct kgsl_context *context,
+				struct kgsl_cmdbatch *cmdbatch)
+{
+	return 0;
+}
+
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 static inline int kgsl_cff_dump_enable_set(void *data, u64 val)
 {
 	return -EINVAL;

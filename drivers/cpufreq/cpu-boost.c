@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2013-2015, The Linux Foundation. All rights reserved.
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -34,6 +38,10 @@ struct cpu_sync {
 	int cpu;
 	spinlock_t lock;
 	bool pending;
+<<<<<<< HEAD
+=======
+	atomic_t being_woken;
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 	int src_cpu;
 	unsigned int boost_min;
 	unsigned int input_boost_min;
@@ -206,7 +214,20 @@ static int boost_migration_notify(struct notifier_block *nb,
 	s->pending = true;
 	s->src_cpu = (int) arg;
 	spin_unlock_irqrestore(&s->lock, flags);
+<<<<<<< HEAD
 	wake_up(&s->sync_wq);
+=======
+	/*
+	* Avoid issuing recursive wakeup call, as sync thread itself could be
+	* seen as migrating triggering this notification. Note that sync thread
+	* of a cpu could be running for a short while with its affinity broken
+	* because of CPU hotplug.
+	*/
+	if (!atomic_cmpxchg(&s->being_woken, 0, 1)) {
+		wake_up(&s->sync_wq);
+		atomic_set(&s->being_woken, 0);
+	}
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 
 	return NOTIFY_OK;
 }
@@ -346,6 +367,10 @@ static int cpu_boost_init(void)
 		s = &per_cpu(sync_info, cpu);
 		s->cpu = cpu;
 		init_waitqueue_head(&s->sync_wq);
+<<<<<<< HEAD
+=======
+		atomic_set(&s->being_woken, 0);
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 		spin_lock_init(&s->lock);
 		INIT_DELAYED_WORK(&s->boost_rem, do_boost_rem);
 		INIT_DELAYED_WORK(&s->input_boost_rem, do_input_boost_rem);

@@ -1162,6 +1162,7 @@ struct ff_effect {
 #define FF_MAX		0x7f
 #define FF_CNT		(FF_MAX+1)
 
+<<<<<<< HEAD
 #define KEY_BS_KEY0 0x2a0       //Single key press
 #define KEY_BS_KEY1 0x2a1       //Single key press
 #define KEY_BS_KEY2 0x2a2       // Single key press
@@ -1205,6 +1206,8 @@ struct ff_effect {
 #define KEY_BS_GESTURE_UNLOCK        0x2ba
 #define KEY_FS_GESTURE_UNLOCK        0x2bb
 
+=======
+>>>>>>> caf/LA.BF.1.1.3_rb1.13
 #ifdef __KERNEL__
 
 /*
